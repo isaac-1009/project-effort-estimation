@@ -1,0 +1,341 @@
+{
+  "total_effort": 196.0,
+  "features": [
+    {
+      "seq": 1,
+      "system": "微信小程序",
+      "module": "登录账号",
+      "name": "扫码注册+OCR识别+信息提交",
+      "effort": 10.0,
+      "desc": "提交身份证、健康证等，OCR识别，后台审核"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "电子员工证展示+多店铺切换",
+      "effort": 6.0,
+      "desc": "审核通过后颁发电子员工证，支持多店铺切换"
+    },
+    {
+      "seq": 2,
+      "system": "",
+      "module": "首页",
+      "name": "待办事项列表",
+      "effort": 6.0,
+      "desc": "显示全部提醒：日常提报、待确认事项、到期预警、审批进度、活动通知"
+    },
+    {
+      "seq": 3,
+      "system": "",
+      "module": "销售管理",
+      "name": "每日销售提报",
+      "effort": 3.0,
+      "desc": "日期、店铺名称、店铺号、营业额，保留全部数据"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "月度销售提报",
+      "effort": 4.0,
+      "desc": "日期、店铺名称、店铺号、营业额、线上、线下"
+    },
+    {
+      "seq": 4,
+      "system": "",
+      "module": "财务管理",
+      "name": "账单下载",
+      "effort": 2.0,
+      "desc": "按权限下载缴费账单"
+    },
+    {
+      "seq": 5,
+      "system": "",
+      "module": "市场相关",
+      "name": "活动提交+确认",
+      "effort": 5.0,
+      "desc": "店铺提交活动内容、活动信息，需营运确认"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "活动通知+总结查看",
+      "effort": 4.0,
+      "desc": "接收微信活动通知，查看活动总结"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "积分抵现对账",
+      "effort": 6.0,
+      "desc": "店长发起，填固定表单，营运审核"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "商场合作信息",
+      "effort": 3.0,
+      "desc": "VIP折扣、员工折扣等，按权限展示"
+    },
+    {
+      "seq": 6,
+      "system": "",
+      "module": "营运管理",
+      "name": "三关一闭提报",
+      "effort": 4.0,
+      "desc": "拍照+文字备注"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "资质档案管理",
+      "effort": 5.0,
+      "desc": "查看/上传营业执照、许可证、保险"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "违纪/客诉查阅",
+      "effort": 3.0,
+      "desc": "店铺可查阅违纪汇总、客诉汇总"
+    },
+    {
+      "seq": 7,
+      "system": "",
+      "module": "员工管理",
+      "name": "培训视频+答题",
+      "effort": 8.0,
+      "desc": "观看培训视频，选择题考核，展示结果"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "员工入离职管理",
+      "effort": 5.0,
+      "desc": "入职提交审核，离职店铺端可删除"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "员工进场扫码",
+      "effort": 4.0,
+      "desc": "门口静态二维码，员工扫码，门卫确认放行"
+    },
+    {
+      "seq": 8,
+      "system": "",
+      "module": "共享文件",
+      "name": "制式单据下载",
+      "effort": 2.0,
+      "desc": "面试表、开票信息等参考文档"
+    },
+    {
+      "seq": 9,
+      "system": "PC管理后台",
+      "module": "登录",
+      "name": "微信扫码/账号登录",
+      "effort": 4.0,
+      "desc": "PC端微信扫码登录"
+    },
+    {
+      "seq": 10,
+      "system": "",
+      "module": "首页",
+      "name": "数据概览",
+      "effort": 6.0,
+      "desc": "今日进场、销售数据、审批状态统计"
+    },
+    {
+      "seq": 11,
+      "system": "",
+      "module": "账号管理",
+      "name": "注册审核",
+      "effort": 4.0,
+      "desc": "审核员工注册申请"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "电子员工证管理",
+      "effort": 2.0,
+      "desc": "查看员工证信息"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "多店铺权限配置",
+      "effort": 5.0,
+      "desc": "营运配置用户可查看的店铺列表"
+    },
+    {
+      "seq": 12,
+      "system": "",
+      "module": "销售管理",
+      "name": "销售数据查询+导出",
+      "effort": 5.0,
+      "desc": "查询导出销售数据"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "月度销售数据+导出",
+      "effort": 4.0,
+      "desc": "查看月度销售数据"
+    },
+    {
+      "seq": 13,
+      "system": "",
+      "module": "财务管理",
+      "name": "账单导出+发送",
+      "effort": 5.0,
+      "desc": "财务导出账单，微信通知+邮件发送"
+    },
+    {
+      "seq": 14,
+      "system": "",
+      "module": "市场管理",
+      "name": "活动审核+总结",
+      "effort": 6.0,
+      "desc": "审核活动，发布活动总结"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "积分抵现审核",
+      "effort": 5.0,
+      "desc": "审核积分抵现申请"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "商场合作信息维护",
+      "effort": 3.0,
+      "desc": "维护VIP折扣、员工折扣等信息"
+    },
+    {
+      "seq": 15,
+      "system": "",
+      "module": "营运管理",
+      "name": "三关一闭统计",
+      "effort": 3.0,
+      "desc": "查看三关一闭提交统计"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "资质档案审核",
+      "effort": 3.0,
+      "desc": "审核资质上传"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "违纪/客诉上传，查看",
+      "effort": 5.0,
+      "desc": "营运上传违纪、客诉信息"
+    },
+    {
+      "seq": 16,
+      "system": "",
+      "module": "员工管理",
+      "name": "培训视频分类+上传",
+      "effort": 5.0,
+      "desc": "分类管理培训视频（入职/消防等）"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "试卷配置管理",
+      "effort": 6.0,
+      "desc": "配置选择题及答案"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "答题记录查询",
+      "effort": 3.0,
+      "desc": "查询员工答题历史和成绩"
+    },
+    {
+      "seq": 17,
+      "system": "",
+      "module": "系统设置",
+      "name": "店铺基本数据维护",
+      "effort": 4.0,
+      "desc": "店铺信息录入/编辑，状态管理"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "系统用户角色维护",
+      "effort": 6.0,
+      "desc": "8角色定义和管理，权限配置"
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "小程序用户角色维护",
+      "effort": 5.0,
+      "desc": "用户管理、角色绑定、多店铺权限配置"
+    },
+    {
+      "seq": 18,
+      "system": "其他",
+      "module": "UI设计",
+      "name": "小程序UI设计",
+      "effort": 10.0,
+      "desc": ""
+    },
+    {
+      "seq": 19,
+      "system": "",
+      "module": "系统测试",
+      "name": "集成测试，系统测试",
+      "effort": 12.0,
+      "desc": ""
+    },
+    {
+      "seq": 20,
+      "system": "",
+      "module": "环境搭建",
+      "name": "开发，测试，生产环境搭建",
+      "effort": 3.0,
+      "desc": ""
+    },
+    {
+      "seq": 21,
+      "system": "",
+      "module": "发布",
+      "name": "生产环境发布",
+      "effort": 2.0,
+      "desc": ""
+    },
+    {
+      "seq": null,
+      "system": "",
+      "module": "",
+      "name": "后期运维费用2人天/月（5000/月）",
+      "effort": 0,
+      "desc": ""
+    }
+  ]
+}

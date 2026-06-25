@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>渠道管理 Helpdesk · 发布计划</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:        #6366F1;
+      --primary-dark:   #4F46E5;
+      --primary-light:  #818CF8;
+      --primary-bg:     #EEF2FF;
+      --secondary:      #10B981;
+      --secondary-dark: #059669;
+      --secondary-bg:   #ECFDF5;
+      --accent:         #F59E0B;
+      --accent-bg:      #FFFBEB;
+      --background:     #F3F4F6;
+      --card-bg:        #FFFFFF;
+      --text-primary:   #1E293B;
+      --text-secondary: #64748B;
+      --text-muted:     #94A3B8;
+      --border:         #E2E8F0;
+      --shadow:         0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+      --shadow-lg:      0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+      --radius:         12px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* ── header ── */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -.02em;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 64px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      border-radius: 2px;
+    }
+    header p {
+      margin-top: .75rem;
+      font-size: .95rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── section label ── */
+    .sec-label {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: .85rem;
+    }
+
+    /* ── legend ── */
+    .legend {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .8rem;
+      color: var(--text-secondary);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── gantt card ── */
+    .gantt-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      margin-bottom: 2.5rem;
+      overflow-x: auto;
+    }
+
+    .gantt {
+      min-width: 680px;
+    }
+
+    /* week col header */
+    .g-wcell {
+      text-align: center;
+      font-size: .82rem;
+      font-weight: 600;
+      padding: .45rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* rows */
+    .g-row {
+      display: grid;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .g-row:last-child { border-bottom: none; }
+
+    .g-label {
+      font-size: .96rem;
+      color: var(--text-secondary);
+      padding: .45rem .75rem .45rem 0;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .step-num {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .g-bars {
+      position: relative;
+      height: 40px;
+    }
+
+    .g-bar {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: .82rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity .15s, box-shadow .15s;
+    }
+    .g-bar:hover { opacity: .88; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+
+    .g-bar.p1  { background: var(--primary);  color: #fff; }
+    .g-bar.p2  { background: var(--secondary); color: #fff; }
+    .g-bar.rel { background: var(--accent);    color: #fff; }
+    .g-bar.tst { background: #CBD5E1;          color: var(--text-secondary); }
+
+    .g-diamond {
+      position: absolute;
+      top: 50%;
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+      background: var(--accent);
+      transform: translate(-50%, -50%) rotate(45deg);
+      box-shadow: 0 0 0 3px rgba(245,158,11,.2);
+    }
+
+    /* release row */
+    .g-row.release-row {
+      background: var(--accent-bg);
+      border-radius: 0 0 8px 8px;
+    }
+    .g-row.release-row .g-label {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* phase separator */
+    .g-sep {
+      border-top: 2px dashed var(--border);
+    }
+
+    /* ── feature grid ── */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 680px) { .feat-grid { grid-template-columns: 1fr; } }
+
+    .feat-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .feat-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+
+    .feat-hdr {
+      padding: 1rem 1.5rem;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .feat-hdr.p1 { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+    .feat-hdr.p2 { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+    .feat-hdr .badge {
+      margin-left: auto;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      background: rgba(255,255,255,.22);
+      padding: .2rem .65rem;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    .feat-list { padding: .4rem 0; }
+    .feat-item {
+      padding: .7rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      transition: background .15s;
+    }
+    .feat-item:last-child { border-bottom: none; }
+    .feat-item:hover { background: var(--background); }
+
+    .feat-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: .68rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: .05rem;
+    }
+    .feat-num.p1 { background: var(--primary-bg); color: var(--primary); }
+    .feat-num.p2 { background: var(--secondary-bg); color: var(--secondary-dark); }
+
+    .feat-name {
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .feat-desc {
+      font-size: .78rem;
+      color: var(--text-secondary);
+      margin-top: .15rem;
+      line-height: 1.5;
+    }
+
+    /* ── note ── */
+    .note {
+      background: var(--accent-bg);
+      border: 1px solid #FDE68A;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-size: .83rem;
+      color: #92400E;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+    .note strong { font-weight: 600; }
+
+    /* ── footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: .75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1.5rem 1rem 4rem; }
+      .gantt-card { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>渠道管理 Helpdesk 功能一览</h1>
+    <p>为销售提供渠道管理类问题的自助查询 + 人工答疑服务，嵌入企业微信 · 美外之家 · 智汇工坊板块</p>
+  </header>
+
+  <!-- Legend -->
+  <div class="sec-label">图例</div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--primary);"></div>一期功能（W1–W4）
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--secondary);"></div>二期功能（W6–W10）
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#CBD5E1;"></div>测试阶段
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--accent);border-radius:2px;transform:rotate(45deg);"></div>发布节点
+    </div>
+  </div>
+
+  <!-- Gantt -->
+  <div class="sec-label">开发甘特图（共 11 周）</div>
+  <div class="gantt-card">
+    <div class="gantt">
+
+      <!--
+        Layout: label col = 190px, then 11 equal week cols.
+        Each col = 1/11 ≈ 9.09%
+        W1=0%, W2=9.09%, W3=18.18%, W4=27.27%, W5=36.36%
+        W6=45.45%, W7=54.55%, W8=63.64%, W9=72.73%, W10=81.82%, W11=90.91%
+        bar left% = col_start/11 * 100, width% = span/11 * 100
+      -->
+
+      <!-- Phase band labels -->
+      <div style="display:grid;grid-template-columns:190px repeat(11,1fr);margin-bottom:.3rem;">
+        <div></div>
+        <div style="grid-column:2/7;text-align:center;font-size:.82rem;font-weight:600;color:var(--primary);letter-spacing:.07em;padding-bottom:.35rem;border-bottom:2px solid var(--primary-bg);">
+          一期 · 第 1–5 周（3W 开发 + 1W 测试 + 1W 发布）
+        </div>
+        <div style="grid-column:7/13;text-align:center;font-size:.82rem;font-weight:600;color:var(--secondary-dark);letter-spacing:.07em;padding-bottom:.35rem;border-bottom:2px solid var(--secondary-bg);">
+          二期 · 第 6–11 周（5W 开发 + 1W 测试发布）
+        </div>
+      </div>
+
+      <!-- Week headers -->
+      <div style="display:grid;grid-template-columns:190px repeat(11,1fr);margin-bottom:.25rem;">
+        <div></div>
+        <div class="g-wcell" style="color:var(--primary);">W1</div>
+        <div class="g-wcell" style="color:var(--primary);">W2</div>
+        <div class="g-wcell" style="color:var(--primary);">W3</div>
+        <div class="g-wcell" style="color:var(--primary);">W4</div>
+        <div class="g-wcell" style="color:var(--accent);">W5</div>
+        <div class="g-wcell" style="color:var(--secondary-dark);">W6</div>
+        <div class="g-wcell" style="color:var(--secondary-dark);">W7</div>
+        <div class="g-wcell" style="color:var(--secondary-dark);">W8</div>
+        <div class="g-wcell" style="color:var(--secondary-dark);">W9</div>
+        <div class="g-wcell" style="color:var(--secondary-dark);">W10</div>
+        <div class="g-wcell" style="color:var(--accent);">W11</div>
+      </div>
+
+      <!-- ── 一期 rows ── -->
+
+      <!-- 1. 美外之家入口调整 W1 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">①</span>美外之家入口调整</div>
+        <div class="g-bars">
+          <!-- W1 = 0/11..1/11 → 0%..9.09% width=9.09% -->
+          <div class="g-bar p1" style="left:.3%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 2. 用户聊天界面 W1-W2 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">②</span>用户聊天界面（H5）</div>
+        <div class="g-bars">
+          <!-- W1-W2 = 0..2/11 = 0%..18.18% width=18.18% -->
+          <div class="g-bar p1" style="left:.3%;width:17.6%;"></div>
+        </div>
+      </div>
+
+      <!-- 3. 引导菜单+FAQ W2-W3 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">③</span>引导菜单 + FAQ 自动应答</div>
+        <div class="g-bars">
+          <!-- W2-W3 = 1/11..3/11 → left=9.09% width=18.18% -->
+          <div class="g-bar p1" style="left:9.4%;width:17.6%;"></div>
+        </div>
+      </div>
+
+      <!-- 4. 问答配置 + 分配规则配置 W3 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">④</span>问答配置 + 分配规则配置</div>
+        <div class="g-bars">
+          <div class="g-bar p1" style="left:18.5%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 5. 一期系统测试 W4 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">⑤</span>系统测试</div>
+        <div class="g-bars">
+          <div class="g-bar tst" style="left:27.6%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 一期验收发布 W5 -->
+      <div class="g-row release-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label">🚀 验收发布</div>
+        <div class="g-bars">
+          <div class="g-bar rel" style="left:36.7%;width:8.5%;"></div>
+          <div class="g-diamond" style="left:40.9%;"></div>
+        </div>
+      </div>
+
+      <!-- Spacer between phases -->
+      <div style="height:1.25rem;border-bottom:1px dashed var(--border);display:grid;grid-template-columns:190px 1fr;">
+        <div style="display:flex;align-items:center;padding-right:.5rem;">
+          <div style="font-size:.78rem;font-weight:700;letter-spacing:.08em;color:var(--secondary-dark);text-transform:uppercase;padding:.15rem .5rem;background:var(--secondary-bg);border-radius:4px;">二期开始</div>
+        </div>
+        <div></div>
+      </div>
+
+      <!-- ── 二期 rows ── -->
+
+      <!-- 1. 消息服务 + 人工对话 W6-W9 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">①</span>消息服务 + 人工对话</div>
+        <div class="g-bars">
+          <div class="g-bar p2" style="left:45.8%;width:35.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 2. 后台对话管理 W7-W9 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">②</span>后台对话管理</div>
+        <div class="g-bars">
+          <div class="g-bar p2" style="left:54.9%;width:26.6%;"></div>
+        </div>
+      </div>
+
+      <!-- 3. 满意度评分 W8 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">③</span>满意度评分</div>
+        <div class="g-bars">
+          <div class="g-bar p2" style="left:63.8%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 4. 数据统计 W9 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">④</span>数据统计</div>
+        <div class="g-bars">
+          <div class="g-bar p2" style="left:72.85%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 5. 二期系统测试 W10 -->
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">⑤</span>系统测试</div>
+        <div class="g-bars">
+          <div class="g-bar tst" style="left:82%;width:8.5%;"></div>
+        </div>
+      </div>
+
+      <!-- 二期验收发布 W11 -->
+      <div class="g-row release-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label">🚀 验收发布</div>
+        <div class="g-bars">
+          <div class="g-bar rel" style="left:91.2%;width:8.5%;"></div>
+          <div class="g-diamond" style="left:95.4%;"></div>
+        </div>
+      </div>
+
+    </div><!-- /gantt -->
+  </div><!-- /gantt-card -->
+
+  <!-- Feature Cards -->
+  <div class="sec-label">功能详情</div>
+  <div class="feat-grid">
+
+    <!-- 一期 -->
+    <div class="feat-card">
+      <div class="feat-hdr p1">
+        📱 一期功能
+        <span class="badge">3W 开发 + 1W 发布</span>
+      </div>
+      <div class="feat-list">
+        <div class="feat-item">
+          <div class="feat-num p1">1</div>
+          <div>
+            <div class="feat-name">美外之家入口调整</div>
+            <div class="feat-desc">在企业微信美外之家中新增 Helpdesk 入口，对接智汇工坊板块</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p1">2</div>
+          <div>
+            <div class="feat-name">用户聊天界面（H5）</div>
+            <div class="feat-desc">移动端自定义聊天 H5 页面，支持消息收发、历史记录、文件/图片发送</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p1">3</div>
+          <div>
+            <div class="feat-name">引导菜单 + FAQ 自动应答</div>
+            <div class="feat-desc">6 大类问题入口菜单，二级子菜单 FAQ，自动匹配答案并回复文件/链接</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p1">4</div>
+          <div>
+            <div class="feat-name">问答配置 + 分配规则配置</div>
+            <div class="feat-desc">后台配置菜单内容、FAQ 问答对、自动回复文件与链接；配置问题类别到管理员的分配规则</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p1">5</div>
+          <div>
+            <div class="feat-name">系统测试</div>
+            <div class="feat-desc">W4 进行集成测试与回归验证，问题修复</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p1">6</div>
+          <div>
+            <div class="feat-name">验收发布</div>
+            <div class="feat-desc">W5 完成用户验收测试，正式上线一期功能</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 二期 -->
+    <div class="feat-card">
+      <div class="feat-hdr p2">
+        🖥️ 二期功能
+        <span class="badge">5W 开发 + 1W 发布</span>
+      </div>
+      <div class="feat-list">
+        <div class="feat-item">
+          <div class="feat-num p2">1</div>
+          <div>
+            <div class="feat-name">消息服务 + 人工对话</div>
+            <div class="feat-desc">实时推送通知、多端消息同步、离线消息补发；管理员聊天界面，支持多会话切换、历史会话查询、快捷回复模板</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p2">2</div>
+          <div>
+            <div class="feat-name">后台对话管理</div>
+            <div class="feat-desc">待处理/进行中/已结束对话列表，标签分类筛选，对话详情查看</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p2">3</div>
+          <div>
+            <div class="feat-name">满意度评分</div>
+            <div class="feat-desc">对话结束时自动触发满意度评分（1–5 分），结果提交至后端统计</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p2">4</div>
+          <div>
+            <div class="feat-name">数据统计</div>
+            <div class="feat-desc">提问量、各类型提问分布、管理员回答量、平均响应时长、满意度图表，支持导出 Excel</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p2">5</div>
+          <div>
+            <div class="feat-name">系统测试</div>
+            <div class="feat-desc">W10 进行全链路集成测试，涵盖消息服务与数据一致性验证</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-num p2">6</div>
+          <div>
+            <div class="feat-name">验收发布</div>
+            <div class="feat-desc">W11 完成用户验收测试，正式上线二期全量功能</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /feat-grid -->
+
+  <!-- Note -->
+  <div class="note">
+    <strong>📌 排期说明：</strong>一期（W1–W5）聚焦用户端核心体验，包含自助查询全链路，3 周开发 + 1 周系统测试 + 1 周验收发布；二期（W6–W11）补全人工对话与管理后台，消息服务与数据统计工作量较大，安排 5 周开发 + 1 周测试发布。两期之间无功能断层，一期自助查询可独立运行。
+  </div>
+
+  <footer>
+    <span>渠道管理 Helpdesk · 产品规划文档</span>
+    <span>一期 W1–W5 · 二期 W6–W11 · 共 11 周</span>
+  </footer>
+
+</div>
+</body>
+</html>

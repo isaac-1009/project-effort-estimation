@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>营运部信息化小程序研发排期</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+:root {
+  --primary:        #6366F1;
+  --primary-dark:   #4F46E5;
+  --secondary:      #10B981;
+  --secondary-dark: #059669;
+  --accent:         #F59E0B;
+  --violet:         #8B5CF6;
+  --violet-dark:    #7C3AED;
+  --rose:           #F43F5E;
+  --rose-dark:      #E11D48;
+  --sky:            #0EA5E9;
+  --sky-dark:       #0284C7;
+  --background:     transparent;
+  --card-bg:        #FFFFFF;
+  --text-primary:   #1E293B;
+  --text-secondary: #64748B;
+  --text-muted:     #94A3B8;
+  --border:         #E2E8F0;
+  --shadow:         0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+  --radius:         12px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+header { text-align: center; margin-bottom: 3rem; position: relative; }
+header h1 {
+  font-size: 2rem; font-weight: 700; color: var(--text-primary);
+  letter-spacing: -.02em; position: relative; display: inline-block; margin-bottom: 1rem;
+}
+header .export-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+header h1::after {
+  content: ''; position: absolute; bottom: -8px; left: 50%;
+  transform: translateX(-50%); width: 64px; height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark)); border-radius: 2px;
+}
+
+.sec-label {
+  font-size: .7rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: .85rem;
+}
+
+.legend { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: .45rem; font-size: .8rem; color: var(--text-secondary); }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+.gantt-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 2.5rem; overflow-x: auto;
+}
+.gantt { min-width: 680px; position: relative; }
+
+.g-month {
+  text-align: center; font-size: .78rem; font-weight: 600;
+  padding: .35rem 0; color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  background: #F8FAFC;
+}
+
+.g-wcell {
+  text-align: center; font-size: .82rem; font-weight: 600;
+  padding: .45rem 0; border-bottom: 1px solid var(--border);
+}
+
+/* Vertical dashed separators every 4 weeks */
+.g-vsep-cell {
+  border-right: 2px dashed var(--text-muted);
+  opacity: 0.4;
+}
+
+.g-row { display: grid; align-items: center; border-bottom: 1px solid var(--border); position: relative; }
+.g-row:last-child { border-bottom: none; }
+
+.g-label {
+  font-size: .96rem; font-weight: 600; color: var(--text-secondary);
+  padding: .45rem .75rem .45rem 0; line-height: 1.3;
+  display: flex; align-items: center; justify-content: flex-start; gap: .5rem;
+}
+.step-num {
+  font-size: .82rem; font-weight: 700; color: var(--text-muted);
+  flex-shrink: 0; min-width: 20px; text-align: center;
+}
+
+.g-bars { position: relative; height: 40px; display: grid; grid-template-columns: repeat(11, 1fr); }
+.g-bars-sep { border-right: 2px dashed var(--text-muted); opacity: 0.4; }
+
+.g-bar {
+  position: absolute; top: 50%; transform: translateY(-50%); height: 24px;
+  border-radius: 6px; display: flex; align-items: center; padding: 0 10px;
+  font-size: .82rem; font-weight: 600; white-space: nowrap; overflow: hidden;
+  transition: opacity .15s, box-shadow .15s;
+}
+.g-bar:hover { opacity: .88; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+
+@media (max-width: 600px) {
+  .container { padding: 1.5rem 1rem 4rem; }
+  .gantt-card { padding: 1rem; }
+}
+  </style>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>营运部信息化小程序研发排期</h1>
+    <button class="export-btn" onclick="exportToPNG()">📷 导出PNG图片</button>
+  </header>
+
+
+  <div id="export-content">
+  <div class="sec-label">图例</div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--primary);"></div>需求阶段</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--violet);"></div>UI 设计</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div>系统设计</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--secondary);"></div>功能开发</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#CBD5E1;"></div>系统测试</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div>客户验收</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--rose);"></div>系统发布</div>
+  </div>
+
+
+  <div class="sec-label">排期甘特图（共 11 周）</div>
+  <div class="gantt-card">
+    <div class="gantt">
+
+
+
+      <div style="display:grid;grid-template-columns:190px repeat(11,1fr);margin-bottom:0;">
+<div></div>
+        <div class="g-month" style="grid-column:2/6;">第1月</div>
+        <div class="g-month" style="grid-column:6/10;">第2月</div>
+        <div class="g-month" style="grid-column:10/13;">第3月</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:190px repeat(11,1fr);margin-bottom:.25rem;">
+<div></div>
+        <div class="g-wcell">W1</div>
+        <div class="g-wcell">W2</div>
+        <div class="g-wcell">W3</div>
+        <div class="g-wcell g-vsep-cell">W4</div>
+        <div class="g-wcell">W5</div>
+        <div class="g-wcell">W6</div>
+        <div class="g-wcell">W7</div>
+        <div class="g-wcell g-vsep-cell">W8</div>
+        <div class="g-wcell">W9</div>
+        <div class="g-wcell">W10</div>
+        <div class="g-wcell">W11</div>
+      </div>
+
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">①</span>需求沟通与评审</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--primary);color:#fff;left:0.3%;width:17.6%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">②</span>UI设计与评审</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--violet);color:#fff;left:0.3%;width:26.7%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">③</span>系统设计</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--sky);color:#fff;left:0.3%;width:26.7%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">④</span>功能开发</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--secondary);color:#fff;left:9.4%;width:53.9%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">⑤</span>系统测试</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:#CBD5E1;color:var(--text-secondary);left:54.8%;width:17.6%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label"><span class="step-num">⑥</span>客户验收</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--accent);color:#fff;left:73.0%;width:17.6%;"></div>
+        </div>
+      </div>
+      <div class="g-row" style="grid-template-columns:190px 1fr;">
+        <div class="g-label">🚀 系统发布</div>
+        <div class="g-bars">
+          <div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div><div class="g-bars-sep"></div><div></div><div></div><div></div>
+          <div class="g-bar" style="background:var(--rose);color:#fff;left:91.2%;width:8.5%;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+</div>
+<script>
+function exportToPNG() {
+  const element = document.getElementById('export-content');
+  
+  const originalOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'visible';
+  
+  html2canvas(element, {
+    backgroundColor: null,
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    allowTaint: true
+  }).then(canvas => {
+    document.body.style.overflow = originalOverflow;
+    const link = document.createElement('a');
+    link.download = '甘特图_营运部信息化小程序研发排期.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(err => {
+    document.body.style.overflow = originalOverflow;
+    console.error('导出失败:', err);
+    alert('导出失败，请重试');
+  });
+}
+</script>
+</body>
+</html>

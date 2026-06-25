@@ -1,0 +1,136 @@
+{
+  "project_id": "渠道管理Helpdesk_20260329",
+  "name": "渠道管理Helpdesk",
+  "created_date": "2026-03-29",
+  "total_effort": 60,
+  "description": "为销售提供渠道管理类问题的自助查询+人工答疑服务，嵌入企业微信-美外之家-智汇工坊板块内",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "Helpdesk", "客服", "聊天", "FAQ", "满意度"],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）",
+    "backend": "Java/Node.js（复用美外之家）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（应用消息推送）"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "引导与自助查询",
+      "name": "引导菜单+FAQ自动应答",
+      "effort_days": 4,
+      "description": "6大类问题入口菜单，二级子菜单FAQ，自动匹配答案+文件/链接回复，内容为固定配置",
+      "complexity": "低",
+      "reference": "问答系统模式"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "自定义聊天界面",
+      "effort_days": 8,
+      "description": "美外之家内自定义聊天，消息收发、历史记录、文件/图片发送、实时更新",
+      "complexity": "高",
+      "reference": "问答系统模式扩展(含实时聊天)"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "满意度评分",
+      "effort_days": 2,
+      "description": "对话结束时自动触发满意度评分（1-5分），提交评分到后端",
+      "complexity": "低",
+      "reference": "打卡签到模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "对话队列管理",
+      "effort_days": 4,
+      "description": "待处理/进行中/已结束对话列表，标签分类筛选，对话详情查看",
+      "complexity": "中",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "管理员聊天界面",
+      "effort_days": 10,
+      "description": "管理员消息收发界面，含对话队列侧边栏，支持多会话切换，历史会话查询，快捷回复模板",
+      "complexity": "中",
+      "reference": "问答系统模式扩展(管理员端聊天)"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "分配规则配置",
+      "effort_days": 2,
+      "description": "配置问题类别到管理员的分配规则（如类别1,2→管理员A，3-6→管理员B）",
+      "complexity": "低",
+      "reference": "系统管理模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "统计看板",
+      "effort_days": 5,
+      "description": "销售提问数量、各类型问题提问量、管理员回答数量、平均响应时长、满意度分数图表",
+      "complexity": "中",
+      "reference": "数据统计模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "报表导出",
+      "effort_days": 2,
+      "description": "导出统计报表为Excel格式",
+      "complexity": "低",
+      "reference": "数据导出模式"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "实时消息服务",
+      "effort_days": 6,
+      "description": "WebSocket/SSE实时通信、消息持久化、离线推送(企微应用消息)、断线重连与消息补发",
+      "complexity": "高",
+      "reference": "消息中心模式"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "消息路由引擎",
+      "effort_days": 3,
+      "description": "问题类别匹配、按规则分配管理员、携带问题标签",
+      "complexity": "中",
+      "reference": "审核流程模式"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "对话超时机制",
+      "effort_days": 2,
+      "description": "定时检测超时对话，自动结束并触发满意度评分",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    }
+  ],
+  "summary": {
+    "user_development": 14,
+    "admin_development": 23,
+    "other_development": 11,
+    "total_development_effort": 48,
+    "testing_effort": 6,
+    "other_fixed": {
+      "communication": 2,
+      "ui_design": 3,
+      "acceptance": 1
+    },
+    "total_effort": 60
+  },
+  "notes": [
+    "聊天系统采用自定义实现（非企微客服API），需开发WebSocket服务端及H5聊天界面，是主要工时占比（约25人天）",
+    "管理后台嵌入美外之家现有系统，复用已有登录/权限，无需额外开发认证模块",
+    "FAQ内容为固定配置，后续如需动态管理需额外开发FAQ管理CRUD（约3人天）",
+    "如使用企微客服消息API替代自定义聊天，可节省约10-12人天",
+    "因在已有系统上开发，移除环境搭建工时，增加UI/UX设计工时"
+  ]
+}

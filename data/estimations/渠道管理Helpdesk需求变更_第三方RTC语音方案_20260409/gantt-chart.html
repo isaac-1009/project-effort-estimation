@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渠道管理Helpdesk · 开发计划甘特图</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F6FA; --surface: #FFFFFF; --surface-2: #F0F1F6;
+  --border: #DDE0EA; --border-light: #EEF0F5;
+  --text: #1A1D2E; --text-2: #4A5068; --text-3: #8A90A6;
+  --purple: #7C3AED; --purple-bar: linear-gradient(90deg,#7C3AED,#9F67FF);
+  --blue: #2563EB;   --blue-bar: linear-gradient(90deg,#2563EB,#5B8DEF);
+  --green: #059669;   --green-bar: linear-gradient(90deg,#059669,#34D399);
+  --gray: #64748B;    --gray-bar: linear-gradient(90deg,#64748B,#94A3B8);
+  --red: #DC2626;     --red-bar: linear-gradient(90deg,#DC2626,#EF4444);
+  --critical: #DC2626; --critical-glow: rgba(220,38,38,.20);
+  --milestone: #D97706; --milestone-line: rgba(217,119,6,.40);
+  --row-h: 40px; --phase-h: 36px; --sub-h: 30px; --left-w: 300px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Noto Sans SC','DM Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-3);}
+
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:28px 32px 20px;background:var(--surface);border-bottom:1px solid var(--border);
+}
+.header-left{flex:1;}
+.project-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--purple);background:rgba(124,58,237,.08);
+  padding:4px 12px;border-radius:20px;margin-bottom:12px;
+  border:1px solid rgba(124,58,237,.15);
+}
+.project-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.project-title{font-family:'DM Sans','Noto Sans SC',sans-serif;font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.3px;margin-bottom:4px;}
+.project-subtitle{font-size:13px;color:var(--text-3);font-weight:400;}
+.summary-cards{display:flex;gap:12px;flex-shrink:0;}
+.summary-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:14px 18px;min-width:120px;position:relative;overflow:hidden;
+}
+.summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.summary-card:nth-child(1)::before{background:var(--purple);}
+.summary-card:nth-child(2)::before{background:var(--blue);}
+.summary-card:nth-child(3)::before{background:var(--critical);}
+.summary-label{font-size:10px;font-weight:600;color:var(--text-3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.summary-value{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:var(--text);}
+.summary-value small{font-size:13px;font-weight:500;color:var(--text-2);margin-left:2px;}
+
+/* ── GANTT WRAP ── */
+.gantt-wrap{flex:1;display:flex;overflow:hidden;border-bottom:1px solid var(--border);}
+
+/* ── LEFT ── */
+.gantt-left{
+  width:var(--left-w);flex-shrink:0;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;background:var(--surface);
+}
+.left-header{
+  height:48px;display:flex;align-items:center;padding:0 20px;
+  border-bottom:1px solid var(--border);font-size:13px;font-weight:700;
+  color:var(--text-3);letter-spacing:.5px;text-transform:uppercase;background:var(--surface-2);
+}
+.left-body{flex:1;overflow:hidden;}
+
+.phase-row{
+  height:var(--phase-h);display:flex;align-items:center;padding:0 20px;gap:8px;
+  font-size:14px;font-weight:700;color:var(--text);
+  background:var(--surface-2);border-bottom:1px solid var(--border-light);
+}
+.phase-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+.sub-row{
+  height:var(--sub-h);display:flex;align-items:center;padding:0 20px 0 28px;gap:6px;
+  font-size:13px;font-weight:600;color:var(--text-3);
+  border-bottom:1px solid var(--border-light);
+}
+.sub-line{flex-shrink:0;width:16px;height:1px;background:var(--text-3);opacity:.4;}
+.sub-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+.task-row{
+  height:var(--row-h);display:flex;align-items:center;padding:0 20px 0 44px;gap:8px;
+  border-bottom:1px solid var(--border-light);transition:background .15s;cursor:default;
+}
+.task-row:hover{background:var(--surface-2);}
+.task-row:last-child{border-bottom:none;}
+.task-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px;color:var(--text);}
+.task-days{
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+  color:var(--text-3);background:var(--surface-2);
+  padding:2px 8px;border-radius:4px;flex-shrink:0;border:1px solid var(--border-light);
+}
+.task-critical{color:var(--critical);font-size:11px;flex-shrink:0;}
+
+/* ── RIGHT ── */
+.gantt-right{flex:1;overflow:auto;display:flex;flex-direction:column;}
+.right-header{
+  height:48px;display:flex;border-bottom:1px solid var(--border);
+  background:var(--surface-2);flex-shrink:0;position:sticky;top:0;z-index:10;
+}
+.week-cell{
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--text);border-right:1px solid var(--border-light);
+}
+.right-body{flex:1;position:relative;}
+
+.g-phase-row{height:var(--phase-h);border-bottom:1px solid var(--border-light);background:var(--surface-2);}
+.g-sub-row{height:var(--sub-h);border-bottom:1px solid var(--border-light);background:rgba(240,241,246,.5);}
+.g-task-row{height:var(--row-h);position:relative;border-bottom:1px solid var(--border-light);}
+.g-task-row:last-child{border-bottom:none;}
+
+/* ── BARS ── */
+.bar{
+  position:absolute;top:6px;height:calc(var(--row-h) - 12px);
+  border-radius:4px;display:block;cursor:pointer;
+  transition:filter .15s,transform .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:2;
+}
+.bar:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.15);}
+.bar.bar-purple{background:var(--purple-bar);}
+.bar.bar-blue{background:var(--blue-bar);}
+.bar.bar-green{background:var(--green-bar);}
+.bar.bar-gray{background:var(--gray-bar);}
+.bar.bar-red{background:var(--red-bar);}
+.bar.bar-critical{box-shadow:0 1px 4px var(--critical-glow),0 0 0 1.5px rgba(220,38,38,.25);}
+
+.critical-mark{
+  position:absolute;top:50%;width:10px;height:10px;
+  background:var(--critical);transform:translate(-50%,-50%) rotate(45deg);
+  z-index:3;border-radius:1px;box-shadow:0 0 6px var(--critical-glow);
+}
+
+/* ── MILESTONE DASHED LINES ── */
+.ms-line{
+  position:absolute;top:0;bottom:0;width:1px;z-index:4;
+  border-left:2px dashed var(--milestone-line);
+}
+.ms-line-label{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:700;color:var(--milestone);white-space:nowrap;
+  background:var(--surface);padding:1px 5px;border-radius:3px;
+  letter-spacing:.2px;border:1px solid rgba(217,119,6,.15);
+}
+
+.grid-line{
+  position:absolute;top:0;bottom:0;width:1px;
+  background:var(--border);opacity:.35;z-index:0;
+}
+
+/* ── LEGEND ── */
+.legend{
+  display:flex;align-items:center;gap:20px;
+  padding:14px 32px;border-top:1px solid var(--border);
+  background:var(--surface);flex-shrink:0;
+}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2);font-weight:500;}
+.legend-swatch{width:14px;height:8px;border-radius:3px;}
+.legend-diamond{width:8px;height:8px;transform:rotate(45deg);border-radius:1px;flex-shrink:0;}
+.legend-dash{width:18px;height:0;border-top:2px dashed var(--milestone);flex-shrink:0;}
+
+/* ── TOOLTIP ── */
+.tooltip{
+  position:fixed;z-index:100;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.12);
+  font-size:13px;color:var(--text);pointer-events:none;
+  opacity:0;transition:opacity .15s;max-width:280px;
+}
+.tooltip.show{opacity:1;}
+.tooltip-title{font-weight:700;margin-bottom:4px;}
+.tooltip-meta{color:var(--text-3);font-size:12px;}
+.tooltip-dates{font-family:'JetBrains Mono',monospace;color:var(--text-2);font-size:12px;margin-top:4px;padding-top:4px;border-top:1px solid var(--border-light);}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .header{flex-direction:column;gap:16px;padding:20px;}
+  .project-title{font-size:20px;}
+  :root{--left-w:240px;--row-h:36px;--phase-h:32px;}
+  .task-name{font-size:13px;}
+}
+@media (max-width: 768px) {
+  .header{padding:16px;}
+  .project-title{font-size:18px;}
+  :root{--left-w:180px;--row-h:32px;--phase-h:28px;--sub-h:26px;}
+  .phase-row{padding:0 12px;font-size:12px;}
+  .task-row{padding:0 12px 0 32px;}
+  .task-name{font-size:12px;}
+  .task-days{font-size:10px;padding:1px 6px;}
+  .legend{flex-wrap:wrap;gap:12px;padding:12px 16px;}
+  .week-cell{font-size:11px;}
+}
+@media (max-width: 480px) {
+  :root{--left-w:140px;}
+  .gantt-left{min-width:140px;}
+  .phase-row{padding:0 8px;font-size:11px;}
+  .task-row{padding:0 8px 0 24px;}
+  .task-name{font-size:11px;max-width:100px;}
+  .week-cell{font-size:10px;}
+  .legend{padding:10px 12px;}
+  .legend-item{font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="project-tag"><span class="dot"></span>PROJECT PLAN</div>
+    <div class="project-title">渠道管理 Helpdesk 开发计划</div>
+  </div>
+</div>
+
+<div class="gantt-wrap">
+  <div class="gantt-left">
+    <div class="left-header">任务名称</div>
+    <div class="left-body" id="leftBody"></div>
+  </div>
+  <div class="gantt-right" id="ganttRight">
+    <div class="right-header" id="rightHeader"></div>
+    <div class="right-body" id="rightBody"></div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--purple-bar)"></div>用户端</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--blue-bar)"></div>管理后台</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--green-bar)"></div>后端服务</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--gray-bar)"></div>其他</div>
+  <div class="legend-item"><div class="legend-diamond" style="background:var(--critical)"></div>关键路径</div>
+  <div class="legend-item"><div class="legend-dash"></div>里程碑</div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="ttTitle"></div>
+  <div class="tooltip-meta" id="ttMeta"></div>
+  <div class="tooltip-dates" id="ttDates"></div>
+</div>
+
+<script>
+const DAY_W = 17.5, WEEKS = 8, TOTAL_DAYS = WEEKS * 7;
+const START = new Date(2026, 3, 1);
+function fmt(d){ return `${d.getMonth()+1}/${d.getDate()}`; }
+
+// 排期：W1=项目准备，W2-W6=功能开发，W6-W7=系统测试(10天)，W8=验收发布
+const phases = [
+  { name:'项目准备', color:'gray', rows:[
+    { type:'task', name:'需求沟通', days:2, color:'gray', startOffset:0 },
+    { type:'task', name:'UI/UX 设计', days:5, color:'gray', startOffset:2 },
+  ]},
+  { name:'功能开发', color:'blue', rows:[
+    { type:'task', name:'消息服务开发', days:11, color:'green', critical:true, startOffset:5 },
+    { type:'task', name:'用户端开发', days:14, color:'purple', startOffset:10 },
+    { type:'task', name:'管理后台开发', days:20, color:'blue', critical:true, startOffset:10 },
+  ]},
+  { name:'系统测试', color:'gray', rows:[
+    { type:'task', name:'集成测试+系统测试', days:10, color:'gray', startOffset:25 },
+  ]},
+  { name:'验收发布', color:'gray', rows:[
+    { type:'task', name:'项目验收', days:4, color:'gray', startOffset:35 },
+    { type:'task', name:'上线发布', days:1, color:'red', startOffset:39 },
+  ]},
+];
+
+// Milestone references to task names (will calculate position after tasks)
+const milestoneDefs = [
+  { name:'需求确认', taskName:'需求沟通' },
+  { name:'设计完成', taskName:'UI/UX 设计' },
+  { name:'功能完成', taskName:'管理后台开发' },
+  { name:'测试通过', taskName:'集成测试+系统测试' },
+  { name:'正式上线', taskName:'上线发布' },
+];
+
+// Calculate dates for tasks
+function calcTask(task) {
+  const tmp = new Date(START);
+  let w = 0;
+  while (w < task.startOffset) { tmp.setDate(tmp.getDate()+1); if (tmp.getDay()!==0&&tmp.getDay()!==6) w++; }
+  task.startDate = new Date(tmp);
+  const end = new Date(tmp);
+  let e = 0;
+  while (e < task.days-1) { end.setDate(end.getDate()+1); if (end.getDay()!==0&&end.getDay()!==6) e++; }
+  task.endDate = new Date(end);
+  task.calStart = Math.round((task.startDate - START)/864e5);
+  task.calEnd = Math.round((task.endDate - START)/864e5);
+  task.calSpan = task.calEnd - task.calStart + 1;
+}
+phases.forEach(p => p.rows.forEach(r => { if(r.type==='task') calcTask(r); }));
+
+// Calculate milestone positions based on task calEnd
+const milestones = milestoneDefs.map(md => {
+  let targetTask = null;
+  for (const phase of phases) {
+    for (const row of phase.rows) {
+      if (row.type === 'task' && row.name === md.taskName) {
+        targetTask = row;
+        break;
+      }
+    }
+    if (targetTask) break;
+  }
+  return { name: md.name, calEnd: targetTask ? targetTask.calEnd : 0 };
+});
+
+const totalWidth = TOTAL_DAYS * DAY_W;
+const dotColors = {purple:'var(--purple)',blue:'var(--blue)',green:'var(--green)',gray:'var(--gray)'};
+
+// HEADER - 显示周数
+const rightHeader = document.getElementById('rightHeader');
+rightHeader.innerHTML = Array.from({length:WEEKS},(_,w)=>`<div class="week-cell" style="width:${7*DAY_W}px">W${w+1}</div>`).join('');
+rightHeader.style.minWidth = totalWidth+'px';
+
+// LEFT & RIGHT BODY
+const leftBody = document.getElementById('leftBody');
+const rightBody = document.getElementById('rightBody');
+let lHTML='', bHTML='';
+
+phases.forEach(phase => {
+  lHTML += `<div class="phase-row"><div class="phase-dot" style="background:${dotColors[phase.color]}"></div>${phase.name}</div>`;
+  bHTML += `<div class="g-phase-row" style="min-width:${totalWidth}px"></div>`;
+
+  phase.rows.forEach(row => {
+    if (row.type === 'sub') {
+      lHTML += `<div class="sub-row"><div class="sub-line"></div><div class="sub-dot" style="background:${dotColors[row.color]}"></div>${row.name}</div>`;
+      bHTML += `<div class="g-sub-row" style="min-width:${totalWidth}px"></div>`;
+    } else {
+      const critMark = row.critical ? '<span class="task-critical">◆ 关键</span>' : '';
+      lHTML += `<div class="task-row"><span class="task-name">${row.name}</span>${critMark}<span class="task-days">${row.days}d</span></div>`;
+      const barLeft = row.calStart * DAY_W;
+      const barWidth = Math.max(row.calSpan * DAY_W, DAY_W);
+      const cls = `bar bar-${row.color}${row.critical?' bar-critical':''}`;
+      bHTML += `<div class="g-task-row" style="min-width:${totalWidth}px">`;
+      bHTML += `<div class="${cls}" style="left:${barLeft}px;width:${barWidth}px" data-name="${row.name}" data-days="${row.days}" data-dates="${fmt(row.startDate)} — ${fmt(row.endDate)}" data-critical="${!!row.critical}"></div>`;
+      if (row.critical) bHTML += `<div class="critical-mark" style="left:${barLeft+barWidth+6}px"></div>`;
+      bHTML += '</div>';
+    }
+  });
+});
+
+leftBody.innerHTML = lHTML;
+rightBody.innerHTML = bHTML;
+rightBody.style.minWidth = totalWidth+'px';
+
+// MILESTONE DASHED LINES (span full chart height, at task END position)
+milestones.forEach(ms => {
+  // Position just after the bar's right edge (barLeft + barWidth + small gap)
+  // barLeft + barWidth = calStart * DAY_W + calSpan * DAY_W = (calEnd + 1) * DAY_W
+  const x = (ms.calEnd + 1) * DAY_W + 3;
+  const line = document.createElement('div');
+  line.className = 'ms-line';
+  line.style.left = x + 'px';
+  const label = document.createElement('div');
+  label.className = 'ms-line-label';
+  label.textContent = ms.name;
+  line.appendChild(label);
+  rightBody.appendChild(line);
+});
+
+// WEEK GRID LINES
+for (let w = 0; w <= WEEKS; w++) {
+  const line = document.createElement('div');
+  line.className = 'grid-line';
+  line.style.left = (w*7*DAY_W)+'px';
+  rightBody.appendChild(line);
+}
+
+// SYNC SCROLL (now with 2-row header)
+const ganttRight = document.getElementById('ganttRight');
+ganttRight.addEventListener('scroll', () => {
+  // Freeze both header rows
+  document.getElementById('rightHeader').style.transform = `translateX(${-ganttRight.scrollLeft}px)`;
+});
+
+// TOOLTIP
+const tooltip = document.getElementById('tooltip');
+function posTT(e){
+  tooltip.style.left = Math.min(e.clientX+12, window.innerWidth-300)+'px';
+  tooltip.style.top = Math.max(e.clientY-50, 8)+'px';
+}
+document.querySelectorAll('.bar').forEach(bar => {
+  bar.addEventListener('mouseenter', e => {
+    document.getElementById('ttTitle').textContent = bar.dataset.name;
+    document.getElementById('ttMeta').textContent = `${bar.dataset.days} 人天${bar.dataset.critical==='true'?' · 关键路径':''}`;
+    document.getElementById('ttDates').textContent = bar.dataset.dates;
+    tooltip.classList.add('show'); posTT(e);
+  });
+  bar.addEventListener('mousemove', posTT);
+  bar.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+});
+
+// ANIMATE
+document.querySelectorAll('.bar').forEach((bar, i) => {
+  const w = bar.style.width;
+  bar.style.width='0px'; bar.style.opacity='0';
+  setTimeout(()=>{
+    bar.style.transition='width .45s cubic-bezier(.4,0,.2,1), opacity .3s';
+    bar.style.width=w; bar.style.opacity='1';
+    setTimeout(()=>bar.style.transition='filter .15s, transform .15s', 500);
+  }, 80+i*50);
+});
+</script>
+</body>
+</html>

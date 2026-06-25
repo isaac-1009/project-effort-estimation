@@ -1,0 +1,76 @@
+{
+  "project_id": "企微图文推送投票功能_20260527",
+  "name": "企微图文推送投票功能",
+  "created_date": "2026-05-27",
+  "total_effort": 13,
+  "description": "在现有企业微信图文推送功能的基础上，新增投票功能。用户阅读图文文章时，可以在文章详情页参与投票（支持单选/多选、图文选项），管理员可以在创建推文时配置投票，在后台管理投票数据和导出结果。",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "投票", "互动", "数据统计", "图文选项", "权限控制"],
+  "tech_stack": {
+    "frontend": "企微H5（复用现有）",
+    "backend": "Java/Node.js（复用现有）",
+    "database": "MySQL/MongoDB（扩展表）",
+    "integration": "企微API（员工标签权限）"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "推文投票组件",
+      "name": "推文投票组件",
+      "effort_days": 3,
+      "description": "在文章详情页嵌入投票组件，支持投票展示、交互（单选/多选模式）、提交与校验（权限、重复、截止时间）、结果实时展示（票数、百分比、柱状图）",
+      "complexity": "低",
+      "reference": "复用现有组件，简化开发"
+    },
+    {
+      "system": "管理后台",
+      "module": "推文创建扩展",
+      "name": "推文创建页投票配置",
+      "effort_days": 4,
+      "description": "在现有推文创建页面中扩展投票配置功能：设置投票标题、描述、类型（单选/多选）、截止时间、图文选项（支持上传图片和拖拽排序），复用推文的标签权限配置",
+      "complexity": "中",
+      "reference": "页面扩展，复用现有表单组件"
+    },
+    {
+      "system": "管理后台",
+      "module": "投票管理",
+      "name": "投票管理页面",
+      "effort_days": 2,
+      "description": "独立的投票管理页面：投票列表展示（标题、状态、截止时间、参与人数、关联推文）、状态筛选（草稿/进行中/已结束）、快速操作（发布/关闭/删除）、查看投票结果详情",
+      "complexity": "低",
+      "reference": "标准列表页，复用现有组件"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "投票数据统计",
+      "effort_days": 2,
+      "description": "独立的投票数据页面：实时统计（各选项票数、百分比、参与率）、投票明细（用户、选择、时间）、图表展示（柱状图）、数据导出（Excel）",
+      "complexity": "低",
+      "reference": "复用现有图表和导出组件"
+    }
+  ],
+  "summary": {
+    "user_development": 2,
+    "admin_development": 8,
+    "other_development": 0,
+    "total_development_effort": 10,
+    "testing_effort": 2,
+    "other_fixed": {
+      "communication": 1,
+      "environment": 0,
+      "acceptance": 0,
+      "ui_design": 0
+    },
+    "total_effort": 13
+  },
+  "notes": [
+    "现有系统扩展，复用技术栈和UI设计，节省工时",
+    "投票配置集成到推文创建页面，复用推文标签权限",
+    "投票组件独立封装，便于未来扩展",
+    "支持图文选项，复用现有文件上传服务",
+    "测试工时按开发工时15%计算",
+    "工时调整：大幅复用现有组件，降低开发成本"
+  ],
+  "pending_questions": []
+}

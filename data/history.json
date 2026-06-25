@@ -1,0 +1,266 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-03-26",
+  "total_features": 4,
+  "projects": [
+    {
+      "project_id": "企微推文_20250326",
+      "name": "企微推文管理系统",
+      "created_date": "2025-03-26",
+      "tech_stack": {
+        "frontend": "企微小程序/H5",
+        "backend": "Java/Node.js",
+        "database": "MySQL/MongoDB"
+      },
+      "features": [
+        {
+          "id": "WX_001",
+          "system": "管理后台",
+          "module": "基础功能",
+          "name": "登录，用户管理，角色权限，系统配置",
+          "effort_days": 8,
+          "description": "管理后台基础功能（登录、用户管理、角色权限、系统配置）",
+          "complexity": "中",
+          "keywords": ["登录", "用户管理", "角色", "权限", "系统配置", "后台管理", "企微"],
+          "patterns": ["认证授权", "系统管理", "企微后台"]
+        },
+        {
+          "id": "WX_002",
+          "system": "管理后台",
+          "module": "内容管理",
+          "name": "企微推文创建、编辑、发布、标签管理、评论管理",
+          "effort_days": 10,
+          "description": "企微推文的创建、编辑、发布，标签管理，评论管理",
+          "complexity": "中",
+          "keywords": ["推文", "内容管理", "发布", "标签", "评论", "企微", "文章"],
+          "patterns": ["内容管理", "发布管理", "标签管理", "评论管理"]
+        },
+        {
+          "id": "WX_003",
+          "system": "用户端",
+          "module": "内容查看",
+          "name": "推文查看、评论、点赞、收藏、转发",
+          "effort_days": 8,
+          "description": "企微端推文查看、评论、点赞、收藏（我的收藏）、转发",
+          "complexity": "中",
+          "keywords": ["推文", "评论", "点赞", "收藏", "转发", "企微", "社交"],
+          "patterns": ["内容展示", "社交互动", "收藏管理"]
+        },
+        {
+          "id": "WX_004",
+          "system": "管理后台",
+          "module": "消息中心",
+          "name": "推送记录列表、详情、撤回、取消定时推送",
+          "effort_days": 4,
+          "description": "推送记录管理（列表、详情、撤回、取消定时推送）",
+          "complexity": "低",
+          "keywords": ["推送", "消息中心", "推送记录", "撤回", "定时推送", "企微"],
+          "patterns": ["推送管理", "消息中心"]
+        }
+      ]
+    }
+  ],
+  "feature_patterns": {
+    "CRUD操作": {
+      "base_effort": 3,
+      "complexity": "低",
+      "description": "标准增删改查功能",
+      "keywords": ["列表", "详情", "创建", "编辑", "删除", "CRUD", "增删改查"],
+      "examples": [],
+      "effort_range": [2, 5]
+    },
+    "认证授权": {
+      "base_effort": 4,
+      "complexity": "中",
+      "description": "登录、注册、权限管理",
+      "keywords": ["登录", "注册", "认证", "权限", "角色", "RBAC"],
+      "examples": ["WX_001"],
+      "effort_range": [3, 8]
+    },
+    "文件上传": {
+      "base_effort": 4,
+      "complexity": "中",
+      "description": "图片、文件上传功能",
+      "keywords": ["上传", "图片", "文件", "附件", "导入"],
+      "examples": [],
+      "effort_range": [3, 6]
+    },
+    "富文本编辑": {
+      "base_effort": 5,
+      "complexity": "中",
+      "description": "富文本内容编辑",
+      "keywords": ["富文本", "编辑器", "图文", "HTML", "内容编辑"],
+      "examples": [],
+      "effort_range": [4, 8]
+    },
+    "审核流程": {
+      "base_effort": 6,
+      "complexity": "中",
+      "description": "内容审核、审批流程",
+      "keywords": ["审核", "审批", "工作流", "状态流转"],
+      "examples": [],
+      "effort_range": [4, 8]
+    },
+    "数据统计": {
+      "base_effort": 5,
+      "complexity": "中",
+      "description": "数据统计、图表展示",
+      "keywords": ["统计", "图表", "报表", "数据分析", "仪表盘"],
+      "examples": [],
+      "effort_range": [4, 7]
+    },
+    "排行榜": {
+      "base_effort": 6,
+      "complexity": "中",
+      "description": "排行榜、排名展示",
+      "keywords": ["排行榜", "排行", "排名", "榜单"],
+      "examples": [],
+      "effort_range": [5, 8]
+    },
+    "打卡签到": {
+      "base_effort": 2,
+      "complexity": "低",
+      "description": "打卡、签到功能",
+      "keywords": ["打卡", "签到", "考勤"],
+      "examples": [],
+      "effort_range": [2, 4]
+    },
+    "勋章积分": {
+      "base_effort": 7,
+      "complexity": "中",
+      "description": "勋章、积分、奖励系统",
+      "keywords": ["勋章", "积分", "奖励", "成就", "等级"],
+      "examples": [],
+      "effort_range": [6, 10]
+    },
+    "问答系统": {
+      "base_effort": 6,
+      "complexity": "中",
+      "description": "问答、评论、留言功能",
+      "keywords": ["问答", "评论", "留言", "互动"],
+      "examples": [],
+      "effort_range": [5, 8]
+    },
+    "二维码": {
+      "base_effort": 1,
+      "complexity": "低",
+      "description": "二维码生成、扫码",
+      "keywords": ["二维码", "扫码", "QR码"],
+      "examples": [],
+      "effort_range": [1, 2]
+    },
+    "系统管理": {
+      "base_effort": 6,
+      "complexity": "中",
+      "description": "系统配置、设置管理",
+      "keywords": ["系统管理", "配置", "设置", "后台"],
+      "examples": ["WX_001"],
+      "effort_range": [5, 8]
+    },
+    "数据导出": {
+      "base_effort": 3,
+      "complexity": "低",
+      "description": "数据导出功能",
+      "keywords": ["导出", "下载", "Excel", "CSV"],
+      "examples": [],
+      "effort_range": [2, 4]
+    },
+    "内容管理": {
+      "base_effort": 10,
+      "complexity": "中",
+      "description": "内容创建、编辑、发布、管理",
+      "keywords": ["内容管理", "发布", "编辑", "推文", "文章", "CMS"],
+      "examples": ["WX_002"],
+      "effort_range": [8, 12]
+    },
+    "发布管理": {
+      "base_effort": 4,
+      "complexity": "中",
+      "description": "内容发布、状态管理",
+      "keywords": ["发布", "上线", "状态", "推送"],
+      "examples": ["WX_002"],
+      "effort_range": [3, 6]
+    },
+    "标签管理": {
+      "base_effort": 3,
+      "complexity": "低",
+      "description": "标签分类、管理",
+      "keywords": ["标签", "分类", "标签管理", "分类管理"],
+      "examples": ["WX_002"],
+      "effort_range": [2, 4]
+    },
+    "评论管理": {
+      "base_effort": 3,
+      "complexity": "低",
+      "description": "评论审核、管理",
+      "keywords": ["评论", "评论管理", "评论审核"],
+      "examples": ["WX_002"],
+      "effort_range": [2, 4]
+    },
+    "社交互动": {
+      "base_effort": 8,
+      "complexity": "中",
+      "description": "点赞、收藏、转发、分享",
+      "keywords": ["点赞", "收藏", "转发", "分享", "社交"],
+      "examples": ["WX_003"],
+      "effort_range": [6, 10]
+    },
+    "收藏管理": {
+      "base_effort": 2,
+      "complexity": "低",
+      "description": "收藏、我的收藏",
+      "keywords": ["收藏", "我的收藏", "收藏夹"],
+      "examples": ["WX_003"],
+      "effort_range": [1, 3]
+    },
+    "企微后台": {
+      "base_effort": 8,
+      "complexity": "中",
+      "description": "企微管理后台基础功能",
+      "keywords": ["企微", "企业微信", "企微后台", "企微管理"],
+      "examples": ["WX_001"],
+      "effort_range": [6, 10]
+    },
+    "企微端": {
+      "base_effort": 8,
+      "complexity": "中",
+      "description": "企微小程序/H5端功能",
+      "keywords": ["企微", "企业微信", "企微小程序", "企微H5"],
+      "examples": ["WX_003"],
+      "effort_range": [6, 10]
+    },
+    "推送管理": {
+      "base_effort": 4,
+      "complexity": "低",
+      "description": "推送记录管理、撤回、定时推送",
+      "keywords": ["推送", "推送记录", "撤回", "定时推送", "消息推送"],
+      "examples": ["WX_004"],
+      "effort_range": [3, 6]
+    },
+    "消息中心": {
+      "base_effort": 4,
+      "complexity": "低",
+      "description": "消息中心、推送管理",
+      "keywords": ["消息中心", "推送", "通知", "消息管理"],
+      "examples": ["WX_004"],
+      "effort_range": [3, 6]
+    }
+  },
+  "complexity_factors": {
+    "低": {
+      "description": "标准CRUD，无特殊逻辑，无第三方集成",
+      "multiplier": 0.8,
+      "examples": ["列表展示", "二维码", "数据导出", "标签管理"]
+    },
+    "中": {
+      "description": "有一定业务逻辑，可能涉及文件处理、简单审核流程",
+      "multiplier": 1.0,
+      "examples": ["认证授权", "数据统计", "审核流程", "内容管理"]
+    },
+    "高": {
+      "description": "复杂业务规则，多系统集成，高并发或性能要求",
+      "multiplier": 1.3,
+      "examples": ["富文本编辑+社交互动", "复杂工作流"]
+    }
+  }
+}

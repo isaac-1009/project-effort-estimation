@@ -1,0 +1,310 @@
+{
+  "project_id": "渠道管理Helpdesk_WebRTC方案_20260403",
+  "name": "渠道管理Helpdesk需求变更_WebRTC语音方案",
+  "created_date": "2026-04-03",
+  "total_effort": 96,
+  "description": "渠道管理Helpdesk需求变更：支持Group管理、在线状态、聊天记录导出、WebRTC语音聊天（双向发起）",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "Helpdesk", "客服", "聊天", "语音", "Group", "导出", "WebRTC"],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）+ WebRTC",
+    "backend": "Java/Node.js（复用美外之家）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（应用消息推送）+ WebRTC",
+    "infrastructure": "自建STUN/TURN服务器"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "引导与自助查询",
+      "name": "引导菜单+FAQ自动应答",
+      "effort_days": 4,
+      "description": "6大类问题入口菜单，二级子菜单FAQ，自动匹配答案+文件/链接回复，内容为固定配置",
+      "complexity": "低",
+      "reference": "历史项目复用（问答系统模式）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "自定义聊天界面",
+      "effort_days": 8,
+      "description": "美外之家内自定义聊天，消息收发、历史记录、文件/图片发送、实时更新",
+      "complexity": "高",
+      "reference": "历史项目复用（问答系统模式扩展）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "语音聊天（WebRTC）（新需求）",
+      "effort_days": 5,
+      "description": "基于WebRTC的语音通话功能，支持发起/接收通话请求，通话中UI，结束通话，音量控制",
+      "complexity": "高",
+      "reference": "新增（实时音视频通信）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "满意度评分",
+      "effort_days": 2,
+      "description": "对话结束时自动触发满意度评分（1-5分），提交评分到后端",
+      "complexity": "低",
+      "reference": "历史项目复用（打卡签到模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group管理（新需求）",
+      "effort_days": 3,
+      "description": "Group的CRUD操作，包括组名称、描述、状态",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group-User关联管理（新需求）",
+      "effort_days": 2,
+      "description": "为Group添加/移除成员，查看Group成员列表",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group分配规则配置（升级版）（新需求）",
+      "effort_days": 4,
+      "description": "配置问题类别到Group的分配规则（替代原有直接分配给管理员），支持优先级设置",
+      "complexity": "中",
+      "reference": "系统管理模式（历史项目2人天基础上+2人天）"
+    },
+    {
+      "system": "管理后台",
+      "module": "在线状态管理",
+      "name": "用户在线状态管理（新需求）",
+      "effort_days": 2,
+      "description": "管理员可设置自己的在线/离线/忙碌状态，状态持久化",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "在线状态管理",
+      "name": "在线用户状态列表（新需求）",
+      "effort_days": 2,
+      "description": "实时显示所有管理员的在线状态，支持按Group筛选",
+      "complexity": "中",
+      "reference": "数据统计模式（简化版）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "对话队列管理",
+      "effort_days": 4,
+      "description": "待处理/进行中/已结束对话列表，标签分类筛选，对话详情查看",
+      "complexity": "中",
+      "reference": "历史项目复用（CRUD操作模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "管理员聊天界面",
+      "effort_days": 10,
+      "description": "管理员消息收发界面，含对话队列侧边栏，支持多会话切换，历史会话查询，快捷回复模板",
+      "complexity": "中",
+      "reference": "历史项目复用（问答系统模式扩展）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "语音聊天管理界面（WebRTC）（新需求）",
+      "effort_days": 5,
+      "description": "管理后台WebRTC语音通话界面，支持发起/接收语音请求，通话中UI，通话记录查看",
+      "complexity": "高",
+      "reference": "新增（实时音视频通信）"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "统计看板",
+      "effort_days": 5,
+      "description": "销售提问数量、各类型问题提问量、管理员回答数量、平均响应时长、满意度分数图表",
+      "complexity": "中",
+      "reference": "历史项目复用（数据统计模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "报表导出",
+      "effort_days": 2,
+      "description": "导出统计报表为Excel格式",
+      "complexity": "低",
+      "reference": "历史项目复用（数据导出模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录列表与查询（新需求）",
+      "effort_days": 3,
+      "description": "按对话/用户/时间范围查询聊天记录，支持筛选",
+      "complexity": "中",
+      "reference": "CRUD操作模式（扩展版）"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录导出（文字）（新需求）",
+      "effort_days": 3,
+      "description": "导出文字聊天记录为Excel/CSV格式",
+      "complexity": "中",
+      "reference": "数据导出模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录导出（附件）（新需求）",
+      "effort_days": 2,
+      "description": "打包下载聊天中的附件为ZIP",
+      "complexity": "中",
+      "reference": "文件上传模式（反向）"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录导出（音频）（新需求）",
+      "effort_days": 2,
+      "description": "导出语音消息为音频文件（MP3/WAV）",
+      "complexity": "中",
+      "reference": "文件上传模式（反向）"
+    },
+    {
+      "system": "管理后台",
+      "module": "语音通话管理",
+      "name": "语音通话记录（新需求）",
+      "effort_days": 2,
+      "description": "语音通话记录列表，包含通话时长、参与者、通话质量等信息",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "实时消息服务",
+      "effort_days": 6,
+      "description": "WebSocket/SSE实时通信、消息持久化、离线推送(企微应用消息)、断线重连与消息补发",
+      "complexity": "高",
+      "reference": "历史项目复用（消息中心模式）"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "在线状态同步服务（新需求）",
+      "effort_days": 2,
+      "description": "WebSocket心跳机制、在线状态实时同步、掉线检测",
+      "complexity": "中",
+      "reference": "实时消息服务扩展"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "消息路由引擎（升级版）（新需求）",
+      "effort_days": 5,
+      "description": "问题类别匹配、按Group分配、分配给Group内在线成员、负载均衡",
+      "complexity": "高",
+      "reference": "审核流程模式（历史项目3人天基础上+2人天）"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "对话超时机制",
+      "effort_days": 2,
+      "description": "定时检测超时对话，自动结束并触发满意度评分",
+      "complexity": "低",
+      "reference": "历史项目复用（CRUD操作模式）"
+    },
+    {
+      "system": "其他",
+      "module": "语音服务",
+      "name": "WebRTC信令服务（新需求）",
+      "effort_days": 4,
+      "description": "WebRTC信令服务器，处理通话建立、SDP交换、ICE候选交换",
+      "complexity": "高",
+      "reference": "新增（实时音视频通信）"
+    },
+    {
+      "system": "其他",
+      "module": "语音服务",
+      "name": "STUN/TURN服务器配置（新需求）",
+      "effort_days": 2,
+      "description": "配置Coturn等STUN/TURN服务器，处理NAT穿透",
+      "complexity": "中",
+      "reference": "新增（网络配置）"
+    },
+    {
+      "system": "其他",
+      "module": "文件服务",
+      "name": "异步导出任务服务（新需求）",
+      "effort_days": 2,
+      "description": "大量数据异步生成导出文件，支持任务队列、进度查询、断点续传",
+      "complexity": "中",
+      "reference": "新增（后台任务）"
+    },
+    {
+      "system": "其他",
+      "module": "系统测试",
+      "name": "系统测试",
+      "effort_days": 10,
+      "description": "集成测试、系统测试、语音通话测试、压力测试",
+      "complexity": "中",
+      "reference": "开发总工时 x 10%（语音功能增加测试复杂度）"
+    },
+    {
+      "system": "其他",
+      "module": "项目管理",
+      "name": "需求沟通",
+      "effort_days": 3,
+      "description": "需求沟通、需求文档",
+      "complexity": "低",
+      "reference": "固定工时"
+    },
+    {
+      "system": "其他",
+      "module": "项目管理",
+      "name": "环境搭建",
+      "effort_days": 2,
+      "description": "测试/生产环境搭建、技术设计文档、用户手册",
+      "complexity": "低",
+      "reference": "固定工时"
+    },
+    {
+      "system": "其他",
+      "module": "项目管理",
+      "name": "验收发布",
+      "effort_days": 1,
+      "description": "项目验收和上线发布",
+      "complexity": "低",
+      "reference": "固定工时"
+    }
+  ],
+  "summary": {
+    "user_development": 19,
+    "admin_development": 51,
+    "other_development": 23,
+    "total_development_effort": 93,
+    "testing_effort": 10,
+    "other_fixed": {
+      "communication": 3,
+      "environment": 2,
+      "acceptance": 1
+    },
+    "total_effort": 109
+  },
+  "notes": [
+    "本方案使用自建WebRTC实现语音通话，无需第三方服务费用，但需要自行处理NAT穿透、信令服务等技术难点",
+    "语音功能工时占比约23人天（21%），是本次新增的主要功能",
+    "Group管理和在线状态管理是分配逻辑升级，需要修改原有的消息路由引擎",
+    "聊天记录导出支持三种格式，需要异步任务服务处理大量数据",
+    "与原项目相比，新增约49人天（原60人天→109人天），增幅82%",
+    "测试工时占比提高到约10%（语音功能增加了测试复杂度）",
+    "如使用第三方RTC服务，可节省约5人天工时（详见方案B）"
+  ]
+}

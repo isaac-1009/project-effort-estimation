@@ -1,0 +1,131 @@
+{
+  "project_id": "Facility需求追加_20260420",
+  "name": "Facility 需求追加",
+  "created_date": "2026-04-20",
+  "total_effort": 53,
+  "description": "在现有美外之家系统上新增Facility Management相关功能模块，包括员工survey（含后台表单创建）、失物招领、数据收集接口、ISO认证页面、EAG页面、逃生指引（含地图API集成）、厕位管理和AI chatbot。",
+  "systems": ["用户端", "管理后台"],
+  "tags": ["企微", "Facility", "Dify", "地图API", "硬件集成", "AI助手"],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）",
+    "backend": "Java/Node.js（复用美外之家技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API + Dify API + 智能门锁API + 腾讯地图/高德地图API"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "员工survey",
+      "name": "Survey填写页面",
+      "effort_days": 3,
+      "description": "员工填写survey表单页面，数据提交与展示",
+      "complexity": "低",
+      "reference": "问卷表单 pattern"
+    },
+    {
+      "system": "用户端",
+      "module": "失物招领",
+      "name": "失物招领查看",
+      "effort_days": 3,
+      "description": "前端用户可查看失物list",
+      "complexity": "低",
+      "reference": "CRUD操作 pattern (2-5人天)"
+    },
+    {
+      "system": "用户端",
+      "module": "逃生指引",
+      "name": "楼层逃生指引+定位",
+      "effort_days": 0,
+      "description": "需求未定",
+      "complexity": "中",
+      "reference": "地图API集成 + 渲染页面 + 路线指引"
+    },
+    {
+      "system": "用户端",
+      "module": "ISO认证",
+      "name": "ISO 45001认证页面",
+      "effort_days": 2,
+      "description": "知识库、宣传渠道静态页面",
+      "complexity": "低",
+      "reference": "静态内容页面"
+    },
+    {
+      "system": "用户端",
+      "module": "EAG",
+      "name": "EAG静态页面",
+      "effort_days": 2,
+      "description": "EAG相关内容静态页面",
+      "complexity": "低",
+      "reference": "静态内容页面"
+    },
+    {
+      "system": "用户端",
+      "module": "厕位管理",
+      "name": "智能门锁集成管理",
+      "effort_days": 0,
+      "description": "需求未定",
+      "complexity": "中",
+      "reference": "硬件集成 + 状态显示，需对接调试"
+    },
+    {
+      "system": "用户端",
+      "module": "AI助手",
+      "name": "AI chatbot",
+      "effort_days": 10,
+      "description": "Dify接入，解决Facility相关的问答和服务快速触达（已有Dify环境，仅需API对接）",
+      "complexity": "中",
+      "reference": "Dify集成"
+    },
+    {
+      "system": "管理后台",
+      "module": "员工survey",
+      "name": "Survey表单创建管理",
+      "effort_days": 8,
+      "description": "PC后台创建问卷表单功能，支持表单设计、字段配置、发布管理、数据统计、Excel导出",
+      "complexity": "中",
+      "reference": "表单设计器 + CRUD操作 pattern"
+    },
+    {
+      "system": "管理后台",
+      "module": "失物招领",
+      "name": "失物list管理",
+      "effort_days": 4,
+      "description": "后台管理员可编辑失物list（增删改查）",
+      "complexity": "低",
+      "reference": "CRUD操作 pattern (2-5人天)，后端部分"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据收集",
+      "name": "数据collection接口",
+      "effort_days": 6,
+      "description": "预设数据收集及传输接口给DI Team，含数据格式定义和传输协议",
+      "complexity": "中",
+      "reference": "API接口开发 + 数据传输"
+    }
+  ],
+  "summary": {
+    "user_development": 20,
+    "admin_development": 18,
+    "total_development_effort": 38,
+    "testing_effort": 7,
+    "other_fixed": {
+      "ui_design": 5,
+      "ui_design_desc": "Survey填写页面(1)、失物招领(1)、AI chatbot聊天界面(3)",
+      "communication": 2,
+      "environment": 0,
+      "acceptance": 1
+    },
+    "total_fixed_effort": 8,
+    "total_effort": 53
+  },
+  "notes": [
+    "现有系统新增功能，环境搭建工时为0",
+    "Dify环境已由美敦力IT搭建，仅需API对接",
+    "逃生指引+定位需求未定，暂估0人天",
+    "智能门锁集成管理需求未定，暂估0人天",
+    "UI设计5人天涵盖：Survey填写页面(1)、失物招领(1)、逃生指引+地图渲染(2)、AI chatbot聊天界面(1)",
+    "验收发布调整为1人天",
+    "如需分阶段实施，可按功能模块独立开发和上线"
+  ]
+}

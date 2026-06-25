@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python -c \":*)",
+      "Bash(iconv -f GBK -t UTF-8)",
+      "Bash(python generate_excel.py)",
+      "Bash(python scripts/generate_excel.py data/current/metadata.xlsx data/current/estimate.xlsx)",
+      "Bash(python scripts/generate_excel.py data/current/metadata.json)",
+      "Bash(rm -f \"全球员工创意收集活动系统估算.xlsx\" \"全球员工创意收集活动系统待确认问题.md\")",
+      "Bash(python scripts/generate_excel.py data/current/metadata.json data/current/estimate.xlsx)",
+      "Bash(ls -la *.xlsx)",
+      "Read(//c/Users/admin/Documents/001-项目估算/project-effort-estimation/data/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\admin\\.claude\\rules\\common",
+      "C:\\Users\\admin\\.agents\\skills",
+      "C:\\Users\\admin\\.claude\\skills"
+    ]
+  }
+}

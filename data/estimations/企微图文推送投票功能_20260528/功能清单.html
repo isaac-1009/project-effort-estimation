@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企微图文推送投票功能 - 功能清单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-card.user {
+            border-left-color: #28a745;
+        }
+
+        .feature-card.admin {
+            border-left-color: #667eea;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feature-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .feature-tag.user {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feature-tag.admin {
+            background: #e0d4f7;
+            color: #4a3b78;
+        }
+
+        .feature-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            margin-top: 10px;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            font-size: 13px;
+            color: #666;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .system-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .system-title::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: #667eea;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .system-title.user::before {
+            background: #28a745;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+            border-left: 4px solid #ffc107;
+            padding: 15px 18px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box strong {
+            color: #856404;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 11px;
+            border-radius: 10px;
+            background: #e9ecef;
+            color: #6c757d;
+            margin-left: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>企微图文推送投票功能</h1>
+            <p>功能清单 v1.1 | 2026-05-27</p>
+        </div>
+
+        <div class="content">
+            <!-- 项目概述 -->
+            <div class="section">
+                <h2 class="section-title">项目概述</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">项目类型</div>
+                        <div class="info-value">现有系统功能扩展</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">技术栈</div>
+                        <div class="info-value">企微H5 + Java/Node.js</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">部署方式</div>
+                        <div class="info-value">复用现有环境</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">界面设计</div>
+                        <div class="info-value">复用现有样式</div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong>项目说明：</strong>在现有企业微信图文推送功能的基础上，新增投票功能。管理员在创建推文时可配置投票，用户阅读推文时可在文章详情页参与投票，投票权限复用推文的标签配置。
+                </div>
+            </div>
+
+            <!-- 用户端功能 -->
+            <div class="section">
+                <h2 class="section-title">用户端功能</h2>
+                <div class="system-section">
+                    <div class="system-title user">推文投票组件</div>
+
+                    <div class="feature-card user">
+                        <div class="feature-header">
+                            <span class="feature-tag user">用户端</span>
+                            <span class="feature-name">推文投票组件</span>
+                        </div>
+                        <div class="feature-desc">
+                            在文章详情页嵌入完整的投票组件，包含以下功能：
+                            <ul class="feature-list">
+                                <li><strong>投票展示</strong>：显示投票标题、描述、选项列表（图文混排）、截止时间、实时票数</li>
+                                <li><strong>投票交互</strong>：支持单选和多选两种模式，单选可修改，多选可同时选择多个选项</li>
+                                <li><strong>提交与校验</strong>：点击提交后自动校验权限（复用推文标签）、重复投票、截止时间</li>
+                                <li><strong>结果展示</strong>：投票成功后立即显示结果，包括票数、百分比、柱状图、参与人数</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 管理后台功能 -->
+            <div class="section">
+                <h2 class="section-title">管理后台功能</h2>
+                <div class="system-section">
+                    <div class="system-title">推文创建扩展</div>
+
+                    <div class="feature-card admin">
+                        <div class="feature-header">
+                            <span class="feature-tag admin">管理后台</span>
+                            <span class="feature-name">推文创建页投票配置</span>
+                        </div>
+                        <div class="feature-desc">
+                            在现有推文创建页面中新增投票配置功能：
+                            <ul class="feature-list">
+                                <li><strong>投票基础信息</strong>：设置投票标题、描述、类型（单选/多选）、截止时间</li>
+                                <li><strong>选项管理</strong>：添加选项（文字+图片）、拖拽排序、删除选项</li>
+                                <li><strong>权限说明</strong>：复用推文的标签配置，投票权限与推文查看权限一致</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="system-section">
+                    <div class="system-title">投票管理</div>
+
+                    <div class="feature-card admin">
+                        <div class="feature-header">
+                            <span class="feature-tag admin">管理后台</span>
+                            <span class="feature-name">投票管理页面</span>
+                            <span class="badge">新增页面</span>
+                        </div>
+                        <div class="feature-desc">
+                            独立的投票管理页面，包含以下功能：
+                            <ul class="feature-list">
+                                <li><strong>投票列表</strong>：展示投票标题、关联推文、状态、截止时间、参与人数</li>
+                                <li><strong>状态筛选</strong>：支持按状态（草稿/进行中/已结束）筛选</li>
+                                <li><strong>快速操作</strong>：发布、关闭、删除投票</li>
+                                <li><strong>结果详情</strong>：查看投票配置和实时投票结果</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="system-section">
+                    <div class="system-title">数据统计</div>
+
+                    <div class="feature-card admin">
+                        <div class="feature-header">
+                            <span class="feature-tag admin">管理后台</span>
+                            <span class="feature-name">投票数据页面</span>
+                            <span class="badge">新增页面</span>
+                        </div>
+                        <div class="feature-desc">
+                            独立的投票数据分析页面，包含以下功能：
+                            <ul class="feature-list">
+                                <li><strong>实时统计</strong>：各选项票数、百分比、参与率</li>
+                                <li><strong>图表展示</strong>：柱状图、饼图可视化展示</li>
+                                <li><strong>投票明细</strong>：用户姓名、选择、投票时间，支持筛选和搜索</li>
+                                <li><strong>数据导出</strong>：导出投票明细数据到Excel</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心特性 -->
+            <div class="section">
+                <h2 class="section-title">核心特性</h2>
+                <div class="info-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="info-item">
+                        <div class="info-label">投票类型</div>
+                        <div class="info-value">单选 / 多选</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">选项形式</div>
+                        <div class="info-value">图文混排</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">投票规则</div>
+                        <div class="info-value">单次投票，不可修改</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">结果展示</div>
+                        <div class="info-value">投票后立即显示</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">权限控制</div>
+                        <div class="info-value">复用推文标签</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">配置入口</div>
+                        <div class="info-value">推文创建页</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页面清单 -->
+            <div class="section">
+                <h2 class="section-title">页面清单</h2>
+                <div class="info-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="info-item">
+                        <div class="info-label">用户端</div>
+                        <div class="info-value">推文详情页（嵌入投票组件）</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">管理后台</div>
+                        <div class="info-value">推文创建页（扩展投票配置）</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">管理后台</div>
+                        <div class="info-value">投票管理页（新增）</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">管理后台</div>
+                        <div class="info-value">投票数据页（新增）</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            功能清单共 4 项 | 用户端 1 项 | 管理后台 3 项<br>
+            生成日期: 2026-05-27
+        </div>
+    </div>
+</body>
+</html>

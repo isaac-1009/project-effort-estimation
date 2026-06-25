@@ -1,0 +1,230 @@
+{
+  "project_id": "内部流程与知识管理系统_20250326",
+  "name": "内部流程与知识管理系统",
+  "project_name": "内部流程与知识管理系统",
+  "created_date": "2025-03-26",
+  "total_effort": 185,
+  "description": "基于企微的内部流程集成平台，包含数字化流程、知识库和员工支持系统",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "工单", "内容管理", "名片", "桥接API", "UI设计"],
+  "tech_stack": {
+    "frontend": "企微小程序/H5",
+    "backend": "Java/Node.js",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API、第三方应用集成"
+  },
+  "features": [
+    {
+      "id": "USER_001",
+      "system": "用户端",
+      "module": "工单报修",
+      "name": "工单报修",
+      "effort_days": 10,
+      "description": "工单提交、查询、状态跟踪",
+      "complexity": "中",
+      "reference": "完整工单系统用户端"
+    },
+    {
+      "id": "USER_002",
+      "system": "用户端",
+      "module": "Sports Club",
+      "name": "运动俱乐部",
+      "effort_days": 8,
+      "description": "活动查看、报名、互动",
+      "complexity": "中",
+      "reference": "社群管理用户端"
+    },
+    {
+      "id": "USER_003",
+      "system": "用户端",
+      "module": "名片申请",
+      "name": "名片申请",
+      "effort_days": 5,
+      "description": "实体+电子名片申请",
+      "complexity": "中",
+      "reference": "申请流程用户端"
+    },
+    {
+      "id": "USER_004",
+      "system": "用户端",
+      "module": "员工支持",
+      "name": "员工支持",
+      "effort_days": 16,
+      "description": "NBO、工牌申请、设备申请、配套设施、园区交通、SAFE等",
+      "complexity": "中",
+      "reference": "多个支持模块"
+    },
+    {
+      "id": "USER_005",
+      "system": "用户端",
+      "module": "内容管理",
+      "name": "内容管理",
+      "effort_days": 8,
+      "description": "内容查看、搜索",
+      "complexity": "中",
+      "reference": "内容管理用户端"
+    },
+    {
+      "id": "USER_006",
+      "system": "用户端",
+      "module": "楼层3D建模",
+      "name": "楼层3D建模",
+      "effort_days": 5,
+      "description": "3D静态图（不可旋转）",
+      "complexity": "低",
+      "reference": "外包服务"
+    },
+    {
+      "id": "USER_007",
+      "system": "用户端",
+      "module": "用户信息",
+      "name": "用户信息",
+      "effort_days": 6,
+      "description": "个人信息管理",
+      "complexity": "中",
+      "reference": "用户信息管理"
+    },
+    {
+      "id": "USER_008",
+      "system": "用户端",
+      "module": "外部系统",
+      "name": "史泰博文具",
+      "effort_days": 1.5,
+      "description": "外链（URL）",
+      "complexity": "低",
+      "reference": "外部链接"
+    },
+    {
+      "id": "USER_009",
+      "system": "用户端",
+      "module": "外部系统",
+      "name": "Loffice物业",
+      "effort_days": 1.5,
+      "description": "外链（小程序）",
+      "complexity": "低",
+      "reference": "外部链接"
+    },
+    {
+      "id": "USER_010",
+      "system": "用户端",
+      "module": "桥接系统",
+      "name": "mExpress API",
+      "effort_days": 2,
+      "description": "对外提供API接口",
+      "complexity": "低",
+      "reference": "API接口提供"
+    },
+    {
+      "id": "USER_011",
+      "system": "用户端",
+      "module": "桥接系统",
+      "name": "Radicare API",
+      "effort_days": 2,
+      "description": "对外提供API接口",
+      "complexity": "低",
+      "reference": "API接口提供"
+    },
+    {
+      "id": "USER_012",
+      "system": "用户端",
+      "module": "桥接系统",
+      "name": "mOffice API",
+      "effort_days": 2,
+      "description": "对外提供API接口",
+      "complexity": "低",
+      "reference": "API接口提供"
+    },
+    {
+      "id": "ADMIN_001",
+      "system": "管理后台",
+      "module": "工单管理",
+      "name": "工单管理后台",
+      "effort_days": 20,
+      "description": "工单查询、手动/自动分配、通知用户、状态变更、工单维护",
+      "complexity": "高",
+      "reference": "完整工单管理系统"
+    },
+    {
+      "id": "ADMIN_002",
+      "system": "管理后台",
+      "module": "Sports Club",
+      "name": "Sports Club后台",
+      "effort_days": 20,
+      "description": "管理员发布信息、查看发布信息、信息状态维护、评论管理",
+      "complexity": "高",
+      "reference": "内容管理+评论管理"
+    },
+    {
+      "id": "ADMIN_003",
+      "system": "管理后台",
+      "module": "信息收集",
+      "name": "信息收集",
+      "effort_days": 5,
+      "description": "分类查询、导出",
+      "complexity": "中",
+      "reference": "数据查询导出"
+    },
+    {
+      "id": "ADMIN_004",
+      "system": "管理后台",
+      "module": "内容管理",
+      "name": "内容管理后台",
+      "effort_days": 15,
+      "description": "图文管理、活动管理",
+      "complexity": "中",
+      "reference": "CMS内容管理"
+    },
+    {
+      "id": "ADMIN_005",
+      "system": "管理后台",
+      "module": "名片管理",
+      "name": "名片管理后台",
+      "effort_days": 20,
+      "description": "查询申请、确认申请信息、上传电子版样式、实体制作快递信息维护",
+      "complexity": "高",
+      "reference": "申请管理系统"
+    },
+    {
+      "id": "ADMIN_006",
+      "system": "管理后台",
+      "module": "系统管理",
+      "name": "系统基础功能",
+      "effort_days": 5,
+      "description": "角色权限管理、用户管理、系统配置",
+      "complexity": "中",
+      "reference": "RBAC权限系统"
+    },
+    {
+      "id": "OTHER_001",
+      "system": "其他",
+      "module": "UI/UX设计",
+      "name": "UI/UX设计",
+      "effort_days": 10,
+      "description": "企微应用、管理后台设计",
+      "complexity": "中",
+      "reference": "UI/UX设计"
+    }
+  ],
+  "summary": {
+    "user_development": 67,
+    "admin_development": 85,
+    "other_development": 10,
+    "total_development_effort": 162,
+    "testing_percentage": 0,
+    "testing_effort": 15,
+    "other_fixed": {
+      "communication": 3,
+      "environment": 3,
+      "acceptance": 2
+    },
+    "total_effort": 185
+  },
+  "notes": [
+    "用户端（67人天）：工单报修10、Sports Club8、名片申请5、员工支持16、内容管理8、3D建模5、用户信息6、外部系统3、桥接系统6",
+    "管理后台（85人天）：工单管理20、Sports Club20、信息收集5、内容管理15、名片管理20、系统管理5",
+    "其他（33人天）：UI/UX设计10、系统测试15、需求沟通3、环境搭建3、验收发布2",
+    "总计：185人天",
+    "关键教训：用户端功能必然有对应的管理后台，工单系统≠简单表单",
+    "桥接系统：对外提供API接口（2人天/个），不是完整企微集成"
+  ]
+}

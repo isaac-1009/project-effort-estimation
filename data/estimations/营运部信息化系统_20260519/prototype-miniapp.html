@@ -1,0 +1,2840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>营运部信息化系统 - 小程序端原型</title>
+<style>
+/* ==================== Design Tokens (CSS Custom Properties) ==================== */
+:root {
+  /* Primary */
+  --color-primary: #1677FF;
+  --color-primary-hover: #4096FF;
+  --color-primary-active: #0958D9;
+  --color-primary-gradient: linear-gradient(135deg, #1677FF 0%, #0958D9 100%);
+
+  /* Semantic Colors */
+  --color-success: #00B42A;
+  --color-warning: #FF7D00;
+  --color-danger: #F53F3F;
+  --color-purple: #722ED1;
+  --color-cyan: #0FC6C2;
+  --color-gold: #D48806;
+
+  /* Semantic Backgrounds */
+  --color-success-bg: #E8FFEA;
+  --color-warning-bg: #FFF7E8;
+  --color-danger-bg: #FFECE8;
+  --color-info-bg: #E8F3FF;
+  --color-purple-bg: #F5E8FF;
+  --color-cyan-bg: #E8FFFB;
+  --color-gold-bg: #FFFBE6;
+
+  /* Neutral */
+  --color-bg: #F2F3F5;
+  --color-card: #FFFFFF;
+  --color-border: #E5E6EB;
+  --color-border-light: #F2F3F5;
+  --color-divider: #F0F0F0;
+
+  /* Text */
+  --text-primary: #1D2129;
+  --text-secondary: #4E5969;
+  --text-tertiary: #86909C;
+  --text-disabled: #C9CDD4;
+  --text-inverse: #FFFFFF;
+
+  /* Font */
+  --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+
+  /* Font Sizes */
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 24px;
+
+  /* Line Heights */
+  --line-height-base: 1.5;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 50%;
+
+  /* Spacing Scale (4px increment) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.3);
+  --shadow-primary: 0 4px 12px rgba(22,119,255,0.4);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* ==================== Base Reset ==================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #f5f5f5;
+  font-family: var(--font-family);
+  display: flex;
+  justify-content: center;
+  padding: var(--space-5);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== Phone Frame ==================== */
+.phone {
+  width: 375px;
+  height: 812px;
+  background: var(--color-bg);
+  border-radius: 40px;
+  border: 8px solid #1a1a1a;
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-xl);
+}
+
+/* ==================== Status Bar (CSS-only signal/wifi/battery) ==================== */
+.status-bar {
+  height: 44px;
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-5);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+.status-bar .time { font-weight: var(--font-weight-semibold); }
+.status-bar .icons { display: flex; gap: var(--space-2); align-items: center; }
+
+/* CSS Signal Bars */
+.signal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 12px;
+}
+.signal-bars span {
+  width: 3px;
+  background: var(--text-primary);
+  border-radius: 1px;
+}
+.signal-bars span:nth-child(1) { height: 3px; }
+.signal-bars span:nth-child(2) { height: 5px; }
+.signal-bars span:nth-child(3) { height: 8px; }
+.signal-bars span:nth-child(4) { height: 11px; }
+
+/* CSS WiFi Icon */
+.wifi-icon {
+  width: 16px;
+  height: 12px;
+  position: relative;
+}
+.wifi-icon::before,
+.wifi-icon::after,
+.wifi-icon span,
+.wifi-icon span::before {
+  content: '';
+  position: absolute;
+  border: 2px solid transparent;
+  border-top-color: var(--text-primary);
+  border-radius: 50%;
+}
+.wifi-icon::before { top: 6px; left: 6px; width: 4px; height: 4px; background: var(--text-primary); border: none; border-radius: 50%; }
+.wifi-icon::after { top: 2px; left: 2px; width: 12px; height: 10px; border-top-width: 2px; }
+.wifi-icon span { top: 0; left: -1px; width: 18px; height: 14px; border-top-width: 2px; }
+
+/* CSS Battery */
+.battery-icon {
+  width: 25px;
+  height: 12px;
+  border: 1.5px solid var(--text-primary);
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+.battery-icon::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 5px;
+  background: var(--text-primary);
+  border-radius: 0 1px 1px 0;
+}
+.battery-icon .battery-fill {
+  width: 70%;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 1px;
+}
+
+/* ==================== Page Container & Transitions ==================== */
+.page-container {
+  height: calc(812px - 44px - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.page-container.no-tab {
+  height: calc(812px - 44px);
+}
+.page {
+  display: none;
+  min-height: 100%;
+  background: var(--color-bg);
+  animation: pageIn 0.2s ease;
+}
+.page.active { display: block; }
+
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==================== Tab Bar ==================== */
+.tab-bar {
+  height: 60px;
+  background: var(--color-card);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  transition: color var(--transition-normal);
+  min-height: 44px;
+}
+.tab-item.active { color: var(--color-primary); }
+.tab-item .icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tab-item .icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Navigation Bar ==================== */
+.nav-bar {
+  height: 44px;
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid var(--color-border-light);
+}
+.nav-bar .title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+.nav-bar .back {
+  position: absolute;
+  left: var(--space-3);
+  cursor: pointer;
+  color: var(--text-primary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+.nav-bar .back:active {
+  background: var(--color-bg);
+}
+.nav-bar .back svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Common Styles ==================== */
+.section {
+  margin: var(--space-3);
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.section-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  padding: 14px var(--space-4) var(--space-2);
+}
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 14px var(--space-4);
+  border-bottom: 1px solid var(--color-divider);
+  cursor: pointer;
+  min-height: 48px;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.cell:last-child { border-bottom: none; }
+.cell:active {
+  background: var(--color-bg);
+  transform: scale(0.98);
+}
+.cell-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+.cell-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cell-content { flex: 1; }
+.cell-title { font-size: var(--font-size-base); color: var(--text-primary); line-height: 1.4; }
+.cell-desc { font-size: var(--font-size-sm); color: var(--text-tertiary); margin-top: 2px; line-height: 1.4; }
+.cell-arrow {
+  color: var(--text-disabled);
+  display: flex;
+  align-items: center;
+}
+.cell-arrow svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.badge {
+  background: var(--color-danger);
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: var(--space-2);
+}
+
+/* ==================== Buttons ==================== */
+.btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: var(--space-4) auto;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  text-align: center;
+  min-height: 44px;
+  transition: transform 0.1s ease-out, background var(--transition-fast);
+  font-family: var(--font-family);
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--color-primary); color: var(--text-inverse); }
+.btn-primary:active { background: var(--color-primary-active); }
+.btn-outline {
+  background: var(--color-card);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+/* ==================== Login Page ==================== */
+.login-page {
+  background: transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-inverse);
+  position: relative;
+  overflow: hidden;
+  padding: 0 var(--space-6);
+}
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 240px; height: 240px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.06);
+}
+.login-page::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 200px; height: 200px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.04);
+}
+.login-logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.login-logo-box {
+  width: 88px; height: 88px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  margin-bottom: var(--space-5);
+}
+.login-logo-text {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+.login-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 4px;
+}
+.login-subtitle {
+  font-size: var(--font-size-sm);
+  opacity: 0.55;
+  position: relative;
+  z-index: 1;
+}
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 280px;
+  margin-top: 48px;
+  position: relative;
+  z-index: 1;
+}
+.login-btn-primary {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--color-primary);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.login-btn-primary:active { transform: scale(0.97); }
+.login-btn-secondary {
+  width: 100%;
+  height: 48px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform 0.15s, background 0.15s;
+}
+.login-btn-secondary:active {
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.15);
+}
+.login-footer {
+  position: absolute;
+  bottom: var(--space-8);
+  left: 0; right: 0;
+  text-align: center;
+  z-index: 1;
+}
+.login-footer a {
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ==================== Shop Selector ==================== */
+.shop-selector {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border-light);
+  cursor: pointer;
+}
+.shop-selector .current-shop {
+  flex: 1;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.shop-selector .current-shop svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-primary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.shop-selector .switch-btn {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  transition: background var(--transition-fast);
+}
+.shop-selector .switch-btn:active {
+  background: var(--color-info-bg);
+}
+
+/* ==================== Todo Cards ==================== */
+.todo-card {
+  margin: var(--space-2) var(--space-3);
+  background: var(--color-card);
+  border-radius: var(--radius-sm);
+  padding: 14px var(--space-4);
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-normal), transform var(--transition-fast);
+}
+.todo-card:active {
+  box-shadow: var(--shadow-md);
+  transform: scale(0.98);
+}
+.todo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+.todo-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.todo-info { flex: 1; }
+.todo-title { font-size: var(--font-size-base); color: var(--text-primary); font-weight: var(--font-weight-medium); line-height: 1.4; }
+.todo-desc { font-size: var(--font-size-sm); color: var(--text-tertiary); margin-top: var(--space-1); line-height: 1.4; }
+.todo-time { font-size: 11px; color: var(--text-disabled); margin-top: 2px; }
+.todo-badge {
+  background: var(--color-danger);
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  padding: 2px var(--space-2);
+  border-radius: 10px;
+}
+
+/* ==================== Carousel ==================== */
+.carousel {
+  margin: var(--space-3);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  height: 130px;
+  background: var(--color-card);
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.35s ease;
+  height: 100%;
+}
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+.carousel-slide::after {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 100px; height: 100px;
+  border-radius: var(--radius-full);
+  opacity: 0.15;
+}
+.carousel-slide .slide-content { position: relative; z-index: 1; }
+.carousel-slide .slide-tag {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: var(--space-2);
+  display: inline-block;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+.carousel-slide .slide-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: #fff;
+  line-height: 1.4;
+}
+.carousel-slide .slide-desc {
+  font-size: var(--font-size-sm);
+  color: rgba(255,255,255,0.8);
+  margin-top: var(--space-1);
+}
+.carousel-slide .slide-icon {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-3);
+  opacity: 0.12;
+}
+.carousel-slide .slide-icon svg {
+  width: 60px; height: 60px;
+  stroke: #fff; fill: none;
+  stroke-width: 1;
+}
+.carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+.carousel-dots span {
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.4);
+  transition: all 0.25s;
+}
+.carousel-dots span.active {
+  width: 16px;
+  background: #fff;
+}
+
+/* ==================== Message Section ==================== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) var(--space-4) var(--space-1);
+}
+.section-header .section-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+.section-header .section-more {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.msg-card {
+  margin: var(--space-2) var(--space-3);
+  background: var(--color-card);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.msg-card:active { background: var(--color-bg); }
+.msg-dot {
+  width: 8px; height: 8px;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.msg-dot.read { background: transparent; }
+.msg-content { flex: 1; min-width: 0; }
+.msg-title {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.msg-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.msg-time {
+  font-size: 11px;
+  color: var(--text-disabled);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ==================== Message List Page ==================== */
+.msg-tabs {
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-2);
+}
+.msg-tab {
+  padding: var(--space-1) var(--space-3);
+  border-radius: 16px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  background: var(--color-bg);
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+.msg-tab.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ==================== Form Styles ==================== */
+.form-group { padding: 0 var(--space-4); }
+.form-item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+.form-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.form-label .required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+.form-input {
+  width: 100%;
+  border: none;
+  font-size: var(--font-size-md);
+  outline: none;
+  color: var(--text-primary);
+  min-height: 44px;
+  padding: 0;
+  font-family: var(--font-family);
+  line-height: 1.5;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-normal);
+}
+.form-input:focus {
+  border-bottom-color: var(--color-primary);
+}
+.form-select {
+  width: 100%;
+  border: none;
+  font-size: var(--font-size-md);
+  outline: none;
+  color: var(--text-primary);
+  background: var(--color-card);
+  min-height: 44px;
+  font-family: var(--font-family);
+}
+textarea.form-input {
+  min-height: auto;
+  padding: var(--space-2) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+textarea.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(22,119,255,0.1);
+  border-bottom: 1px solid var(--color-primary);
+}
+.upload-area {
+  width: 100%;
+  height: 100px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  margin-top: var(--space-2);
+  cursor: pointer;
+  transition: border-color var(--transition-normal), background var(--transition-normal);
+}
+.upload-area:hover {
+  border-color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+.upload-area .icon {
+  margin-bottom: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-area .icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--text-tertiary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.upload-area:hover .icon svg {
+  stroke: var(--color-primary);
+}
+.upload-area .upload-success {
+  color: var(--color-success);
+  font-size: 11px;
+  margin-top: var(--space-1);
+}
+.upload-area .upload-success svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--color-success);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+/* ==================== Employee Card ==================== */
+.employee-card {
+  margin: var(--space-3);
+  background: var(--color-primary-gradient);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  color: var(--text-inverse);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(22,119,255,0.25);
+}
+.employee-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 15% 85%, rgba(255,255,255,0.1) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,0.07) 0%, transparent 45%);
+  pointer-events: none;
+}
+.employee-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.08);
+}
+.employee-card .card-label {
+  font-size: var(--font-size-xs);
+  opacity: 0.7;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+}
+.employee-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+.employee-card .card-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.employee-card .card-avatar {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.2);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.employee-card .card-avatar svg {
+  width: 24px; height: 24px;
+  stroke: #fff; fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.employee-card .card-no {
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+}
+.employee-card .card-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+}
+.employee-card .card-dept {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+.employee-card .card-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+.employee-card .card-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1) var(--space-4);
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+.employee-card .card-info-item {
+  display: flex;
+  justify-content: space-between;
+}
+.employee-card .card-info-label {
+  opacity: 0.65;
+}
+.employee-card .card-info-value {
+  font-variant-numeric: tabular-nums;
+}
+.employee-card .qr-code {
+  width: 52px; height: 52px;
+  background: var(--color-card);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.employee-card .qr-code svg {
+  width: 36px; height: 36px;
+}
+
+/* ==================== Data Stats ==================== */
+.stat-row { display: flex; padding: var(--space-4); gap: 10px; }
+.stat-card {
+  flex: 1;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.stat-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* ==================== Data Table ==================== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+.data-table th {
+  background: #FAFBFC;
+  padding: 10px var(--space-2);
+  text-align: center;
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+  border-bottom: 1px solid var(--color-border-light);
+}
+.data-table td {
+  padding: 10px var(--space-2);
+  text-align: center;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--color-border-light);
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================== Approval Flow ==================== */
+.flow-steps { padding: var(--space-4); }
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+.flow-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  width: 2px;
+  height: calc(100% + 0px);
+  background: var(--color-border);
+}
+.flow-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+.flow-dot svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.flow-dot.done { background: var(--color-success); color: var(--text-inverse); }
+.flow-dot.current { background: var(--color-primary); color: var(--text-inverse); }
+.flow-dot.wait { background: var(--color-bg); color: var(--text-tertiary); }
+.flow-info .flow-title { font-size: var(--font-size-base); color: var(--text-primary); font-weight: var(--font-weight-medium); }
+.flow-info .flow-time { font-size: var(--font-size-sm); color: var(--text-tertiary); margin-top: 2px; }
+.flow-info .flow-user { font-size: var(--font-size-sm); color: var(--text-secondary); margin-top: 2px; }
+
+/* ==================== Home Indicator ==================== */
+.home-indicator { height: var(--space-5); }
+
+/* ==================== Modal ==================== */
+.modal-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  align-items: flex-end;
+}
+.modal-overlay.show { display: flex; }
+.modal-content {
+  width: 100%;
+  background: var(--color-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--space-5);
+  max-height: 70%;
+  overflow-y: auto;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+.modal-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+.modal-close {
+  font-size: var(--font-size-lg);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== Color Theme Classes ==================== */
+.bg-blue { background: var(--color-info-bg); color: var(--color-primary); }
+.bg-green { background: var(--color-success-bg); color: var(--color-success); }
+.bg-orange { background: var(--color-warning-bg); color: var(--color-warning); }
+.bg-red { background: var(--color-danger-bg); color: var(--color-danger); }
+.bg-purple { background: var(--color-purple-bg); color: var(--color-purple); }
+.bg-cyan { background: var(--color-cyan-bg); color: var(--color-cyan); }
+.bg-gold { background: var(--color-gold-bg); color: var(--color-gold); }
+.bg-grey { background: #F7F8FA; color: var(--text-tertiary); }
+
+/* ==================== Search Bar ==================== */
+.search-bar {
+  margin: var(--space-3);
+  background: var(--color-card);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  min-height: 44px;
+  color: var(--text-primary);
+}
+.search-bar .search-icon {
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+}
+.search-bar .search-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Tags ==================== */
+.tag {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+.tag-blue { background: var(--color-info-bg); color: var(--color-primary); }
+.tag-green { background: var(--color-success-bg); color: var(--color-success); }
+.tag-red { background: var(--color-danger-bg); color: var(--color-danger); }
+.tag-orange { background: var(--color-warning-bg); color: var(--color-warning); }
+.tag-grey { background: var(--color-bg); color: var(--text-tertiary); }
+
+/* ==================== Page Header ==================== */
+.page-header { padding: var(--space-4); background: var(--color-card); }
+.page-header h2 { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--text-primary); }
+.page-header p { font-size: 13px; color: var(--text-tertiary); margin-top: var(--space-1); }
+
+/* ==================== Tabs ==================== */
+.tabs {
+  display: flex;
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border-light);
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: var(--font-size-base);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  position: relative;
+  transition: color var(--transition-normal);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tab.active { color: var(--color-primary); font-weight: var(--font-weight-semibold); }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 1px;
+}
+
+/* ==================== Empty State ==================== */
+.empty { text-align: center; padding: 60px var(--space-5); color: var(--text-tertiary); }
+.empty .icon {
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty .icon svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--text-disabled);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.empty p { font-size: var(--font-size-base); }
+
+/* ==================== Notice Item ==================== */
+.notice-item {
+  padding: 14px var(--space-4);
+  border-bottom: 1px solid var(--color-divider);
+}
+.notice-item .notice-title {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+.notice-item .notice-content {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+  line-height: 1.5;
+}
+.notice-item .notice-time {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* ==================== Floating Action Button ==================== */
+.fab {
+  position: absolute;
+  bottom: 76px;
+  right: var(--space-4);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-primary);
+  cursor: pointer;
+  z-index: 50;
+  transition: transform 0.1s ease-out;
+}
+.fab:active { transform: scale(0.95); }
+.fab svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Exam Option ==================== */
+.exam-option {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  transition: border-color var(--transition-normal), background var(--transition-normal);
+}
+.exam-option:active {
+  background: var(--color-bg);
+}
+.exam-option.selected {
+  border: 2px solid var(--color-primary);
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==================== Status Icons (large centered) ==================== */
+.status-icon-large {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.status-icon-large svg {
+  width: 48px;
+  height: 48px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.status-icon-medium {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.status-icon-medium svg {
+  width: 40px;
+  height: 40px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== My Profile Header ==================== */
+.profile-header {
+  background: var(--color-primary-gradient);
+  padding: 40px var(--space-5) var(--space-6);
+  color: var(--text-inverse);
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.profile-avatar svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--color-primary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Scan Frame ==================== */
+.scan-frame {
+  width: 200px;
+  height: 200px;
+  border: 3px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.scan-frame svg {
+  width: 64px;
+  height: 64px;
+  stroke: var(--color-primary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Pending Page ==================== */
+.pending-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.pending-icon svg {
+  width: 64px;
+  height: 64px;
+  stroke: var(--color-warning);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Info Banner ==================== */
+.info-banner {
+  padding: var(--space-4);
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: #F7F8FA;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: 1.5;
+}
+.info-banner svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-primary);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ==================== Checkmark SVG inline ==================== */
+.svg-check-small {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+/* Employee initial avatar in list */
+.avatar-initial {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+/* Ensure check mark in shop-switch */
+.check-mark svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--color-primary);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==================== Icon Grid (Workspace) ==================== */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 16px;
+}
+.icon-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 4px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+  min-height: 80px;
+}
+.icon-grid-item:active {
+  transform: scale(0.95);
+  background: var(--color-bg);
+}
+.icon-grid-item .grid-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.icon-grid-item .grid-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-grid-item .grid-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.3;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- ==================== Status Bar ==================== -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">
+      <span class="signal-bars"><span></span><span></span><span></span><span></span></span>
+      <span class="wifi-icon"><span></span></span>
+      <span class="battery-icon"><span class="battery-fill"></span></span>
+    </span>
+  </div>
+
+  <div class="page-container" id="pageContainer">
+
+    <!-- ==================== 登录页 ==================== -->
+    <div class="page active" id="page-login" style="background:var(--color-primary-gradient);">
+      <div class="login-page">
+        <div class="login-logo-area">
+          <div class="login-title">营运部信息化系统</div>
+          <div class="login-subtitle">Operations Management System</div>
+          <div class="login-logo-box">
+            <span class="login-logo-text">商场Logo</span>
+          </div>
+        </div>
+        <div class="login-actions">
+          <button class="login-btn-primary" onclick="showPage('page-register')">商场员工注册</button>
+          <button class="login-btn-secondary" onclick="showPage('page-register-other')">其他人员</button>
+        </div>
+        <div class="login-footer"><a onclick="showPage('page-shop-switch')">演示入口</a></div>
+      </div>
+    </div>
+
+    <!-- ==================== 注册页 (Change 1: New form fields) ==================== -->
+    <div class="page" id="page-register">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-login')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">员工注册</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          请填写以下信息完成员工注册
+        </div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">姓名 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入真实姓名" value="张三">
+          </div>
+          <div class="form-item">
+            <div class="form-label">电话号 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入手机号" value="138****5678">
+          </div>
+          <div class="form-item">
+            <div class="form-label">现住址 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入现住址">
+          </div>
+          <div class="form-item">
+            <div class="form-label">楼层 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入楼层" value="1F">
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺号 <span class="required">*</span></div>
+            <select class="form-select">
+              <option value="N101" selected>N101</option>
+              <option value="N102">N102</option>
+              <option value="N201">N201</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺名 <span class="required">*</span></div>
+            <select class="form-select">
+              <option selected>星巴克</option>
+              <option>喜茶</option>
+              <option>海底捞</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺性质 <span class="required">*</span></div>
+            <select class="form-select">
+              <option selected>餐饮</option>
+              <option>零售</option>
+              <option>服务</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">证件信息（OCR自动识别）</div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">身份证正面</div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="12" cy="15" r="1.5"/></svg></span>
+              <span class="upload-success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 已识别：张三 110101199001011234</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">身份证号 <span class="required">*</span></div>
+            <input class="form-input" value="110101199001011234" readonly style="color:var(--text-secondary);">
+            <div style="font-size:11px;color:var(--color-success);margin-top:4px;">OCR自动识别</div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">身份证反面</div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="12" cy="15" r="1.5"/></svg></span>
+              <span>点击上传身份证反面</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">健康证</div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></span>
+              <span class="upload-success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 已识别，有效期至 2027-03-15</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">健康证到期时间</div>
+            <input class="form-input" type="date" value="2027-03-15">
+          </div>
+          <div class="form-item">
+            <div class="form-label">备注</div>
+            <textarea class="form-input" rows="2" placeholder="选填"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('page-register-pending')">提交审核</button>
+    </div>
+
+    <!-- ==================== 其他人员注册 ==================== -->
+    <div class="page" id="page-register-other">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-login')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">其他人员注册</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          请填写基本信息完成注册
+        </div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">姓名 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入姓名">
+          </div>
+          <div class="form-item">
+            <div class="form-label">手机号 <span class="required">*</span></div>
+            <input class="form-input" type="tel" placeholder="请输入手机号" maxlength="11">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('page-register-pending')">提交注册</button>
+    </div>
+
+    <!-- ==================== 注册审核中 ==================== -->
+    <div class="page" id="page-register-pending">
+      <div class="nav-bar">
+        <span class="title">审核状态</span>
+      </div>
+      <div style="padding:60px var(--space-5);text-align:center;">
+        <div class="pending-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div style="font-size:var(--font-size-xl);font-weight:var(--font-weight-semibold);color:var(--text-primary);margin-top:var(--space-4);">审核中</div>
+        <div style="font-size:var(--font-size-base);color:var(--text-tertiary);margin-top:var(--space-2);">您的注册信息已提交，请等待营运部审核</div>
+        <button class="btn btn-primary" style="margin-top:40px;" onclick="showPage('page-shop-switch')">模拟审核通过</button>
+      </div>
+    </div>
+
+    <!-- ==================== 电子员工证 ==================== -->
+    <div class="page" id="page-employee-card">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-home')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">电子员工证</span>
+      </div>
+      <div class="employee-card">
+        <div class="card-label">电子员工证</div>
+        <div class="card-header">
+          <div class="card-main">
+            <div class="card-avatar">
+              <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="card-name">张三</div>
+              <div class="card-dept">N101 - 星巴克 · 店员</div>
+            </div>
+          </div>
+          <div class="qr-code">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#1f2937" stroke-width="3">
+              <rect x="8" y="8" width="28" height="28" rx="3"/><rect x="15" y="15" width="14" height="14" rx="1"/>
+              <rect x="64" y="8" width="28" height="28" rx="3"/><rect x="71" y="15" width="14" height="14" rx="1"/>
+              <rect x="8" y="64" width="28" height="28" rx="3"/><rect x="15" y="71" width="14" height="14" rx="1"/>
+              <rect x="44" y="44" width="6" height="6"/><rect x="54" y="44" width="6" height="6"/>
+              <rect x="44" y="54" width="6" height="6"/><rect x="54" y="54" width="6" height="6"/>
+              <rect x="64" y="64" width="6" height="6"/><rect x="78" y="64" width="6" height="6"/>
+              <rect x="64" y="78" width="6" height="6"/><rect x="78" y="78" width="14" height="6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-info">
+          <div class="card-info-item"><span class="card-info-label">工号</span><span class="card-info-value">EMP20260001</span></div>
+          <div class="card-info-item"><span class="card-info-label">手机</span><span class="card-info-value">138****5678</span></div>
+          <div class="card-info-item"><span class="card-info-label">身份证</span><span class="card-info-value">1101****1234</span></div>
+          <div class="card-info-item"><span class="card-info-label">健康证</span><span class="card-info-value">2027-03-15</span></div>
+        </div>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">进场状态</div>
+        <div style="padding:var(--space-4);text-align:center;">
+          <div class="status-icon-medium" style="background:var(--color-success-bg);">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div style="font-size:var(--font-size-lg);font-weight:var(--font-weight-semibold);color:var(--color-success);margin-top:var(--space-2);">允许进场</div>
+          <div style="font-size:13px;color:var(--text-tertiary);margin-top:var(--space-1);">培训已完成 · 健康证有效</div>
+          <div id="entryTimeHome" style="font-size:13px;color:var(--text-secondary);margin-top:8px;font-variant-numeric:tabular-nums;">2026-05-15 14:30:00</div>
+        </div>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">关联店铺</div>
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N101 - 星巴克</div>
+            <div class="cell-desc">店员 · 当前店铺</div>
+          </div>
+          <span class="tag tag-blue">当前</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N102 - 喜茶</div>
+            <div class="cell-desc">店员</div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 7 2 12a10 10 0 0 0 4.3 8.2c.4.3.8.5 1.2.8h12.9c.4-.3.8-.5 1.2-.8A10 10 0 0 0 26 12c0-5-4.5-10-10-10Z" transform="scale(0.92) translate(1,1)"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N201 - 海底捞</div>
+            <div class="cell-desc">店员</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 首页 ==================== -->
+    <div class="page" id="page-home">
+      <div class="shop-selector" onclick="showPage('page-shop-switch')">
+        <span class="current-shop">
+          <svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          N101 - 星巴克
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+      </div>
+
+      <!-- Activity Carousel -->
+      <div class="carousel" id="homeCarousel">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#FF6B35,#F7931E);">
+            <div class="slide-content">
+              <div class="slide-tag">热门活动</div>
+              <div class="slide-title">618年中大促</div>
+              <div class="slide-desc">全场满减优惠，报名从速</div>
+            </div>
+            <div class="slide-icon"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#1677FF,#0958D9);">
+            <div class="slide-content">
+              <div class="slide-tag">营运通知</div>
+              <div class="slide-title">三关一闭规范更新</div>
+              <div class="slide-desc">新增低压电箱拍照要求</div>
+            </div>
+            <div class="slide-icon"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#00B42A,#009A29);">
+            <div class="slide-content">
+              <div class="slide-tag">培训公告</div>
+              <div class="slide-title">消防安全培训</div>
+              <div class="slide-desc">6月15日前完成全员培训</div>
+            </div>
+            <div class="slide-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+          <span class="active"></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Todo Section -->
+      <div class="section-header">
+        <span class="section-title">待办事项</span>
+      </div>
+      <div class="todo-card" onclick="showPage('page-daily-sales')" style="cursor:pointer;">
+        <div class="todo-icon bg-red"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="todo-info">
+          <div class="todo-title">今日销售未提报 <span class="todo-badge">待办</span></div>
+          <div class="todo-desc">请在今日18:00前完成提报</div>
+        </div>
+      </div>
+      <div class="todo-card">
+        <div class="todo-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+        <div class="todo-info">
+          <div class="todo-title">三关一闭未提交 <span class="todo-badge">待办</span></div>
+          <div class="todo-desc">请提交今日三关一闭照片</div>
+        </div>
+      </div>
+      <div class="todo-card">
+        <div class="todo-icon bg-gold"><svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="todo-info">
+          <div class="todo-title">营业执照即将到期</div>
+          <div class="todo-desc">N101-星巴克营业执照将于2026-06-01到期</div>
+        </div>
+      </div>
+
+      <!-- Latest Messages -->
+      <div class="section-header">
+        <span class="section-title">最新消息</span>
+        <span class="section-more" onclick="showPage('page-messages')">更多
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </span>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot"></div>
+        <div class="msg-content">
+          <div class="msg-title">618年中大促活动通知</div>
+          <div class="msg-desc">各店铺请注意，618活动方案已下发，请及时查收并准备物料</div>
+        </div>
+        <div class="msg-time">10:30</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot read"></div>
+        <div class="msg-content">
+          <div class="msg-title">您提交的"夏日冰饮节"活动已通过审核</div>
+          <div class="msg-desc">请按照审批意见执行，活动期间注意安全</div>
+        </div>
+        <div class="msg-time">昨天</div>
+      </div>
+
+      <div style="height:var(--space-5);"></div>
+    </div>
+
+    <!-- ==================== 店铺切换 ==================== -->
+    <div class="page" id="page-shop-switch">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-home')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">选择店铺</span>
+      </div>
+      <div style="font-size:15px;padding:16px;color:var(--text-secondary);">请选择要进入的店铺</div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell" style="background:var(--color-info-bg);" onclick="showPage('page-home')">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N101 - 星巴克</div>
+            <div class="cell-desc">店员 · 当前店铺</div>
+          </div>
+          <span class="check-mark"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </div>
+        <div class="cell" onclick="showPage('page-home')">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N102 - 喜茶</div>
+            <div class="cell-desc">店员</div>
+          </div>
+        </div>
+        <div class="cell" onclick="showPage('page-home')">
+          <div class="cell-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="2" y="6" width="20" height="4" rx="1"/><path d="M4 10v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M10 16h4"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">N201 - 海底捞</div>
+            <div class="cell-desc">店长</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 消息列表 ==================== -->
+    <div class="page" id="page-messages">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-home')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">消息中心</span>
+      </div>
+      <div class="msg-tabs">
+        <button class="msg-tab active" onclick="switchMsgTab(this,'all')">全部</button>
+        <button class="msg-tab" onclick="switchMsgTab(this,'unread')">未读</button>
+        <button class="msg-tab" onclick="switchMsgTab(this,'read')">已读</button>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot"></div>
+        <div class="msg-content">
+          <div class="msg-title">618年中大促活动通知</div>
+          <div class="msg-desc">各店铺请注意，618活动方案已下发，请及时查收并准备物料</div>
+        </div>
+        <div class="msg-time">今天 10:30</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot"></div>
+        <div class="msg-content">
+          <div class="msg-title">月度业绩确认提醒</div>
+          <div class="msg-desc">2026年4月业绩表已生成，请在3日内完成确认</div>
+        </div>
+        <div class="msg-time">今天 09:15</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot"></div>
+        <div class="msg-content">
+          <div class="msg-title">三关一闭提交提醒</div>
+          <div class="msg-desc">今日三关一闭尚未提交，请在闭店前完成</div>
+        </div>
+        <div class="msg-time">昨天 21:00</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot read"></div>
+        <div class="msg-content">
+          <div class="msg-title">您提交的"夏日冰饮节"活动已通过审核</div>
+          <div class="msg-desc">请按照审批意见执行，活动期间注意安全</div>
+        </div>
+        <div class="msg-time">昨天 15:20</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot read"></div>
+        <div class="msg-content">
+          <div class="msg-title">健康证到期预警</div>
+          <div class="msg-desc">N205-肯德基 有5位员工健康证将于7日内到期</div>
+        </div>
+        <div class="msg-time">3天前</div>
+      </div>
+      <div class="msg-card">
+        <div class="msg-dot read"></div>
+        <div class="msg-content">
+          <div class="msg-title">账单已发放通知</div>
+          <div class="msg-desc">2026年4月店铺账单已发放，请查收</div>
+        </div>
+        <div class="msg-time">5天前</div>
+      </div>
+    </div>
+
+    <!-- ==================== 工作台（Tab 2）- Change 3: Icon grid layout ==================== -->
+    <div class="page" id="page-workspace">
+      <div class="shop-selector" onclick="showPage('page-shop-switch')">
+        <span class="current-shop">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          N101 - 星巴克 ▾
+        </span>
+      </div>
+
+      <!-- Group 1: 员工管理 -->
+      <div class="section-title" style="margin:var(--space-3) var(--space-4) 0;">员工管理</div>
+      <div class="section" style="margin:var(--space-2) var(--space-3);">
+        <div class="icon-grid">
+          <div class="icon-grid-item" onclick="showPage('page-training')">
+            <div class="grid-icon bg-purple"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><path d="M7 2v20"/><path d="M17 2v20"/><path d="M2 12h20"/><path d="M2 7h5"/><path d="M2 17h5"/><path d="M17 17h5"/><path d="M17 7h5"/></svg></div>
+            <div class="grid-label">培训视频</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-exam')">
+            <div class="grid-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+            <div class="grid-label">参加考试</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-employee-list')">
+            <div class="grid-icon bg-cyan"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="grid-label">员工入离职</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 2: 销售财务 -->
+      <div class="section-title" style="margin:var(--space-3) var(--space-4) 0;">销售财务</div>
+      <div class="section" style="margin:var(--space-2) var(--space-3);">
+        <div class="icon-grid">
+          <div class="icon-grid-item" onclick="showPage('page-daily-sales')">
+            <div class="grid-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+            <div class="grid-label">每日销售提报</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-monthly-sales')">
+            <div class="grid-icon bg-cyan"><svg viewBox="0 0 24 24"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></div>
+            <div class="grid-label">月度销售提报</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-bill')">
+            <div class="grid-icon bg-gold"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+            <div class="grid-label">账单下载</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 3: 营运管理 -->
+      <div class="section-title" style="margin:var(--space-3) var(--space-4) 0;">营运管理</div>
+      <div class="section" style="margin:var(--space-2) var(--space-3);">
+        <div class="icon-grid">
+          <div class="icon-grid-item" onclick="showPage('page-sanguan')">
+            <div class="grid-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+            <div class="grid-label">三关一闭提报</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-qualification')">
+            <div class="grid-icon bg-gold"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div>
+            <div class="grid-label">店铺信息管理</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-violation')">
+            <div class="grid-icon bg-red"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+            <div class="grid-label">违纪/客诉查阅</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 4: 市场相关 -->
+      <div class="section-title" style="margin:var(--space-3) var(--space-4) 0;">市场相关</div>
+      <div class="section" style="margin:var(--space-2) var(--space-3);">
+        <div class="icon-grid">
+          <div class="icon-grid-item" onclick="showPage('page-activity')">
+            <div class="grid-icon bg-green"><svg viewBox="0 0 24 24"><path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3z"/></svg></div>
+            <div class="grid-label">活动提交</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-points')">
+            <div class="grid-icon bg-purple"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="M16.71 13.88l.7.71-2.82 2.82"/></svg></div>
+            <div class="grid-label">积分抵现对账</div>
+          </div>
+          <div class="icon-grid-item" onclick="showPage('page-cooperation')">
+            <div class="grid-icon bg-cyan"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+            <div class="grid-label">合作信息</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 5: 共享资源 -->
+      <div class="section-title" style="margin:var(--space-3) var(--space-4) 0;">共享资源</div>
+      <div class="section" style="margin:var(--space-2) var(--space-3);">
+        <div class="icon-grid">
+          <div class="icon-grid-item" onclick="showPage('page-shared-files')">
+            <div class="grid-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div>
+            <div class="grid-label">共享文件下载</div>
+          </div>
+        </div>
+        <div style="padding:0 var(--space-4) var(--space-3);">
+          <div style="font-size:11px;color:var(--text-tertiary);">面试表等参考文档</div>
+        </div>
+      </div>
+      <div style="height:var(--space-5);"></div>
+    </div>
+
+    <!-- ==================== 每日销售提报 ==================== -->
+    <div class="page" id="page-daily-sales">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">每日销售提报</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">今日日期</div>
+            <input class="form-input" value="2026-05-15" readonly style="color:var(--text-secondary);">
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺名称 <span class="required">*</span></div>
+            <select class="form-select" id="dailyShopName" onchange="linkShop('name')">
+              <option value="">请选择店铺</option>
+              <option value="N101" data-name="星巴克" selected>星巴克</option>
+              <option value="N102" data-name="喜茶">喜茶</option>
+              <option value="N201" data-name="海底捞">海底捞</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺号 <span class="required">*</span></div>
+            <select class="form-select" id="dailyShopNo" onchange="linkShop('no')">
+              <option value="">请选择店铺号</option>
+              <option value="N101" data-name="星巴克" selected>N101</option>
+              <option value="N102" data-name="喜茶">N102</option>
+              <option value="N201" data-name="海底捞">N201</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <div class="form-label">营业额（元） <span class="required">*</span></div>
+            <input class="form-input" type="number" placeholder="请输入今日营业额">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交</button>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">历史记录</div>
+        <table class="data-table">
+          <tr><th>日期</th><th>店铺号</th><th>营业额</th><th>状态</th><th>操作</th></tr>
+          <tr>
+            <td>05-15</td>
+            <td>N101</td>
+            <td>¥10,500</td>
+            <td><span class="tag tag-blue">可修改</span></td>
+            <td><a style="color:var(--color-primary);cursor:pointer;font-size:12px;" onclick="editSales()">编辑</a></td>
+          </tr>
+          <tr>
+            <td>05-14</td>
+            <td>N101</td>
+            <td>¥12,580</td>
+            <td><span class="tag tag-green">已提交</span></td>
+            <td>-</td>
+          </tr>
+          <tr><td>05-13</td><td>N101</td><td>¥11,320</td><td><span class="tag tag-green">已提交</span></td><td>-</td></tr>
+          <tr><td>05-12</td><td>N101</td><td>¥13,100</td><td><span class="tag tag-green">已提交</span></td><td>-</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== 月度销售提报 ==================== -->
+    <div class="page" id="page-monthly-sales">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">月度销售提报</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">月份</div>
+            <input class="form-input" type="month" value="2026-05">
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺名称</div>
+            <input class="form-input" value="星巴克" readonly>
+          </div>
+          <div class="form-item">
+            <div class="form-label">店铺号</div>
+            <input class="form-input" value="N101" readonly>
+          </div>
+          <div class="form-item">
+            <div class="form-label">营业额（元） <span class="required">*</span></div>
+            <input class="form-input" type="number" placeholder="请输入月度营业额">
+          </div>
+          <div class="form-item">
+            <div class="form-label">线上（元）</div>
+            <input class="form-input" type="number" placeholder="请输入线上营业额">
+          </div>
+          <div class="form-item">
+            <div class="form-label">线下（元）</div>
+            <input class="form-input" type="number" placeholder="请输入线下营业额">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交</button>
+    </div>
+
+    <!-- ==================== 三关一闭提报 ==================== -->
+    <div class="page" id="page-sanguan">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">三关一闭提报</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">上传照片</div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">关闭电器照片 <span class="required">*</span></div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span>
+              <span>点击拍照或上传</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">关闭燃气照片 <span class="required">*</span></div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span>
+              <span>点击拍照或上传</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">关闭门窗照片 <span class="required">*</span></div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span>
+              <span>点击拍照或上传</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">隔油池照片</div>
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span>
+              <span>点击拍照或上传</span>
+            </div>
+          </div>
+          <div class="form-item">
+            <div class="form-label">文字备注</div>
+            <textarea class="form-input" rows="3" placeholder="请输入备注信息（可选）"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交</button>
+    </div>
+
+    <!-- ==================== 店铺信息管理 (Change 4: renamed from 资质档案管理) ==================== -->
+    <div class="page" id="page-qualification">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">店铺信息管理</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">资质证照</div>
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">营业执照</div>
+            <div class="cell-desc">有效期至 2026-06-01</div>
+          </div>
+          <span class="tag tag-orange">即将到期</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">经营许可证</div>
+            <div class="cell-desc">有效期至 2027-12-31</div>
+          </div>
+          <span class="tag tag-green">有效</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-cyan"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">保险</div>
+            <div class="cell-desc">有效期至 2027-01-15</div>
+          </div>
+          <span class="tag tag-green">有效</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-gold"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">品牌联系人</div>
+            <div class="cell-desc">张经理 · 138****0001</div>
+          </div>
+          <span class="cell-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+        </div>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">上传新资质</div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">资质类型</div>
+            <select class="form-select"><option>营业执照</option><option>经营许可证</option><option>保险</option></select>
+          </div>
+          <div class="form-item" style="border-bottom:none;">
+            <div class="upload-area">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>
+              <span>点击上传资质文件</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交审核</button>
+    </div>
+
+    <!-- ==================== 违纪/客诉查阅 ==================== -->
+    <div class="page" id="page-violation">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">违纪/客诉记录</span>
+      </div>
+      <div class="tabs">
+        <div class="tab active">违纪记录</div>
+        <div class="tab">客诉记录</div>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="notice-item">
+          <div class="notice-title">关于厨房卫生不达标的通知</div>
+          <div class="notice-content">经检查，贵店铺厨房区域卫生未达标，请于3日内完成整改。</div>
+          <div class="notice-time">2026-05-10 · 营运部</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-title">关于营业时间不规范的通知</div>
+          <div class="notice-content">近期巡查发现贵店铺存在未按时开门营业的情况，请严格遵守商场营业时间。</div>
+          <div class="notice-time">2026-04-28 · 营运部</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 活动提交 ==================== -->
+    <div class="page" id="page-activity">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">活动提交</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">活动名称 <span class="required">*</span></div>
+            <input class="form-input" placeholder="请输入活动名称">
+          </div>
+          <div class="form-item">
+            <div class="form-label">活动时间 <span class="required">*</span></div>
+            <input class="form-input" type="date" value="2026-06-18">
+          </div>
+          <div class="form-item">
+            <div class="form-label">活动内容 <span class="required">*</span></div>
+            <textarea class="form-input" rows="4" placeholder="请输入活动详细内容"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交审核</button>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">已提交活动</div>
+        <div class="notice-item">
+          <div class="notice-title">夏日冰饮节 <span class="tag tag-green">已通过</span></div>
+          <div class="notice-content">6月18日-6月20日，全场冰饮8折优惠</div>
+          <div class="notice-time">2026-05-10 提交 · 营运已确认</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-title">母亲节特惠 <span class="tag tag-blue">审核中</span></div>
+          <div class="notice-content">5月11日，指定饮品买一送一</div>
+          <div class="notice-time">2026-05-08 提交</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 积分抵现对账 ==================== -->
+    <div class="page" id="page-points">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">积分抵现对账</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">发起对账</div>
+        <div class="form-group">
+          <div class="form-item">
+            <div class="form-label">月份 <span class="required">*</span></div>
+            <input class="form-input" type="month" value="2026-04">
+          </div>
+          <div class="form-item">
+            <div class="form-label">积分抵现金额（元）<span class="required">*</span></div>
+            <input class="form-input" type="number" placeholder="请输入金额">
+          </div>
+          <div class="form-item">
+            <div class="form-label">抵现笔数</div>
+            <input class="form-input" type="number" placeholder="请输入笔数">
+          </div>
+          <div class="form-item">
+            <div class="form-label">备注</div>
+            <textarea class="form-input" rows="2" placeholder="选填"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">提交审核</button>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="section-title">对账记录</div>
+        <div class="notice-item">
+          <div class="notice-title">2026年3月积分抵现 <span class="tag tag-green">已确认</span></div>
+          <div class="notice-content">金额：¥2,350 · 笔数：47笔</div>
+          <div class="notice-time">2026-04-05 · 营运已审核</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 商场合作信息 ==================== -->
+    <div class="page" id="page-cooperation">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">商场合作信息</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell">
+          <div class="cell-icon bg-gold"><svg viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1.5 1.5 0 0 0 1.156.741l5.96.868a.5.5 0 0 1 .277.853l-4.31 4.2a1.5 1.5 0 0 0-.432 1.328l1.018 5.93a.5.5 0 0 1-.726.527l-5.332-2.804a1.5 1.5 0 0 0-1.396 0L6.873 23.32a.5.5 0 0 1-.726-.527l1.018-5.93a1.5 1.5 0 0 0-.432-1.328l-4.31-4.2a.5.5 0 0 1 .277-.853l5.96-.868a1.5 1.5 0 0 0 1.156-.741Z"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">VIP折扣政策</div>
+            <div class="cell-desc">商场VIP会员享9折优惠</div>
+          </div>
+          <span class="cell-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">员工折扣政策</div>
+            <div class="cell-desc">商场员工享8.5折优惠</div>
+          </div>
+          <span class="cell-arrow"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 账单下载 ==================== -->
+    <div class="page" id="page-bill">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">账单下载</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">2026年4月账单</div>
+            <div class="cell-desc">PDF · 2026-05-05</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">2026年3月账单</div>
+            <div class="cell-desc">PDF · 2026-04-03</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-grey"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">2026年2月账单</div>
+            <div class="cell-desc">PDF · 2026-03-02</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 扫码进场 ==================== -->
+    <div class="page" id="page-scan">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">扫码进场</span>
+      </div>
+      <div style="padding:40px var(--space-5);text-align:center;">
+        <div class="scan-frame">
+          <svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          <div style="position:absolute;bottom:var(--space-2);font-size:var(--font-size-sm);color:var(--color-primary);">扫描门口二维码</div>
+        </div>
+        <div style="margin-top:var(--space-5);font-size:var(--font-size-base);color:var(--text-secondary);">请将摄像头对准门口二维码</div>
+        <div style="margin-top:var(--space-3);font-size:var(--font-size-sm);color:var(--text-tertiary);">扫码后系统将自动判断您的进场权限</div>
+        <button class="btn btn-primary" style="margin-top:30px;" onclick="showPage('page-scan-result')">模拟扫码成功</button>
+      </div>
+    </div>
+
+    <!-- ==================== 扫码结果 ==================== -->
+    <div class="page" id="page-scan-result">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-scan')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">进场核验</span>
+      </div>
+      <div style="padding:40px var(--space-5);text-align:center;">
+        <div class="status-icon-large" style="background:var(--color-success-bg);color:var(--color-success);">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div style="font-size:var(--font-size-xl);font-weight:var(--font-weight-semibold);color:var(--color-success);margin-top:var(--space-4);">允许进场</div>
+        <div style="font-size:var(--font-size-base);color:var(--text-secondary);margin-top:var(--space-2);">张三 · N101-星巴克</div>
+        <div style="font-size:13px;color:var(--text-tertiary);margin-top:var(--space-1);">入职培训已完成 · 健康证有效至2027-03-15</div>
+        <div style="margin-top:var(--space-6);padding:var(--space-4);background:#F7F8FA;border-radius:var(--radius-sm);text-align:left;">
+          <div style="font-size:13px;color:var(--text-tertiary);margin-bottom:var(--space-1);">请向门卫出示此页面</div>
+          <div style="font-size:var(--font-size-base);color:var(--text-primary);">门卫确认放行</div>
+          <button class="btn btn-primary" style="margin-top:var(--space-3);" onclick="showPage('page-home')">已确认进场</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 培训视频 ==================== -->
+    <div class="page" id="page-training">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">培训视频</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">新员工入职培训</div>
+            <div class="cell-desc">时长：25分钟 · 已完成</div>
+          </div>
+          <span class="tag tag-green">已完成</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-red"><svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">消防安全培训</div>
+            <div class="cell-desc">时长：15分钟 · 未完成</div>
+          </div>
+          <span class="tag tag-orange">未完成</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">食品安全培训</div>
+            <div class="cell-desc">时长：20分钟 · 未开始</div>
+          </div>
+          <span class="tag tag-grey">未开始</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 考试答题 ==================== -->
+    <div class="page" id="page-exam">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">入职培训考核</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div style="padding:14px var(--space-4);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--color-divider);">
+          <span style="font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);">第 3/10 题</span>
+          <span style="font-size:13px;color:var(--text-tertiary);">剩余时间：08:30</span>
+        </div>
+        <div style="padding:var(--space-4);">
+          <div style="font-size:var(--font-size-md);font-weight:var(--font-weight-medium);color:var(--text-primary);margin-bottom:var(--space-4);">3. 灭火器的有效使用距离是多少米？</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="exam-option">A. 1-2米</div>
+            <div class="exam-option selected">B. 3-5米</div>
+            <div class="exam-option">C. 8-10米</div>
+            <div class="exam-option">D. 10-15米</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary">下一题</button>
+    </div>
+
+    <!-- ==================== 员工列表 ==================== -->
+    <div class="page" id="page-employee-list">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">员工管理</span>
+      </div>
+      <div class="search-bar">
+        <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input placeholder="搜索员工姓名">
+      </div>
+      <div class="fab" onclick="showPage('page-register')">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell">
+          <div class="cell-icon bg-blue"><span class="avatar-initial">张</span></div>
+          <div class="cell-content">
+            <div class="cell-title">张三</div>
+            <div class="cell-desc">店员 · 健康证有效至2027-03-15</div>
+          </div>
+          <span class="tag tag-green">在职</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><span class="avatar-initial">李</span></div>
+          <div class="cell-content">
+            <div class="cell-title">李四</div>
+            <div class="cell-desc">店长 · 健康证有效至2026-08-20</div>
+          </div>
+          <span class="tag tag-green">在职</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-grey"><span class="avatar-initial">王</span></div>
+          <div class="cell-content">
+            <div class="cell-title">王五</div>
+            <div class="cell-desc">店员 · 已离职</div>
+          </div>
+          <span class="tag tag-grey">已离职</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 共享文件下载 ==================== -->
+    <div class="page" id="page-shared-files">
+      <div class="nav-bar">
+        <span class="back" onclick="showPage('page-workspace')">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="title">共享文件下载</span>
+      </div>
+      <div class="section" style="margin:var(--space-3);">
+        <div class="cell">
+          <div class="cell-icon bg-blue"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">面试表模板</div>
+            <div class="cell-desc">DOCX · 2026-01-15</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-green"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">员工手册</div>
+            <div class="cell-desc">PDF · 2026-03-01</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+        <div class="cell">
+          <div class="cell-icon bg-orange"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <div class="cell-content">
+            <div class="cell-title">健康证办理指南</div>
+            <div class="cell-desc">PDF · 2026-02-20</div>
+          </div>
+          <span class="tag tag-blue" style="cursor:pointer;">下载</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 我的（Tab 3）==================== -->
+    <div class="page" id="page-mine">
+      <!-- Employee Card -->
+      <div class="employee-card">
+        <div class="card-label">电子员工证</div>
+        <div class="card-header">
+          <div class="card-main">
+            <div class="card-avatar">
+              <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="card-name">张三</div>
+              <div class="card-dept">N101 - 星巴克 · 店员</div>
+            </div>
+          </div>
+          <div class="qr-code">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#1f2937" stroke-width="3">
+              <rect x="8" y="8" width="28" height="28" rx="3"/>
+              <rect x="15" y="15" width="14" height="14" rx="1"/>
+              <rect x="64" y="8" width="28" height="28" rx="3"/>
+              <rect x="71" y="15" width="14" height="14" rx="1"/>
+              <rect x="8" y="64" width="28" height="28" rx="3"/>
+              <rect x="15" y="71" width="14" height="14" rx="1"/>
+              <rect x="44" y="44" width="6" height="6"/>
+              <rect x="54" y="44" width="6" height="6"/>
+              <rect x="44" y="54" width="6" height="6"/>
+              <rect x="54" y="54" width="6" height="6"/>
+              <rect x="64" y="64" width="6" height="6"/>
+              <rect x="78" y="64" width="6" height="6"/>
+              <rect x="64" y="78" width="6" height="6"/>
+              <rect x="78" y="78" width="14" height="6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-info">
+          <div class="card-info-item"><span class="card-info-label">工号</span><span class="card-info-value">EMP20260001</span></div>
+          <div class="card-info-item"><span class="card-info-label">手机</span><span class="card-info-value">138****5678</span></div>
+          <div class="card-info-item"><span class="card-info-label">身份证</span><span class="card-info-value">1101****1234</span></div>
+          <div class="card-info-item"><span class="card-info-label">健康证</span><span class="card-info-value">2027-03-15</span></div>
+        </div>
+      </div>
+
+      <!-- Real-time Status -->
+      <div class="section" style="margin:12px;">
+        <div class="section-title">进场状态</div>
+        <div style="padding:16px;text-align:center;">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00B42A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span style="font-size:15px;font-weight:600;color:var(--color-success);">允许进场</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-tertiary);margin-top:6px;">培训已完成 · 健康证有效</div>
+          <div id="entryTime" style="font-size:13px;color:var(--text-secondary);margin-top:8px;font-variant-numeric:tabular-nums;">2026-05-15 14:30:00</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tab Bar - Change 5: 3 tabs only (首页, 工作台, 我的) -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('page-home', this)">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>首页
+    </div>
+    <div class="tab-item" onclick="switchTab('page-workspace', this)">
+      <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>工作台
+    </div>
+    <div class="tab-item" onclick="switchTab('page-mine', this)">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>我的
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.getElementById('pageContainer').scrollTop = 0;
+
+  // Tab bar visibility
+  var noTabPages = ['page-login', 'page-register', 'page-register-other', 'page-register-pending'];
+  var tabBar = document.querySelector('.tab-bar');
+  var container = document.getElementById('pageContainer');
+  if (noTabPages.indexOf(pageId) >= 0) {
+    tabBar.style.display = 'none';
+    container.classList.add('no-tab');
+  } else {
+    tabBar.style.display = 'flex';
+    container.classList.remove('no-tab');
+  }
+}
+
+function switchTab(pageId, el) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showPage(pageId);
+}
+
+function linkShop(source) {
+  var nameSelect = document.getElementById('dailyShopName');
+  var noSelect = document.getElementById('dailyShopNo');
+  if (source === 'name') {
+    noSelect.value = nameSelect.value;
+  } else {
+    nameSelect.value = noSelect.value;
+  }
+}
+
+function editSales() {
+  document.getElementById('pageContainer').scrollTop = 0;
+  var inputs = document.querySelectorAll('#page-daily-sales .form-input[type="number"]');
+  if (inputs.length > 0) {
+    inputs[0].value = '10500';
+    inputs[0].focus();
+  }
+}
+
+function updateTime() {
+  var now = new Date();
+  var y = now.getFullYear();
+  var M = String(now.getMonth() + 1).padStart(2, '0');
+  var d = String(now.getDate()).padStart(2, '0');
+  var h = String(now.getHours()).padStart(2, '0');
+  var min = String(now.getMinutes()).padStart(2, '0');
+  var s = String(now.getSeconds()).padStart(2, '0');
+  var timeStr = y + '-' + M + '-' + d + ' ' + h + ':' + min + ':' + s;
+  var el1 = document.getElementById('entryTime');
+  var el2 = document.getElementById('entryTimeHome');
+  if (el1) el1.textContent = timeStr;
+  if (el2) el2.textContent = timeStr;
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// Carousel
+(function() {
+  var track = document.getElementById('carouselTrack');
+  var dots = document.getElementById('carouselDots');
+  if (!track || !dots) return;
+  var total = track.children.length;
+  var current = 0;
+  var timer = null;
+
+  function goTo(idx) {
+    current = ((idx % total) + total) % total;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    var allDots = dots.querySelectorAll('span');
+    allDots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+  }
+
+  function startAuto() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(function() { goTo(current + 1); }, 3500);
+  }
+
+  dots.addEventListener('click', function(e) {
+    if (e.target.tagName === 'SPAN') {
+      var idx = Array.from(dots.children).indexOf(e.target);
+      goTo(idx);
+      startAuto();
+    }
+  });
+
+  startAuto();
+})();
+
+// Message tab switch
+function switchMsgTab(btn, type) {
+  var tabs = btn.parentElement.querySelectorAll('.msg-tab');
+  tabs.forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  var cards = btn.closest('.page').querySelectorAll('.msg-card');
+  cards.forEach(function(card) {
+    var dot = card.querySelector('.msg-dot');
+    if (type === 'all') { card.style.display = 'flex'; }
+    else if (type === 'unread') { card.style.display = dot.classList.contains('read') ? 'none' : 'flex'; }
+    else if (type === 'read') { card.style.display = dot.classList.contains('read') ? 'flex' : 'none'; }
+  });
+}
+
+// Hide tab bar on initial load (login page)
+document.querySelector('.tab-bar').style.display = 'none';
+</script>
+
+</body>
+</html>

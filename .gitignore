@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Office lock / temp files
+~$*.xlsx
+~$*.docx
+~$*.pptx
+.~lock.*
+
+# OS artifacts
+Thumbs.db
+Desktop.ini
+# Windows redirect accident file (created by `cmd > nul` on a posix shell)
+/nul
+
+# Logs
+*.log
+
+# Local Claude settings (per-machine, not shared)
+.claude/settings.local.json

@@ -1,0 +1,284 @@
+{
+  "project_id": "渠道管理Helpdesk_第三方RTC方案_20260403",
+  "name": "渠道管理Helpdesk需求变更_第三方RTC语音方案",
+  "created_date": "2026-04-03",
+  "total_effort": 111,
+  "description": "渠道管理Helpdesk需求变更：支持Group管理、在线状态、聊天记录导出、第三方RTC语音聊天（双向发起）",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "Helpdesk", "客服", "聊天", "语音", "Group", "导出", "TRTC"],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）+ 第三方RTC SDK",
+    "backend": "Java/Node.js（复用美外之家）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（应用消息推送）+ 腾讯云TRTC/声网/融云",
+    "infrastructure": "第三方RTC服务"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "引导与自助查询",
+      "name": "引导菜单+FAQ自动应答",
+      "effort_days": 4,
+      "description": "6大类问题入口菜单，二级子菜单FAQ，自动匹配答案+文件/链接回复，内容为固定配置",
+      "complexity": "低",
+      "reference": "历史项目复用（问答系统模式）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "自定义聊天界面",
+      "effort_days": 8,
+      "description": "美外之家内自定义聊天，消息收发、历史记录、文件/图片发送、实时更新",
+      "complexity": "高",
+      "reference": "历史项目复用（问答系统模式扩展）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "语音聊天（第三方RTC）（新需求）",
+      "effort_days": 6,
+      "description": "集成第三方RTC SDK（腾讯云TRTC/声网），支持发起/接收通话请求，通话中UI，结束通话，音量控制",
+      "complexity": "中",
+      "reference": "新增（第三方SDK集成）"
+    },
+    {
+      "system": "用户端",
+      "module": "人工对话",
+      "name": "满意度评分",
+      "effort_days": 2,
+      "description": "对话结束时自动触发满意度评分（1-5分），提交评分到后端",
+      "complexity": "低",
+      "reference": "历史项目复用（打卡签到模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group管理（新需求）",
+      "effort_days": 3,
+      "description": "Group的CRUD操作，包括组名称、描述、状态",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group-User关联管理（新需求）",
+      "effort_days": 2,
+      "description": "为Group添加/移除成员，查看Group成员列表",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "Group管理",
+      "name": "Group分配规则配置（升级版）（新需求）",
+      "effort_days": 4,
+      "description": "配置问题类别到Group的分配规则（替代原有直接分配给管理员），支持优先级设置",
+      "complexity": "中",
+      "reference": "系统管理模式（历史项目2人天基础上+2人天）"
+    },
+    {
+      "system": "管理后台",
+      "module": "在线状态管理",
+      "name": "用户在线状态管理（新需求）",
+      "effort_days": 2,
+      "description": "管理员可设置自己的在线/离线/忙碌状态，状态持久化",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "在线状态管理",
+      "name": "在线用户状态列表（新需求）",
+      "effort_days": 2,
+      "description": "实时显示所有管理员的在线状态，支持按Group筛选",
+      "complexity": "中",
+      "reference": "数据统计模式（简化版）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "对话队列管理",
+      "effort_days": 4,
+      "description": "待处理/进行中/已结束对话列表，标签分类筛选，对话详情查看",
+      "complexity": "中",
+      "reference": "历史项目复用（CRUD操作模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "管理员聊天界面",
+      "effort_days": 10,
+      "description": "管理员消息收发界面，含对话队列侧边栏，支持多会话切换，历史会话查询，快捷回复模板",
+      "complexity": "中",
+      "reference": "历史项目复用（问答系统模式扩展）"
+    },
+    {
+      "system": "管理后台",
+      "module": "对话管理",
+      "name": "语音聊天管理界面（第三方RTC）（新需求）",
+      "effort_days": 6,
+      "description": "管理后台第三方RTC语音通话界面，集成SDK，支持发起/接收语音请求，通话中UI，通话记录查看",
+      "complexity": "中",
+      "reference": "新增（第三方SDK集成）"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "统计看板",
+      "effort_days": 5,
+      "description": "销售提问数量、各类型问题提问量、管理员回答数量、平均响应时长、满意度分数图表",
+      "complexity": "中",
+      "reference": "历史项目复用（数据统计模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据统计",
+      "name": "报表导出",
+      "effort_days": 2,
+      "description": "导出统计报表为Excel格式",
+      "complexity": "低",
+      "reference": "历史项目复用（数据导出模式）"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录列表与查询（新需求）",
+      "effort_days": 3,
+      "description": "按对话/用户/时间范围查询聊天记录，支持筛选",
+      "complexity": "中",
+      "reference": "CRUD操作模式（扩展版）"
+    },
+    {
+      "system": "管理后台",
+      "module": "聊天记录管理",
+      "name": "聊天记录导出（新需求）",
+      "effort_days": 6,
+      "description": "导出聊天记录，支持Excel/CSV文字导出、附件ZIP打包、音频文件导出",
+      "complexity": "中",
+      "reference": "数据导出模式"
+    },
+    {
+      "system": "管理后台",
+      "module": "语音通话管理",
+      "name": "语音通话记录（新需求）",
+      "effort_days": 2,
+      "description": "语音通话记录列表，包含通话时长、参与者、通话质量等信息",
+      "complexity": "低",
+      "reference": "CRUD操作模式"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "实时消息服务",
+      "effort_days": 6,
+      "description": "WebSocket/SSE实时通信、消息持久化、离线推送(企微应用消息)、断线重连与消息补发",
+      "complexity": "高",
+      "reference": "历史项目复用（消息中心模式）"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "在线状态同步服务（新需求）",
+      "effort_days": 2,
+      "description": "WebSocket心跳机制、在线状态实时同步、掉线检测",
+      "complexity": "中",
+      "reference": "实时消息服务扩展"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "消息路由（新需求）",
+      "effort_days": 3,
+      "description": "问题类别匹配、按Group分配、分配给Group内在线成员、负载均衡",
+      "complexity": "高",
+      "reference": "审核流程模式（历史项目3人天基础上+2人天）"
+    },
+    {
+      "system": "其他",
+      "module": "消息服务",
+      "name": "对话超时机制",
+      "effort_days": 2,
+      "description": "定时检测超时对话，自动结束并触发满意度评分",
+      "complexity": "低",
+      "reference": "历史项目复用（CRUD操作模式）"
+    },
+    {
+      "system": "其他",
+      "module": "语音服务",
+      "name": "第三方RTC SDK集成（新需求）",
+      "effort_days": 3,
+      "description": "集成腾讯云TRTC/声网SDK，后端Token生成、房间管理",
+      "complexity": "中",
+      "reference": "新增（第三方SDK集成）"
+    },
+    {
+      "system": "其他",
+      "module": "网络服务",
+      "name": "网络协议转换：http转https（新需求）",
+      "effort_days": 6,
+      "description": "配置HTTPS证书、HTTP到HTTPS重定向、SSL/TLS配置",
+      "complexity": "中",
+      "reference": "新增（网络安全配置）"
+    },
+    {
+      "system": "其他",
+      "module": "系统测试",
+      "name": "系统测试",
+      "effort_days": 10,
+      "description": "集成测试、系统测试、语音通话测试、压力测试",
+      "complexity": "中",
+      "reference": "开发总工时测试"
+    },
+    {
+      "system": "其他",
+      "module": "UI设计",
+      "name": "UI/UX设计",
+      "effort_days": 5,
+      "description": "界面设计、交互设计、视觉设计",
+      "complexity": "中",
+      "reference": "UI/UX设计"
+    },
+    {
+      "system": "其他",
+      "module": "项目管理",
+      "name": "需求沟通",
+      "effort_days": 2,
+      "description": "需求沟通、需求文档",
+      "complexity": "低",
+      "reference": "固定工时"
+    },
+    {
+      "system": "其他",
+      "module": "项目管理",
+      "name": "验收发布",
+      "effort_days": 1,
+      "description": "项目验收和上线发布",
+      "complexity": "低",
+      "reference": "固定工时"
+    }
+  ],
+  "summary": {
+    "user_development": 20,
+    "admin_development": 51,
+    "other_development": 22,
+    "total_development_effort": 93,
+    "testing_effort": 10,
+    "ui_design": 5,
+    "other_fixed": {
+      "communication": 2,
+      "acceptance": 1
+    },
+    "total_effort": 111
+  },
+  "notes": [
+    "本方案使用第三方RTC服务（腾讯云TRTC/声网），稳定性高，但需要支付服务费用",
+    "语音功能工时约21人天（19%），包含用户端、管理后台、SDK集成、通话记录",
+    "第三方RTC提供NAT穿透、信令服务、全球节点加速，无需自建基础设施",
+    "推荐服务商：腾讯云TRTC（国内优势）、声网Agora（全球优势）、融云（企微集成优势）",
+    "预估RTC服务成本：约500-2000元/月（根据并发通话时长计费）",
+    "与原项目相比，新增约51人天（原60人天→111人天），增幅85%",
+    "新增网络协议转换功能（HTTP转HTTPS），增强系统安全性",
+    "如对稳定性要求高，推荐本方案"
+  ]
+}

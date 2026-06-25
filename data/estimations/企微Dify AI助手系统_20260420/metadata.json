@@ -1,0 +1,170 @@
+{
+  "project_id": "企微DifyAI助手系统_20260410",
+  "name": "企微Dify AI助手系统",
+  "created_date": "2026-04-10",
+  "total_effort": 190,
+  "description": "基于企微+Dify企业版构建的企业级AI助手平台，包含身份认证、人员主数据同步、多模态消息引擎、Dify工作流编排、RAG知识库、Agent智能体策略、动态上下文隔离、管理后台及运营审计看板。",
+  "systems": ["用户端", "管理后台", "Dify集成层", "消息引擎"],
+  "tags": ["企微", "Dify", "AI助手", "RAG", "Agent", "OAuth", "SSO", "知识库", "工作流"],
+  "tech_stack": {
+    "frontend": "企微H5（用户端）+ 独立Web（管理后台）",
+    "backend": "独立后端服务",
+    "database": "MySQL + Dify企业版内置向量数据库",
+    "integration": "企微API + Dify API + DAC API"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "身份认证",
+      "name": "OAuth认证登录",
+      "effort_days": 3,
+      "description": "基于企微OAuth2.0协议，实现员工免密登录与身份自动识别",
+      "complexity": "中",
+      "reference": "认证授权 pattern (3-8人天)"
+    },
+    {
+      "system": "用户端",
+      "module": "AI交互",
+      "name": "AI对话界面",
+      "effort_days": 5,
+      "description": "设计简洁易用的AI对话与功能入口界面",
+      "complexity": "中",
+      "reference": "企微端 pattern (6-10人天)"
+    },
+    {
+      "system": "用户端",
+      "module": "消息",
+      "name": "多模态消息接收",
+      "effort_days": 5,
+      "description": "支持Markdown格式、交互式卡片(Button/Select)、附件及多媒体文件",
+      "complexity": "中",
+      "reference": "企微消息API适配"
+    },
+    {
+      "system": "管理后台",
+      "module": "人员数据",
+      "name": "DAC员工数据同步+企微标签同步",
+      "effort_days": 3,
+      "description": "对接DAC人员数据接口，同步组织架构、岗位、角色等权限信息及企微标签",
+      "complexity": "中",
+      "reference": "有历史参考实现，降低工时"
+    },
+    {
+      "system": "管理后台",
+      "module": "权限管理",
+      "name": "Agent权限管理",
+      "effort_days": 8,
+      "description": "管理员工对Agent的使用权限，控制哪些Agent可用/不可用",
+      "complexity": "高",
+      "reference": "RBAC + Agent权限控制，含角色/部门/个人多级权限"
+    },
+    {
+      "system": "管理后台",
+      "module": "数据分析",
+      "name": "运营审计看板",
+      "effort_days": 5,
+      "description": "基于Dify日志API二次开发，分析Token消耗、热点问题及模型响应质量，支持导出分析报表(4-6个基础指标)",
+      "complexity": "中",
+      "reference": "数据统计 pattern (4-7) + 数据导出"
+    },
+    {
+      "system": "管理后台",
+      "module": "基础框架",
+      "name": "管理后台基础框架",
+      "effort_days": 8,
+      "description": "管理后台登录、角色、布局、路由、菜单、权限等基础功能",
+      "complexity": "中",
+      "reference": "系统管理 pattern，含完整RBAC"
+    },
+    {
+      "system": "Dify集成层",
+      "module": "工作流",
+      "name": "业务流编排(5个工作流)",
+      "effort_days": 60,
+      "description": "深度使用Dify工作流模式：集成Python代码块、条件分支及迭代器，处理跨OU的复杂逻辑判定(5个工作流)",
+      "complexity": "高",
+      "reference": "5个复杂业务工作流，含跨OU逻辑"
+    },
+    {
+      "system": "Dify集成层",
+      "module": "RAG",
+      "name": "RAG知识库对接",
+      "effort_days": 16,
+      "description": "对接Dify Knowledge模块，支持内部文档向量化存储(100文档)及混合检索优化，Dify企业版内置向量数据库",
+      "complexity": "高",
+      "reference": "文档向量化 + 混合检索优化 + 调优"
+    },
+    {
+      "system": "Dify集成层",
+      "module": "Agent",
+      "name": "Agent智能体(运营+销售2角色)",
+      "effort_days": 30,
+      "description": "针对运营、销售岗位定制专属Prompt与Agent工具调用，支持多源集成+自定义工具，函数调用查询内部数据库(2个角色)",
+      "complexity": "高",
+      "reference": "2个角色Agent，多源集成+自定义工具+Prompt工程+函数调用"
+    },
+    {
+      "system": "Dify集成层",
+      "module": "安全",
+      "name": "动态上下文隔离",
+      "effort_days": 5,
+      "description": "将企微权限变量(UserID/Role)透传至Dify，确保RAG检索及AI回复严格遵循数据权限边界",
+      "complexity": "高",
+      "reference": "认证授权 pattern (3-8)，安全隔离提升复杂度"
+    },
+    {
+      "system": "Dify集成层",
+      "module": "服务集成",
+      "name": "打通企微服务端和Dify",
+      "effort_days": 5,
+      "description": "API网关、路由、中间件、配置管理等后端基础框架搭建",
+      "complexity": "中",
+      "reference": "企微服务端与Dify双向集成"
+    },
+    {
+      "system": "消息引擎",
+      "module": "消息服务",
+      "name": "实时消息处理",
+      "effort_days": 10,
+      "description": "支持Markdown/交互式卡片/附件/多媒体文件推送",
+      "complexity": "高",
+      "reference": "实时消息处理+模板管理+消息路由"
+    },
+    {
+      "system": "其他",
+      "module": "环境搭建",
+      "name": "环境搭建",
+      "effort_days": 2,
+      "description": "新项目环境搭建：开发/测试/生产环境配置",
+      "complexity": "低",
+      "reference": "新项目固定工时"
+    }
+  ],
+  "summary": {
+    "user_development": 13,
+    "admin_development": 24,
+    "dify_integration_development": 116,
+    "message_engine_development": 10,
+    "other_development": 2,
+    "total_development_effort": 165,
+    "testing_effort": 15,
+    "other_fixed": {
+      "ui_design": 5,
+      "communication": 3,
+      "environment": 2,
+      "acceptance": 2
+    },
+    "total_fixed_effort": 25,
+    "total_effort": 190
+  },
+  "notes": [
+    "Dify使用企业版(SaaS)，向量数据库已内置，减少部署工时",
+    "DAC员工数据同步有历史参考实现，降低开发工时",
+    "基础设施部署由他人负责，不包含在开发工时中",
+    "基础设施租赁和年度运维服务为服务报价项，建议单独报价",
+    "RAG检索质量可能需要多轮调优，当前工时不含持续优化",
+    "Agent角色仅覆盖运营+销售2个岗位，后续新增角色需追加工时",
+    "业务流编排为最大工时项(60人天)，含5个复杂工作流及跨OU逻辑",
+    "需求存在不确定性，需求沟通工时调整为3人天"
+  ]
+}

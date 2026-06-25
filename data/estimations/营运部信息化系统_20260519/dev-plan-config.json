@@ -1,0 +1,23 @@
+{
+    "title": "营运部信息化小程序研发排期",
+    "total_weeks": 11,
+    "background": "transparent",
+    "legend": [
+        {"label": "需求阶段", "color": "primary"},
+        {"label": "UI 设计", "color": "violet"},
+        {"label": "系统设计", "color": "sky"},
+        {"label": "功能开发", "color": "secondary"},
+        {"label": "系统测试", "color": "test"},
+        {"label": "客户验收", "color": "accent"},
+        {"label": "系统发布", "color": "rose"}
+    ],
+    "rows": [
+        {"label": "需求沟通与评审", "legend": "需求阶段", "start_week": 1, "end_week": 3},
+        {"label": "UI设计与评审", "legend": "UI 设计", "start_week": 1, "end_week": 4},
+        {"label": "系统设计", "legend": "系统设计", "start_week": 1, "end_week": 4},
+        {"label": "功能开发", "legend": "功能开发", "start_week": 2, "end_week": 8},
+        {"label": "系统测试", "legend": "系统测试", "start_week": 7, "end_week": 9},
+        {"label": "客户验收", "legend": "客户验收", "start_week": 9, "end_week": 11},
+        {"label": "系统发布", "legend": "系统发布", "start_week": 11, "end_week": 11, "is_release": true}
+    ]
+}

@@ -1,0 +1,131 @@
+{
+  "project_id": "Facility需求追加_20260608",
+  "name": "Facility 需求追加（评论配图+尊巴报名）",
+  "created_date": "2026-06-08",
+  "total_effort": 45,
+  "description": "在现有Facility系统基础上，增强推文评论互动能力（配图、置顶、排序），新增Sports Club尊巴活动报名功能",
+  "systems": ["用户端", "管理后台", "其他"],
+  "tags": ["企微", "Facility", "评论", "尊巴", "报名", "体育活动"],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）",
+    "backend": "Java/Node.js（复用Facility技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（消息推送）"
+  },
+  "features": [
+    {
+      "system": "用户端",
+      "module": "推文评论",
+      "name": "评论配图功能（上传最多9张图片）",
+      "effort_days": 6,
+      "description": "评论时可上传最多9张图片，支持图片预览和删除（含前端+后端评论图片接口）",
+      "complexity": "中",
+      "reference": "文件上传模式"
+    },
+    {
+      "system": "用户端",
+      "module": "推文评论",
+      "name": "评论排序切换（时间/热度）",
+      "effort_days": 2,
+      "description": "评论区支持按时间或按点赞数排序切换（含前端+后端排序接口）",
+      "complexity": "低",
+      "reference": "排序逻辑"
+    },
+    {
+      "system": "管理后台",
+      "module": "推文评论",
+      "name": "评论置顶管理",
+      "effort_days": 6,
+      "description": "管理员可置顶/取消置顶评论，支持多条置顶；用户端置顶评论优先显示（含前端+后端接口）",
+      "complexity": "中",
+      "reference": "置顶逻辑+排序"
+    },
+    {
+      "system": "管理后台",
+      "module": "推文评论",
+      "name": "评论管理查看图片",
+      "effort_days": 1,
+      "description": "评论管理列表中显示评论配图缩略图，点击可查看大图",
+      "complexity": "低",
+      "reference": "评论管理扩展"
+    },
+    {
+      "system": "用户端",
+      "module": "尊巴活动",
+      "name": "尊巴活动列表查看",
+      "effort_days": 4,
+      "description": "展示尊巴活动列表（日期、时间、地点、名额、报名状态）（含前端+后端活动接口）",
+      "complexity": "低",
+      "reference": "列表展示+CRUD接口"
+    },
+    {
+      "system": "用户端",
+      "module": "尊巴活动",
+      "name": "活动报名（含名额判断）",
+      "effort_days": 6,
+      "description": "用户可报名/取消报名尊巴活动，系统自动判断报名上限，支持可设置上限或不设置（含前端+后端报名接口+并发控制）",
+      "complexity": "中",
+      "reference": "报名功能+并发名额控制"
+    },
+    {
+      "system": "用户端",
+      "module": "尊巴活动",
+      "name": "报名结果查看/报名详情页",
+      "effort_days": 2,
+      "description": "用户查看自己的报名状态/活动详情信息",
+      "complexity": "低",
+      "reference": "状态查看+详情页"
+    },
+    {
+      "system": "管理后台",
+      "module": "尊巴活动",
+      "name": "管理员取消报名",
+      "effort_days": 2,
+      "description": "管理员可随时取消员工的报名，并发送企微消息通知（含前端+后端接口+消息推送）",
+      "complexity": "低",
+      "reference": "状态更新+企微通知"
+    },
+    {
+      "system": "管理后台",
+      "module": "尊巴活动",
+      "name": "报名列表管理",
+      "effort_days": 2,
+      "description": "查看活动的报名列表，支持按状态筛选",
+      "complexity": "低",
+      "reference": "列表管理"
+    },
+    {
+      "system": "管理后台",
+      "module": "尊巴活动",
+      "name": "报名结果公布（批量审核）",
+      "effort_days": 4,
+      "description": "报名截止后，管理员批量公布报名结果（成功/失败），并发送企微消息通知（含前端+后端批量接口+消息推送）",
+      "complexity": "中",
+      "reference": "审核流程+批量状态更新+企微通知"
+    }
+  ],
+  "summary": {
+    "user_development": 20,
+    "admin_development": 15,
+    "total_development_effort": 35,
+    "testing_effort": 5,
+    "other_fixed": {
+      "communication": 1,
+      "environment": 0,
+      "ui_ux_design": 3,
+      "acceptance": 1
+    },
+    "total_effort": 45
+  },
+  "notes": [
+    "现有系统新增功能，复用Facility技术栈和部署环境",
+    "尊巴活动用户端需要UI设计（沿用Facility设计规范，有组件库）",
+    "需求清晰，需求沟通工时按1人天计算",
+    "无环境搭建工时（现有系统）",
+    "支持并发报名名额控制",
+    "企微消息推送：管理员取消报名、公布结果时发送通知",
+    "后端服务工时已融合到用户端和管理后台功能中",
+    "评论配图支持最多9张图片",
+    "用户可取消报名尊巴活动（在报名截止前）"
+  ]
+}

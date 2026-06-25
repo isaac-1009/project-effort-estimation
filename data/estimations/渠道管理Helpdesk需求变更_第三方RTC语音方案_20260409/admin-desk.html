@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渠道管理 Helpdesk · 管理后台</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:       #7B5CF5;
+  --primary-d:     #5B3DD5;
+  --primary-l:     #9B7FF8;
+  --primary-bg:    #F0EDFF;
+  --primary-muted: rgba(123,92,245,.12);
+  --sidebar-bg:    #1A1630;
+  --sidebar-hover: rgba(123,92,245,.18);
+  --sidebar-active:#2C2456;
+  --surface:       #ffffff;
+  --bg:            #F4F3FB;
+  --border:        #E8E5F5;
+  --text:          #1A1A2E;
+  --text-2:        #5A577A;
+  --text-3:        #9896B0;
+  --tag-a: #EFF6FF; --tag-a-t: #1D6AB5;
+  --tag-b: #FFF7ED; --tag-b-t: #B45309;
+  --tag-c: #F0FDF4; --tag-c-t: #166534;
+  --tag-d: #FDF4FF; --tag-d-t: #86198F;
+  --tag-e: #FFF1F2; --tag-e-t: #9F1239;
+  --tag-f: #ECFDF5; --tag-f-t: #065F46;
+  --online: #22C55E;
+  --danger: #EF4444;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --r: 10px; --r-sm: 6px;
+  --shadow: 0 2px 16px rgba(80,50,180,.08);
+  --shadow-md: 0 4px 24px rgba(80,50,180,.14);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;font-size:13px;}
+
+/* ── NAV SIDEBAR ── */
+.nav{
+  width:56px;background:var(--sidebar-bg);
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 0;gap:4px;flex-shrink:0;
+  border-right:1px solid rgba(255,255,255,.05);
+}
+.nav-logo{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-d));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;font-weight:700;margin-bottom:12px;
+  font-family:'DM Sans',sans-serif;letter-spacing:-1px;
+}
+.nav-item{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.4);
+  transition:all .2s;position:relative;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:rgba(255,255,255,.8);}
+.nav-item.active{background:var(--sidebar-active);color:#fff;}
+.nav-item svg{width:18px;height:18px;}
+.nav-badge{
+  position:absolute;top:6px;right:6px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--danger);border:1.5px solid var(--sidebar-bg);
+}
+.nav-avatar{
+  margin-top:auto;width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary-l),var(--primary));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:12px;font-weight:700;cursor:pointer;
+  position:relative;
+}
+.nav-avatar::after{
+  content:'';position:absolute;bottom:1px;right:1px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--online);border:1.5px solid var(--sidebar-bg);
+}
+
+/* ── VIEWS ── */
+.view{flex:1;display:none;overflow:hidden;}
+.view.active{display:flex;}
+
+/* ── WORKBENCH VIEW ── */
+.workbench-inner{display:flex;flex:1;overflow:hidden;}
+
+.session-panel{
+  width:300px;background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;flex-shrink:0;
+  overflow:hidden;
+}
+.sp-head{
+  padding:18px 16px 12px;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sp-title{
+  font-size:15px;font-weight:700;color:var(--text);
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+.badge-count{
+  font-size:11px;font-weight:700;
+  background:var(--primary);color:#fff;
+  padding:1px 7px;border-radius:20px;
+}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:0 10px;
+  transition:border-color .2s;
+}
+.search-bar:focus-within{border-color:var(--primary);}
+.search-bar svg{width:14px;height:14px;color:var(--text-3);flex-shrink:0;}
+.search-bar input{
+  flex:1;border:none;background:transparent;
+  font-size:12px;padding:7px 0;outline:none;
+  color:var(--text);font-family:inherit;
+}
+.search-bar input::placeholder{color:var(--text-3);}
+.filter-row{
+  display:flex;gap:6px;padding:10px 16px 0;flex-shrink:0;
+  overflow-x:auto;
+}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-pill{
+  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  cursor:pointer;white-space:nowrap;border:1.5px solid var(--border);
+  background:var(--surface);color:var(--text-2);
+  transition:all .18s;flex-shrink:0;font-family:inherit;
+}
+.filter-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.session-list{flex:1;overflow-y:auto;padding:8px 0;}
+.session-list::-webkit-scrollbar{width:3px;}
+.session-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.s-card{
+  padding:12px 16px;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all .18s;position:relative;
+}
+.s-card:hover{background:var(--bg);}
+.s-card.active{background:var(--primary-bg);border-left-color:var(--primary);}
+.s-card.unread .s-name::after{
+  content:'';display:inline-block;margin-left:6px;
+  width:7px;height:7px;border-radius:50%;background:var(--primary);vertical-align:middle;
+}
+.s-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.s-name{font-size:13px;font-weight:600;color:var(--text);}
+.s-time{font-size:11px;color:var(--text-3);}
+.s-preview{font-size:12px;color:var(--text-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px;}
+.s-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.2px;}
+.tag-a{background:var(--tag-a);color:var(--tag-a-t);}
+.tag-b{background:var(--tag-b);color:var(--tag-b-t);}
+.tag-c{background:var(--tag-c);color:var(--tag-c-t);}
+.tag-d{background:var(--tag-d);color:var(--tag-d-t);}
+.tag-e{background:var(--tag-e);color:var(--tag-e-t);}
+.tag-f{background:var(--tag-f);color:var(--tag-f-t);}
+.tag-pending{background:#FEF3C7;color:#92400E;}
+.tag-active{background:#DCFCE7;color:#166534;}
+.tag-closed{background:#F1F5F9;color:#64748B;}
+.s-assign{font-size:10px;color:var(--text-3);display:flex;align-items:center;gap:4px;margin-top:2px;}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.main-topbar{
+  height:52px;background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;
+}
+.contact-info{flex:1;display:flex;align-items:center;gap:10px;}
+.contact-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#C8BFFF,#7B5CF5);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:13px;font-weight:700;flex-shrink:0;
+}
+.contact-name{font-size:14px;font-weight:700;color:var(--text);}
+.contact-sub{font-size:11px;color:var(--text-3);margin-top:1px;}
+.topbar-actions{display:flex;gap:6px;align-items:center;}
+.tb-btn{
+  height:32px;padding:0 14px;border-radius:var(--r-sm);
+  font-size:12px;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--border);background:var(--surface);
+  color:var(--text-2);transition:all .18s;font-family:inherit;
+  display:flex;align-items:center;gap:6px;
+}
+.tb-btn:hover{border-color:var(--primary);color:var(--primary);}
+.tb-btn svg{width:13px;height:13px;}
+.tb-btn-danger{border-color:#FCA5A5;color:#DC2626;}
+.tb-btn-danger:hover{background:#FEF2F2;border-color:#DC2626;}
+
+.chat-body{display:flex;flex:1;overflow:hidden;}
+.chat-msgs-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.chat-msgs{
+  flex:1;overflow-y:auto;padding:20px 24px;
+  display:flex;flex-direction:column;gap:14px;background:var(--bg);
+}
+.chat-msgs::-webkit-scrollbar{width:4px;}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.sys-msg{
+  text-align:center;font-size:11px;color:var(--text-3);
+  background:rgba(123,92,245,.07);border-radius:20px;padding:4px 14px;align-self:center;
+}
+.msg-row{display:flex;align-items:flex-end;gap:10px;}
+.msg-row.admin{flex-direction:row-reverse;}
+.msg-avatar{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+}
+.msg-avatar.user-av{background:linear-gradient(135deg,#C8BFFF,#7B5CF5);color:#fff;}
+.msg-avatar.admin-av{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;}
+.bubble-wrap{display:flex;flex-direction:column;gap:3px;max-width:460px;}
+.msg-row.admin .bubble-wrap{align-items:flex-end;}
+.bubble{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.7;}
+.bubble.user{background:var(--surface);color:var(--text);border-bottom-left-radius:4px;box-shadow:var(--shadow);}
+.bubble.admin-bubble{background:var(--primary);color:#fff;border-bottom-right-radius:4px;}
+.msg-time{font-size:10px;color:var(--text-3);padding:0 2px;}
+.msg-status{font-size:10px;color:var(--primary-l);padding:0 2px;}
+
+.chat-input-area{background:var(--surface);border-top:1px solid var(--border);padding:12px 20px 16px;flex-shrink:0;}
+.input-tools{display:flex;gap:8px;margin-bottom:10px;}
+.tool-btn{
+  height:28px;padding:0 12px;border-radius:var(--r-sm);
+  font-size:11px;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--border);background:var(--bg);
+  color:var(--text-2);transition:all .18s;font-family:inherit;
+  display:flex;align-items:center;gap:5px;
+}
+.tool-btn:hover{border-color:var(--primary);color:var(--primary);}
+.tool-btn svg{width:12px;height:12px;}
+.input-box{
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:10px 14px;min-height:72px;font-size:13px;font-family:inherit;
+  color:var(--text);outline:none;resize:none;width:100%;
+  transition:border-color .2s;background:var(--bg);line-height:1.6;
+}
+.input-box:focus{border-color:var(--primary);background:var(--surface);}
+.input-box::placeholder{color:var(--text-3);}
+.input-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.input-hint{font-size:11px;color:var(--text-3);}
+.send-row{display:flex;gap:8px;}
+.btn-send{
+  padding:0 20px;height:34px;border-radius:var(--r-sm);
+  background:var(--primary);color:#fff;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:6px;transition:background .18s;
+}
+.btn-send:hover{background:var(--primary-d);}
+.btn-send svg{width:14px;height:14px;fill:#fff;}
+.btn-end{
+  padding:0 16px;height:34px;border-radius:var(--r-sm);
+  background:transparent;color:#DC2626;font-size:12px;font-weight:600;
+  border:1.5px solid #FCA5A5;cursor:pointer;font-family:inherit;transition:all .18s;
+}
+.btn-end:hover{background:#FEF2F2;}
+
+.info-panel{
+  width:260px;border-left:1px solid var(--border);
+  background:var(--surface);display:flex;flex-direction:column;
+  overflow-y:auto;flex-shrink:0;
+}
+.info-panel::-webkit-scrollbar{width:3px;}
+.info-panel::-webkit-scrollbar-thumb{background:var(--border);}
+.info-section{padding:16px;border-bottom:1px solid var(--border);}
+.info-label{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.info-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:12px;}
+.info-key{color:var(--text-2);}
+.info-val{color:var(--text);font-weight:600;text-align:right;}
+.kv-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.history-mini{display:flex;flex-direction:column;gap:6px;}
+.hm-item{
+  padding:8px 10px;border-radius:var(--r-sm);background:var(--bg);font-size:11px;
+  color:var(--text-2);cursor:pointer;transition:background .18s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hm-item:hover{background:var(--primary-bg);color:var(--primary);}
+.note-area{
+  width:100%;border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:8px 10px;min-height:80px;font-size:12px;font-family:inherit;
+  color:var(--text);resize:none;outline:none;transition:border-color .2s;background:var(--bg);
+}
+.note-area:focus{border-color:var(--primary);}
+
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-3);}
+.empty-icon{font-size:48px;opacity:.3;}
+.empty-text{font-size:14px;}
+
+/* ── STATS VIEW ── */
+.stats-page{flex:1;overflow-y:auto;padding:28px 32px;}
+.stats-page::-webkit-scrollbar{width:4px;}
+.stats-page::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.stats-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.stats-title{font-size:20px;font-weight:700;color:var(--text);}
+.stats-period{
+  display:flex;align-items:center;gap:8px;background:var(--surface);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);padding:8px 14px;
+}
+.stats-period svg{width:14px;height:14px;color:var(--text-3);}
+.stats-period span{font-size:13px;color:var(--text-2);}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.kpi-card{
+  background:var(--surface);border-radius:var(--r);padding:20px;
+  border:1.5px solid var(--border);position:relative;overflow:hidden;
+}
+.kpi-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.kpi-card:nth-child(1)::after{background:var(--primary);}
+.kpi-card:nth-child(2)::after{background:var(--success);}
+.kpi-card:nth-child(3)::after{background:var(--warning);}
+.kpi-card:nth-child(4)::after{background:#06B6D4;}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text-3);letter-spacing:.5px;margin-bottom:8px;}
+.kpi-value{font-size:30px;font-weight:700;color:var(--text);line-height:1;}
+.kpi-value small{font-size:14px;font-weight:500;color:var(--text-2);}
+.kpi-delta{font-size:12px;margin-top:8px;display:flex;align-items:center;gap:4px;}
+.kpi-delta.up{color:var(--success);}
+.kpi-delta.down{color:var(--danger);}
+.kpi-delta.neutral{color:var(--text-3);}
+
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+.chart-card{background:var(--surface);border-radius:var(--r);padding:20px;border:1.5px solid var(--border);}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.chart-title{font-size:14px;font-weight:700;color:var(--text);}
+.chart-action{font-size:11px;color:var(--primary);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.chart-action:hover{text-decoration:underline;}
+
+/* CSS-only bar chart */
+.bar-chart{display:flex;flex-direction:column;gap:12px;}
+.bar-row{display:flex;align-items:center;gap:12px;}
+.bar-label{width:90px;font-size:12px;color:var(--text-2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:24px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:#fff;}
+.bar-fill.c1{background:linear-gradient(90deg,var(--primary),var(--primary-l));}
+.bar-fill.c2{background:linear-gradient(90deg,#06B6D4,#22D3EE);}
+.bar-fill.c3{background:linear-gradient(90deg,var(--success),#4ADE80);}
+.bar-fill.c4{background:linear-gradient(90deg,var(--warning),#FCD34D);}
+.bar-fill.c5{background:linear-gradient(90deg,#EC4899,#F472B6);}
+.bar-fill.c6{background:linear-gradient(90deg,#8B5CF6,#A78BFA);}
+.bar-val{width:40px;font-size:12px;font-weight:600;color:var(--text);text-align:left;flex-shrink:0;}
+
+/* admin compare bars */
+.cmp-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.cmp-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.cmp-info{flex:1;}
+.cmp-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.cmp-bar-track{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;}
+.cmp-bar-fill{height:100%;border-radius:4px;}
+.cmp-meta{font-size:11px;color:var(--text-3);margin-top:4px;}
+
+/* data table */
+.data-table{background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;}
+.dt-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.dt-title{font-size:14px;font-weight:700;color:var(--text);}
+.dt-export{
+  font-size:12px;color:var(--primary);cursor:pointer;
+  display:flex;align-items:center;gap:6px;padding:6px 12px;
+  border-radius:var(--r-sm);transition:background .18s;font-family:inherit;
+  background:transparent;border:1.5px solid var(--border);
+}
+.dt-export:hover{background:var(--primary-bg);border-color:var(--primary);}
+.dt-export svg{width:13px;height:13px;}
+
+.dt-content table{width:100%;border-collapse:collapse;}
+.dt-content th{text-align:left;font-size:11px;font-weight:700;color:var(--text-3);padding:12px 20px;border-bottom:1px solid var(--border);background:var(--bg);}
+.dt-content td{font-size:13px;color:var(--text);padding:12px 20px;border-bottom:1px solid var(--border);}
+.dt-content tr:last-child td{border-bottom:none;}
+.dt-content tbody tr:hover{background:var(--primary-bg);}
+.td-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+
+/* ── SETTINGS VIEW ── */
+.settings-page{flex:1;overflow-y:auto;padding:28px 32px;}
+.settings-page::-webkit-scrollbar{width:4px;}
+.settings-page::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.settings-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:24px;}
+
+.s-card{background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;margin-bottom:20px;}
+.s-card-head{padding:16px 20px;border-bottom:1px solid var(--border);}
+.s-card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.s-card-title svg{width:18px;height:18px;color:var(--primary);}
+.s-card-desc{font-size:12px;color:var(--text-3);margin-top:4px;}
+.s-card-body{padding:20px;}
+
+.admin-list{display:flex;flex-direction:column;gap:12px;}
+.admin-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--bg);border-radius:var(--r-sm);
+  border:1.5px solid var(--border);transition:border-color .18s;
+}
+.admin-item:hover{border-color:var(--primary-l);}
+.admin-info{display:flex;align-items:center;gap:12px;}
+.admin-av{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.admin-name{font-size:14px;font-weight:700;color:var(--text);}
+.admin-role{font-size:11px;color:var(--text-3);}
+.cat-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.cat-chip{
+  font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;
+  background:var(--primary-bg);color:var(--primary);border:1px solid rgba(123,92,245,.2);
+}
+
+.rules-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.rule-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--bg);border-radius:var(--r-sm);
+  border:1.5px solid var(--border);transition:border-color .18s;
+}
+.rule-item:hover{border-color:var(--primary-l);}
+.rule-label{font-size:13px;font-weight:600;color:var(--text);}
+.rule-select{
+  padding:7px 28px 7px 12px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border);background:var(--surface);
+  font-size:12px;font-family:inherit;color:var(--text);
+  cursor:pointer;outline:none;transition:border-color .2s;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239896B0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.rule-select:focus{border-color:var(--primary);}
+
+.btn-save{
+  padding:10px 24px;border-radius:var(--r-sm);
+  background:var(--primary);color:#fff;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:8px;transition:background .18s;margin-top:16px;
+}
+.btn-save:hover{background:var(--primary-d);}
+.btn-save svg{width:14px;height:14px;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:20px;right:20px;z-index:999;
+  background:var(--sidebar-bg);color:#fff;
+  padding:12px 16px;border-radius:var(--r);
+  display:flex;gap:10px;align-items:flex-start;
+  box-shadow:var(--shadow-md);font-size:12px;min-width:220px;
+  transform:translateX(300px);opacity:0;
+  transition:all .3s cubic-bezier(.4,0,.2,1);border-left:3px solid var(--primary);
+}
+.toast.show{transform:translateX(0);opacity:1;}
+.toast-icon{font-size:18px;flex-shrink:0;}
+.toast-title{font-weight:700;font-size:13px;margin-bottom:2px;}
+.toast-body{color:rgba(255,255,255,.65);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.session-list .s-card{animation:fadeUp .25s ease forwards;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon">🔔</div>
+  <div>
+    <div class="toast-title">新会话待处理</div>
+    <div class="toast-body">王小明 · 经销商授权相关</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">HD</div>
+  <div class="nav-item active" title="会话工作台" onclick="switchView('workbench',this)">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div class="nav-badge"></div>
+  </div>
+  <div class="nav-item" title="数据报表" onclick="switchView('stats',this)">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+  </div>
+  <div class="nav-item" title="分配规则" onclick="switchView('settings',this)">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+  </div>
+  <div class="nav-avatar" title="同事A — 在线">A</div>
+</nav>
+
+<!-- ==================== WORKBENCH VIEW ==================== -->
+<div class="view active" id="viewWorkbench">
+  <div class="workbench-inner">
+
+  <!-- SESSION LIST -->
+  <div class="session-panel">
+    <div class="sp-head">
+      <div class="sp-title">会话列表<span class="badge-count" id="pendingCount">3</span></div>
+      <div class="search-bar">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="搜索销售姓名或问题…" id="searchInput">
+      </div>
+    </div>
+    <div class="filter-row">
+      <button class="filter-pill active" onclick="filterSessions(this,'all')">全部</button>
+      <button class="filter-pill" onclick="filterSessions(this,'pending')">待处理</button>
+      <button class="filter-pill" onclick="filterSessions(this,'active')">进行中</button>
+      <button class="filter-pill" onclick="filterSessions(this,'closed')">已结束</button>
+    </div>
+    <div class="session-list" id="sessionList"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-topbar" id="mainTopbar" style="display:none">
+      <div class="contact-info">
+        <div class="contact-avatar" id="topAvatar">王</div>
+        <div>
+          <div class="contact-name" id="topName">王小明</div>
+          <div class="contact-sub" id="topSub"></div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="tb-btn" onclick="alert('查看历史记录')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>历史
+        </button>
+        <button class="tb-btn tb-btn-danger" onclick="endSession()">结束对话</button>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">💬</div>
+      <div class="empty-text">请从左侧选择一个会话</div>
+    </div>
+
+    <div class="chat-body" id="chatBody" style="display:none">
+      <div class="chat-msgs-wrap">
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="chat-input-area">
+          <div class="input-tools">
+            <button class="tool-btn" onclick="insertQuick('您好，感谢您的咨询，我来帮您处理。')">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/></svg>快捷回复
+            </button>
+            <button class="tool-btn" onclick="alert('上传文件/附件')">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>附件
+            </button>
+            <button class="tool-btn" onclick="alert('插入知识库答案')">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>知识库
+            </button>
+          </div>
+          <textarea class="input-box" id="replyInput" placeholder="输入回复内容… (Ctrl+Enter 发送)" rows="3"></textarea>
+          <div class="input-footer">
+            <span class="input-hint">Ctrl+Enter 发送 · Shift+Enter 换行</span>
+            <div class="send-row">
+              <button class="btn-end" onclick="endSession()">结束对话</button>
+              <button class="btn-send" onclick="sendReply()">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>发送回复
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-panel" id="infoPanel">
+        <div class="info-section">
+          <div class="info-label">客户信息</div>
+          <div class="info-row"><span class="info-key">姓名</span><span class="info-val" id="iName">—</span></div>
+          <div class="info-row"><span class="info-key">区域</span><span class="info-val" id="iRegion">—</span></div>
+          <div class="info-row"><span class="info-key">问题分类</span><span class="info-val" id="iTag">—</span></div>
+          <div class="info-row"><span class="info-key">状态</span><span class="info-val" id="iStatus">—</span></div>
+          <div class="info-row"><span class="info-key">分配给</span><span class="info-val" id="iAssign">—</span></div>
+          <div class="info-row"><span class="info-key">发起时间</span><span class="info-val" id="iTime">—</span></div>
+        </div>
+        <div class="info-section">
+          <div class="info-label">本次会话标签</div>
+          <div class="s-tags" id="iTags" style="gap:6px;flex-wrap:wrap;"></div>
+        </div>
+        <div class="info-section">
+          <div class="info-label">历史会话</div>
+          <div class="history-mini" id="iHistory"></div>
+        </div>
+        <div class="info-section">
+          <div class="info-label">备注</div>
+          <textarea class="note-area" placeholder="添加内部备注（对销售不可见）…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ==================== STATS VIEW ==================== -->
+<div class="view" id="viewStats">
+  <div class="stats-page">
+    <div class="stats-head">
+      <div class="stats-title">数据报表</div>
+      <div class="stats-period">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+        <span>2026-03-01 至 2026-03-31</span>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">总提问量</div>
+        <div class="kpi-value">156</div>
+        <div class="kpi-delta up">▲ 12% 较上月</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">平均响应时长</div>
+        <div class="kpi-value">3.2 <small>分钟</small></div>
+        <div class="kpi-delta down">▼ 18% 较上月</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">满意度评分</div>
+        <div class="kpi-value">4.6 <small>/ 5</small></div>
+        <div class="kpi-delta up">▲ 0.2 较上月</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">已结束会话</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-delta neutral">完结率 91%</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <!-- 各类型问题提问量 -->
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-title">各类型问题提问量</div>
+          <div class="chart-action" onclick="alert('导出图表')">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出
+          </div>
+        </div>
+        <div class="bar-chart" id="barChart1"></div>
+      </div>
+
+      <!-- 管理员工作量 -->
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-title">管理员工作量统计</div>
+          <div class="chart-action" onclick="alert('导出图表')">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出
+          </div>
+        </div>
+        <div id="adminCompare"></div>
+      </div>
+    </div>
+
+    <!-- 明细表 -->
+    <div class="data-table">
+      <div class="dt-head">
+        <div class="dt-title">各类型问题详情</div>
+        <button class="dt-export" onclick="alert('正在导出Excel报表…')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导出Excel报表
+        </button>
+      </div>
+      <div class="dt-content">
+        <table>
+          <thead><tr><th>问题类型</th><th>提问量</th><th>平均响应(分钟)</th><th>满意度</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>经销商授权相关</td><td>42</td><td>3.1</td><td><span class="td-badge" style="background:#DCFCE7;color:#166534;">4.7</span></td><td>26.9%</td></tr>
+            <tr><td>点配送相关</td><td>35</td><td>2.8</td><td><span class="td-badge" style="background:#DCFCE7;color:#166534;">4.8</span></td><td>22.4%</td></tr>
+            <tr><td>经销商指标政策相关</td><td>28</td><td>3.5</td><td><span class="td-badge" style="background:#DCFCE7;color:#166534;">4.5</span></td><td>17.9%</td></tr>
+            <tr><td>经销商上新相关</td><td>22</td><td>3.0</td><td><span class="td-badge" style="background:#DCFCE7;color:#166534;">4.6</span></td><td>14.1%</td></tr>
+            <tr><td>合规相关</td><td>18</td><td>4.2</td><td><span class="td-badge" style="background:#FEF3C7;color:#92400E;">4.3</span></td><td>11.5%</td></tr>
+            <tr><td>特殊备案</td><td>11</td><td>5.1</td><td><span class="td-badge" style="background:#FEF3C7;color:#92400E;">4.2</span></td><td>7.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SETTINGS VIEW ==================== -->
+<div class="view" id="viewSettings">
+  <div class="settings-page">
+    <div class="settings-title">分配规则配置</div>
+
+    <div class="s-card">
+      <div class="s-card-head">
+        <div class="s-card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          管理员配置
+        </div>
+        <div class="s-card-desc">当前系统共有 2 名渠道运营管理员</div>
+      </div>
+      <div class="s-card-body">
+        <div class="admin-list">
+          <div class="admin-item">
+            <div class="admin-info">
+              <div class="admin-av" style="background:linear-gradient(135deg,#7B5CF5,#9B7FF8);">A</div>
+              <div><div class="admin-name">同事A</div><div class="admin-role">渠道运营管理员</div></div>
+            </div>
+            <div class="cat-chips">
+              <span class="cat-chip">1 经销商授权</span>
+              <span class="cat-chip">2 指标政策</span>
+            </div>
+          </div>
+          <div class="admin-item">
+            <div class="admin-info">
+              <div class="admin-av" style="background:linear-gradient(135deg,#06B6D4,#22D3EE);">B</div>
+              <div><div class="admin-name">同事B</div><div class="admin-role">渠道运营管理员</div></div>
+            </div>
+            <div class="cat-chips">
+              <span class="cat-chip">3 点配送</span>
+              <span class="cat-chip">4 合规</span>
+              <span class="cat-chip">5 上新</span>
+              <span class="cat-chip">6 备案</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-card-head">
+        <div class="s-card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          问题类别分配规则
+        </div>
+        <div class="s-card-desc">配置每个问题类别分配给哪位管理员处理</div>
+      </div>
+      <div class="s-card-body">
+        <div class="rules-grid">
+          <div class="rule-item"><div class="rule-label">1. 经销商授权相关</div><select class="rule-select"><option value="A" selected>同事A</option><option value="B">同事B</option></select></div>
+          <div class="rule-item"><div class="rule-label">2. 经销商指标政策相关</div><select class="rule-select"><option value="A" selected>同事A</option><option value="B">同事B</option></select></div>
+          <div class="rule-item"><div class="rule-label">3. 点配送相关</div><select class="rule-select"><option value="A">同事A</option><option value="B" selected>同事B</option></select></div>
+          <div class="rule-item"><div class="rule-label">4. 合规相关</div><select class="rule-select"><option value="A">同事A</option><option value="B" selected>同事B</option></select></div>
+          <div class="rule-item"><div class="rule-label">5. 经销商上新相关</div><select class="rule-select"><option value="A">同事A</option><option value="B" selected>同事B</option></select></div>
+          <div class="rule-item"><div class="rule-label">6. 特殊备案</div><select class="rule-select"><option value="A">同事A</option><option value="B" selected>同事B</option></select></div>
+        </div>
+        <button class="btn-save" onclick="saveRules()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>保存配置
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── VIEW SWITCHING ── */
+function switchView(view, el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view'+view.charAt(0).toUpperCase()+view.slice(1)).classList.add('active');
+}
+
+/* ── SESSIONS DATA ── */
+const sessions = [
+  {
+    id:1, name:'王小明', avatar:'王', region:'华东区',
+    category:'经销商授权相关', categoryTag:'tag-a',
+    status:'pending', assign:'同事A',
+    time:'09:32', waitMin:3,
+    preview:'你好，我想咨询一下授权申请流程…',
+    tags:['授权相关','待处理','华东区'],
+    tagClasses:['tag-a','tag-pending','tag-c'],
+    history:['上次询问：合同发出进度','上上次：经销商指标问题'],
+    messages:[
+      {role:'system', text:'会话开始 · 09:32 · 分类：经销商授权相关'},
+      {role:'user', text:'你好，我想咨询一下授权申请流程，一般要多久？'},
+      {role:'bot', text:'您好！根据我们的自助知识库，授权申请一般需要 3~5 个工作日审核。如需加急，请提供相关凭证。'},
+      {role:'user', text:'好的，但我这边情况比较特殊，合作方那边比较着急，有没有办法加快？'},
+    ]
+  },
+  {
+    id:2, name:'李雪梅', avatar:'李', region:'华南区',
+    category:'点配送相关', categoryTag:'tag-c',
+    status:'active', assign:'同事B',
+    time:'09:18', waitMin:0,
+    preview:'配送时效的问题，上次反馈还没解决…',
+    tags:['点配送','进行中','华南区'],
+    tagClasses:['tag-c','tag-active','tag-c'],
+    history:['上次询问：配送延误','退款函模版申请'],
+    messages:[
+      {role:'system', text:'会话开始 · 09:18 · 分类：点配送相关'},
+      {role:'user', text:'配送时效的问题，上次反馈还没解决，现在客户那边又催了。'},
+      {role:'admin', text:'您好李雪梅，我来帮您跟进，请问是哪个经销商的订单？'},
+      {role:'user', text:'是广州那边，订单号 GZ20241008-002。'},
+      {role:'admin', text:'好的，我现在帮您查询系统，稍等片刻。'},
+    ]
+  },
+  {
+    id:3, name:'张伟', avatar:'张', region:'华北区',
+    category:'经销商指标政策相关', categoryTag:'tag-b',
+    status:'pending', assign:'同事A',
+    time:'10:05', waitMin:1,
+    preview:'Q4指标怎么核算的，看不太懂…',
+    tags:['指标政策','待处理','华北区'],
+    tagClasses:['tag-b','tag-pending','tag-a'],
+    history:['上次询问：合规备案问题'],
+    messages:[
+      {role:'system', text:'会话开始 · 10:05 · 分类：经销商指标政策相关'},
+      {role:'user', text:'Q4指标怎么核算的？文件里看了好几遍看不太懂，能帮我解释一下吗？'},
+    ]
+  },
+  {
+    id:4, name:'陈美玲', avatar:'陈', region:'华东区',
+    category:'合规相关', categoryTag:'tag-d',
+    status:'closed', assign:'同事B',
+    time:'昨天 16:40', waitMin:0,
+    preview:'合规检查资料已提交，感谢帮助！',
+    tags:['合规','已结束','华东区'],
+    tagClasses:['tag-d','tag-closed','tag-c'],
+    history:['合规备案申请','经销商上新问题'],
+    messages:[
+      {role:'system', text:'会话开始 · 昨天 16:40 · 分类：合规相关'},
+      {role:'user', text:'您好，请问合规检查需要准备哪些资料？'},
+      {role:'admin', text:'您好陈美玲，合规检查需要准备：营业执照、合同副本、近3个月流水。'},
+      {role:'user', text:'好的，我这边都有，稍后上传给您。'},
+      {role:'admin', text:'收到，等您上传后我这边审核，一般1-2个工作日内反馈。'},
+      {role:'user', text:'好的，资料已全部提交，感谢帮助！'},
+      {role:'system', text:'对话已结束 · 满意度评分：⭐⭐⭐⭐⭐ 5分'},
+    ]
+  },
+];
+
+let activeId = null;
+let currentFilter = 'all';
+
+/* ── SESSION LIST ── */
+function renderSessions(list){
+  const el = document.getElementById('sessionList');
+  el.innerHTML = '';
+  list.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 's-card' + (s.id===activeId?' active':'') + (s.status==='pending'?' unread':'');
+    div.innerHTML = `
+      <div class="s-row1"><div class="s-name">${s.name}</div><div class="s-time">${s.time}</div></div>
+      <div class="s-preview">${s.preview}</div>
+      <div class="s-tags">${s.tags.map((t,i)=>`<span class="tag ${s.tagClasses[i]}">${t}</span>`).join('')}</div>
+      <div class="s-assign">
+        <span>分配给：${s.assign}</span>
+        ${s.status==='pending'?`<span style="margin-left:auto;color:#EF4444;font-weight:700;">等待${s.waitMin}分钟</span>`:''}
+      </div>`;
+    div.onclick = () => openSession(s.id);
+    el.appendChild(div);
+  });
+  document.getElementById('pendingCount').textContent = list.filter(s=>s.status==='pending').length;
+}
+
+function filterSessions(btn, filter){
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = filter;
+  renderSessions(filter==='all' ? sessions : sessions.filter(s=>s.status===filter));
+}
+
+function openSession(id){
+  activeId = id;
+  const s = sessions.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('mainTopbar').style.display = 'flex';
+  document.getElementById('chatBody').style.display = 'flex';
+  document.getElementById('topAvatar').textContent = s.avatar;
+  document.getElementById('topName').textContent = s.name;
+  document.getElementById('topSub').textContent =
+    `${s.region} · ${s.category} · ${s.status==='pending'?`等待 ${s.waitMin} 分钟`:s.status==='active'?'进行中':'已结束'}`;
+  document.getElementById('iName').textContent = s.name;
+  document.getElementById('iRegion').textContent = s.region;
+  document.getElementById('iTag').textContent = s.category;
+  document.getElementById('iStatus').innerHTML = `<span class="tag kv-tag ${s.status==='pending'?'tag-pending':s.status==='active'?'tag-active':'tag-closed'}">${s.status==='pending'?'待处理':s.status==='active'?'进行中':'已结束'}</span>`;
+  document.getElementById('iAssign').textContent = s.assign;
+  document.getElementById('iTime').textContent = s.time;
+  document.getElementById('iTags').innerHTML = s.tags.map((t,i)=>`<span class="tag ${s.tagClasses[i]}">${t}</span>`).join('');
+  document.getElementById('iHistory').innerHTML = s.history.map(h=>`<div class="hm-item">${h}</div>`).join('');
+  renderMessages(s);
+  const filtered = currentFilter==='all' ? sessions : sessions.filter(x=>x.status===currentFilter);
+  renderSessions(filtered);
+}
+
+function renderMessages(s){
+  const el = document.getElementById('chatMsgs');
+  el.innerHTML = '';
+  s.messages.forEach(m => {
+    if(m.role==='system'){
+      const d = document.createElement('div');
+      d.className = 'sys-msg';
+      d.textContent = m.text;
+      el.appendChild(d);
+      return;
+    }
+    const row = document.createElement('div');
+    row.className = 'msg-row' + (m.role==='admin'?' admin':'');
+    row.innerHTML = m.role==='user'
+      ? `<div class="msg-avatar user-av">${s.avatar}</div><div class="bubble-wrap"><div class="bubble user">${m.text}</div><div class="msg-time">${s.time}</div></div>`
+      : `<div class="msg-avatar admin-av">${s.assign[2]}</div><div class="bubble-wrap"><div class="bubble admin-bubble">${m.text}</div><div class="msg-status">已发送 ✓</div></div>`;
+    el.appendChild(row);
+  });
+  el.scrollTop = el.scrollHeight;
+}
+
+function sendReply(){
+  const input = document.getElementById('replyInput');
+  const text = input.value.trim();
+  if(!text || !activeId) return;
+  const s = sessions.find(x=>x.id===activeId);
+  s.messages.push({role:'admin', text});
+  s.status = 'active';
+  s.preview = text.substring(0,28)+'…';
+  renderMessages(s);
+  input.value = '';
+  const filtered = currentFilter==='all' ? sessions : sessions.filter(x=>x.status===currentFilter);
+  renderSessions(filtered);
+}
+
+function endSession(){
+  if(!activeId) return;
+  const s = sessions.find(x=>x.id===activeId);
+  if(!confirm(`确认结束与 ${s.name} 的对话？系统将自动推送满意度评分。`)) return;
+  s.status = 'closed';
+  s.messages.push({role:'system', text:'对话已结束 · 系统自动推送满意度评分'});
+  renderMessages(s);
+  document.getElementById('topSub').textContent = `${s.region} · ${s.category} · 已结束`;
+  const filtered = currentFilter==='all' ? sessions : sessions.filter(x=>x.status===currentFilter);
+  renderSessions(filtered);
+}
+
+function insertQuick(text){
+  document.getElementById('replyInput').value = text;
+  document.getElementById('replyInput').focus();
+}
+
+document.getElementById('replyInput').addEventListener('keydown', e=>{
+  if(e.ctrlKey && e.key==='Enter'){ e.preventDefault(); sendReply(); }
+});
+
+document.getElementById('searchInput').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase();
+  renderSessions(sessions.filter(s=> s.name.includes(q) || s.category.includes(q) || s.preview.includes(q)));
+});
+
+/* ── STATS: BAR CHARTS ── */
+function renderBarChart(){
+  const data = [
+    {label:'经销商授权', val:42, cls:'c1'},
+    {label:'点配送', val:35, cls:'c3'},
+    {label:'指标政策', val:28, cls:'c2'},
+    {label:'经销商上新', val:22, cls:'c5'},
+    {label:'合规', val:18, cls:'c4'},
+    {label:'特殊备案', val:11, cls:'c6'},
+  ];
+  const max = Math.max(...data.map(d=>d.val));
+  const el = document.getElementById('barChart1');
+  el.innerHTML = data.map(d=>`
+    <div class="bar-row">
+      <div class="bar-label">${d.label}</div>
+      <div class="bar-track"><div class="bar-fill ${d.cls}" style="width:${(d.val/max*100).toFixed(1)}%">${d.val}</div></div>
+    </div>`).join('');
+}
+
+function renderAdminCompare(){
+  const el = document.getElementById('adminCompare');
+  el.innerHTML = `
+    <div class="cmp-row">
+      <div class="cmp-avatar" style="background:linear-gradient(135deg,#7B5CF5,#9B7FF8);">A</div>
+      <div class="cmp-info">
+        <div class="cmp-name">同事A <span style="font-weight:400;color:var(--text-3);font-size:11px;">70 次回答 · 2.9 分钟平均响应</span></div>
+        <div class="cmp-bar-track"><div class="cmp-bar-fill" style="width:58%;background:linear-gradient(90deg,#7B5CF5,#9B7FF8);"></div></div>
+        <div class="cmp-meta">满意度 4.7 · 授权 42 · 指标 28</div>
+      </div>
+    </div>
+    <div class="cmp-row">
+      <div class="cmp-avatar" style="background:linear-gradient(135deg,#06B6D4,#22D3EE);">B</div>
+      <div class="cmp-info">
+        <div class="cmp-name">同事B <span style="font-weight:400;color:var(--text-3);font-size:11px;">86 次回答 · 3.5 分钟平均响应</span></div>
+        <div class="cmp-bar-track"><div class="cmp-bar-fill" style="width:72%;background:linear-gradient(90deg,#06B6D4,#22D3EE);"></div></div>
+        <div class="cmp-meta">满意度 4.5 · 配送 35 · 上新 22 · 合规 18 · 备案 11</div>
+      </div>
+    </div>`;
+}
+
+/* ── SETTINGS ── */
+function saveRules(){
+  const selects = document.querySelectorAll('.rule-select');
+  const rules = [];
+  const labels = ['经销商授权相关','经销商指标政策相关','点配送相关','合规相关','经销商上新相关','特殊备案'];
+  selects.forEach((sel,i) => rules.push(`${labels[i]} → 同事${sel.value}`));
+  alert('分配规则已保存！\n\n' + rules.join('\n'));
+}
+
+/* ── INIT ── */
+renderSessions(sessions);
+renderBarChart();
+renderAdminCompare();
+
+setTimeout(()=>{
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 4000);
+}, 1500);
+</script>
+</body>
+</html>

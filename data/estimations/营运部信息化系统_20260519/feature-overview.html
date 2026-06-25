@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>营运部信息化系统 — 功能一览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #111827;
+  --ink-body: #374151;
+  --ink-muted: #6B7280;
+  --ink-light: #9CA3AF;
+  --surface: #FFFFFF;
+  --bg: #f5f5f5;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+  --red: #DC2626;
+  --red-soft: #FEF2F2;
+  --teal: #0D9488;
+  --teal-soft: #F0FDFA;
+  --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+  --radius: 12px;
+}
+
+html { height: 100%; }
+
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  padding: 28px 24px 20px;
+  flex-shrink: 0;
+}
+
+.header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.header .subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.24em;
+  margin-top: 4px;
+}
+
+.header .line {
+  width: 44px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--teal));
+  margin: 12px auto 0;
+  border-radius: 2px;
+  opacity: 0.65;
+}
+
+/* ===== MAIN GRID ===== */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 0 32px 20px;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 0;
+}
+
+/* ===== SYSTEM CARD ===== */
+.sys-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sys-head {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sys-card.miniapp .sys-head { border-top: 3px solid var(--red); }
+.sys-card.admin .sys-head { border-top: 3px solid var(--teal); }
+
+.sys-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.sys-card.miniapp .sys-icon { background: var(--red-soft); color: var(--red); }
+.sys-card.admin .sys-icon { background: var(--teal-soft); color: var(--teal); }
+
+.sys-info { flex: 1; }
+
+.sys-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.sys-sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+
+.sys-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+.sys-card.miniapp .sys-badge { background: var(--red-soft); color: var(--red); }
+.sys-card.admin .sys-badge { background: var(--teal-soft); color: var(--teal); }
+
+/* ===== MODULES ===== */
+.modules {
+  flex: 1;
+  padding: 6px 20px 14px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.modules::-webkit-scrollbar { width: 3px; }
+.modules::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.mod {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.mod:last-child { border-bottom: none; }
+
+.mod-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.55;
+}
+
+.mod-idx {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.sys-card.miniapp .mod-idx { background: var(--red-soft); color: var(--red); }
+.sys-card.admin .mod-idx { background: var(--teal-soft); color: var(--teal); }
+
+.mod-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* parenthetical sub-features */
+.mod-name .sub {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 12px;
+  color: var(--ink-light);
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.footer .dot {
+  display: inline-block;
+  width: 3px; height: 3px;
+  background: var(--red);
+  border-radius: 50%;
+  margin: 0 6px;
+  vertical-align: middle;
+  opacity: 0.3;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>营运部信息化系统</h1>
+  <p class="subtitle">功 能 一 览</p>
+  <div class="line"></div>
+</header>
+
+<div class="main">
+
+  <!-- ===== 小程序端 ===== -->
+  <div class="sys-card miniapp">
+    <div class="sys-head">
+      <div class="sys-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      </div>
+      <div class="sys-info">
+        <div class="sys-name">小程序端</div>
+        <div class="sys-sub">微信小程序 · 店员 / 店长 / 品牌负责人 / 品牌财务 / 营运 / 市场 / 招商</div>
+      </div>
+      <span class="sys-badge">8 模块</span>
+    </div>
+
+    <div class="modules">
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">01</span><span class="mod-name">登录与注册 <span class="sub">小程序登录、注册、切换店铺</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">02</span><span class="mod-name">首页 <span class="sub">待办事项列表、消息通知、商场活动轮播</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">03</span><span class="mod-name">销售管理 <span class="sub">每日销售提报，月度业绩核对</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">04</span><span class="mod-name">市场相关 <span class="sub">活动提交，积分抵现对账，商场合作</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">05</span><span class="mod-name">营运管理 <span class="sub">三关一闭，店铺信息，违纪/客诉</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">06</span><span class="mod-name">员工管理 <span class="sub">培训视频，考试答题，入离职管理</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">07</span><span class="mod-name">共享文件 <span class="sub">品牌联络人、通知函、制式单据等</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">08</span><span class="mod-name">我的 <span class="sub">员工信息，实时动态时间，进场状态</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PC 管理后台 ===== -->
+  <div class="sys-card admin">
+    <div class="sys-head">
+      <div class="sys-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="sys-info">
+        <div class="sys-name">PC 管理后台</div>
+        <div class="sys-sub">Web 浏览器 · 营运 / 财务 / 市场 / 招商 / 管理员</div>
+      </div>
+      <span class="sys-badge">7 模块</span>
+    </div>
+
+    <div class="modules">
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">01</span><span class="mod-name">账号管理 <span class="sub">入职培训审核，员工信息管理，多店铺权限配置</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">02</span><span class="mod-name">销售管理 <span class="sub">销售数据查询，月度销售数据导出</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">03</span><span class="mod-name">财务管理 <span class="sub">账单导出，账单对账</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">04</span><span class="mod-name">市场管理 <span class="sub">活动审核，积分抵现审核，合作信息维护</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">05</span><span class="mod-name">营运管理 <span class="sub">三关一闭统计，店铺信息管理，品牌信息维护，违纪/客诉管理</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">06</span><span class="mod-name">员工管理 <span class="sub">培训视频管理，试卷配置，答题记录查询</span></span></div>
+      </div>
+      <div class="mod">
+        <div class="mod-head"><span class="mod-idx">07</span><span class="mod-name">系统设置 <span class="sub">系统用户角色维护，小程序用户角色维护</span></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
