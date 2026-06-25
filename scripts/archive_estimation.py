@@ -8,147 +8,47 @@
 包含 metadata schema 校验，确保数据完整性
 """
 
+import argparse
 import json
 import os
 import shutil
-from datetime import datetime
 import sys
-import io
-from typing import Any, Dict, List
+from datetime import datetime
+from typing import Any
 
-# 设置标准输出编码为 UTF-8
+# 设置标准输出编码为 UTF-8（保留：本脚本输出大量中文）
+import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+# 共享模块：schema 校验的单一真相源（消除与 generate_excel.py 的复制粘贴）
+from metadata_schema import ValidationError, validate_metadata_schema
+# 共享模块：history.json 自学习写入逻辑
+import history
 
-class ValidationError(Exception):
-    """元数据验证错误"""
-    pass
+
+# 可选的保留 ID 校验格式：name_YYYYMMDD
+_ID_DATE_TAIL_LEN = len("_20260101")  # 9
 
 
-def validate_metadata_schema(metadata: Dict[str, Any]) -> None:
+def _normalize_project_id(metadata: dict, archived_date_compact: str) -> str:
     """
-    验证 metadata.json 的 schema 完整性
+    规范化 project_id：统一用归档日期，消除双时间源漂移。
 
-    Args:
-        metadata: 加载的 metadata 字典
-
-    Raises:
-        ValidationError: 当验证失败时
+    规则：
+      - 若 metadata.project_id 末尾是 _YYYYMMDD 且该日期 == 归档日期，则原样使用
+      - 否则用 {name}_{归档日期} 生成（与 folder 名同源）
+    这样 project_id 与 index.json.folder 始终一致。
     """
-    errors = []
-
-    # === 必填字段检查 ===
-    required_fields = [
-        "project_id", "name", "created_date", "total_effort",
-        "description", "systems", "tags", "tech_stack", "features", "summary"
-    ]
-
-    for field in required_fields:
-        if field not in metadata:
-            errors.append(f"[ERROR] Missing required field: {field}")
-
-    # === 字段类型检查 ===
-    if "project_id" in metadata and not isinstance(metadata["project_id"], str):
-        errors.append("[ERROR] project_id must be a string")
-    if "name" in metadata and not isinstance(metadata["name"], str):
-        errors.append("[ERROR] name must be a string")
-    if "total_effort" in metadata and not isinstance(metadata["total_effort"], (int, float)):
-        errors.append("[ERROR] total_effort must be a number")
-
-    # === 数值范围检查 ===
-    if "total_effort" in metadata:
-        effort = metadata["total_effort"]
-        if effort <= 0:
-            errors.append(f"[ERROR] total_effort must be > 0, current value: {effort}")
-        if effort > 1000:
-            errors.append(f"[WARNING] total_effort is too large ({effort} person-days), please confirm")
-
-    # === systems 检查 ===
-    if "systems" in metadata:
-        if not isinstance(metadata["systems"], list):
-            errors.append("[ERROR] systems must be an array")
-        elif len(metadata["systems"]) == 0:
-            errors.append("[ERROR] systems cannot be empty")
-
-    # === tech_stack 检查 ===
-    if "tech_stack" in metadata:
-        required_tech_keys = ["frontend", "backend", "database"]
-        for key in required_tech_keys:
-            if key not in metadata["tech_stack"]:
-                errors.append(f"[ERROR] tech_stack.{key} is missing")
-
-    # === features 检查 ===
-    if "features" in metadata:
-        if not isinstance(metadata["features"], list):
-            errors.append("[ERROR] features must be an array")
-        elif len(metadata["features"]) == 0:
-            errors.append("[ERROR] features cannot be empty, at least one feature is required")
-        else:
-            # 每个功能的必填字段
-            for i, feature in enumerate(metadata["features"]):
-                feature_prefix = f"features[{i}]"
-                required_feature_fields = ["system", "module", "name", "effort_days", "description", "complexity"]
-                for field in required_feature_fields:
-                    if field not in feature:
-                        errors.append(f"[ERROR] {feature_prefix} missing field: {field}")
-
-                # 工时检查
-                if "effort_days" in feature:
-                    effort = feature["effort_days"]
-                    if not isinstance(effort, (int, float)):
-                        errors.append(f"[ERROR] {feature_prefix}.effort_days must be a number")
-                    elif effort < 0:
-                        errors.append(f"[ERROR] {feature_prefix}.effort_days cannot be negative")
-                    elif effort == 0:
-                        # 工时为0只允许在"需求未定"的情况下
-                        desc = feature.get("description", "")
-                        if "需求未定" not in desc and "undefined" not in desc.lower():
-                            errors.append(f"[WARNING] {feature_prefix}.effort_days=0 but description doesn't mention 'undefined'")
-
-                # 复杂度检查
-                if "complexity" in feature:
-                    valid_complexity = ["低", "中", "高"]
-                    if feature["complexity"] not in valid_complexity:
-                        errors.append(f"[ERROR] {feature_prefix}.complexity must be one of {valid_complexity}")
-
-    # === summary 检查 ===
-    if "summary" in metadata:
-        required_summary_keys = [
-            "user_development", "admin_development",
-            "total_development_effort", "testing_effort", "total_effort"
-        ]
-        for key in required_summary_keys:
-            if key not in metadata["summary"]:
-                errors.append(f"[ERROR] summary.{key} is missing")
-
-        # 数值一致性检查 - 动态计算所有 _development 字段
-        if "total_development_effort" in metadata["summary"] and "features" in metadata:
-            # 计算所有以 _development 结尾的字段总和
-            calc_dev_total = 0
-            for key, value in metadata["summary"].items():
-                if key.endswith("_development") and key != "total_development_effort":
-                    calc_dev_total += value
-
-            stated_total = metadata["summary"]["total_development_effort"]
-            if abs(calc_dev_total - stated_total) > 0.5:
-                errors.append(
-                    f"[ERROR] summary.total_development_effort ({stated_total}) does not match "
-                    f"sum of system development effort ({calc_dev_total})"
-                )
-
-        # 总工时一致性检查
-        if "total_effort" in metadata["summary"]:
-            stated_grand = metadata["summary"]["total_effort"]
-            if "total_effort" in metadata and abs(metadata["total_effort"] - stated_grand) > 0.5:
-                errors.append(
-                    f"[ERROR] Top-level total_effort ({metadata['total_effort']}) does not match "
-                    f"summary.total_effort ({stated_grand})"
-                )
-
-    # === 抛出错误 ===
-    if errors:
-        error_message = "[ERROR] Metadata Schema Validation Failed:\n\n" + "\n".join(errors)
-        raise ValidationError(error_message)
+    raw_id = metadata.get("project_id", "")
+    name = metadata.get("name", "Unnamed Project")
+    if (
+        len(raw_id) > _ID_DATE_TAIL_LEN
+        and raw_id[-_ID_DATE_TAIL_LEN:].startswith("_")
+        and raw_id[-8:].isdigit()
+        and raw_id[-8:] == archived_date_compact
+    ):
+        return raw_id
+    return f"{name}_{archived_date_compact}"
 
 
 def load_metadata(metadata_path):
@@ -157,20 +57,31 @@ def load_metadata(metadata_path):
         return json.load(f)
 
 
-def update_index(index_path, project_id, metadata):
-    """更新estimations/index.json"""
+def update_index(index_path, project_id, metadata, feature_patterns):
+    """
+    更新 estimations/index.json。
+
+    Args:
+        index_path:       data/estimations/index.json 路径
+        project_id:       已规范化的项目 id（与 folder 同源日期）
+        metadata:         已校验的 metadata dict
+        feature_patterns: history.json 的 feature_patterns，用于数据驱动的关键词匹配
+    """
     # 读取现有索引
     with open(index_path, 'r', encoding='utf-8') as f:
         index = json.load(f)
 
-    # 生成文件夹名
-    folder_name = f"{metadata['name']}_{datetime.now().strftime('%Y%m%d')}"
+    # 统一时间源：folder 与 id 共用同一个归档日期
+    archived_date = datetime.now()
+    archived_date_compact = archived_date.strftime('%Y%m%d')
+    archived_date_iso = archived_date.strftime('%Y-%m-%d')
+    folder_name = f"{metadata['name']}_{archived_date_compact}"
 
     # 添加新项目
     project_info = {
         "id": project_id,
         "name": metadata["name"],
-        "date": datetime.now().strftime('%Y-%m-%d'),
+        "date": archived_date_iso,
         "folder": folder_name,
         "total_effort": metadata["total_effort"],
         "systems": metadata.get("systems", []),
@@ -181,44 +92,35 @@ def update_index(index_path, project_id, metadata):
     }
 
     # 检查是否已存在
-    existing_ids = [p["id"] for p in index["projects"]]
+    existing_ids = [p.get("id") for p in index.get("projects", [])]
     if project_id in existing_ids:
         print(f"[WARNING] Project ID {project_id} already exists, will update record")
         # 删除旧记录
-        index["projects"] = [p for p in index["projects"] if p["id"] != project_id]
+        index["projects"] = [p for p in index["projects"] if p.get("id") != project_id]
 
-    index["projects"].append(project_info)
+    index.setdefault("projects", []).append(project_info)
     index["total_projects"] = len(index["projects"])
-    index["last_updated"] = datetime.now().strftime('%Y-%m-%d')
+    index["last_updated"] = archived_date_iso
 
-    # 更新功能索引
+    # 更新功能索引（数据驱动：复用 history.match_patterns 得到命中的模式名，
+    # 把模式名 + feature 自身名作为 keyword 写入 feature_index，不再硬编码中文词）
+    feature_index = index.setdefault("feature_index", {})
     for feature in metadata.get("features", []):
-        keywords = []
+        keywords = [feature.get("name", "")]
+        keywords.extend(history.match_patterns(feature, feature_patterns))
 
-        # 从功能名提取关键词
-        keywords.append(feature.get("name", ""))
-
-        # 从描述提取关键词
-        description = feature.get("description", "")
-        if "登录" in description or "认证" in feature.get("name", ""):
-            keywords.extend(["登录", "认证"])
-        if "上传" in feature.get("name", ""):
-            keywords.extend(["上传", "图片上传"])
-        if "AI" in feature.get("name", "") or "AI" in description:
-            keywords.append("AI")
-
-        # 添加到索引
         for keyword in keywords:
             if not keyword:
                 continue
-            if keyword not in index["feature_index"]:
-                index["feature_index"][keyword] = []
-            if project_id not in index["feature_index"][keyword]:
-                index["feature_index"][keyword].append(project_id)
+            if keyword not in feature_index:
+                feature_index[keyword] = []
+            if project_id not in feature_index[keyword]:
+                feature_index[keyword].append(project_id)
 
     # 保存索引
     with open(index_path, 'w', encoding='utf-8') as f:
         json.dump(index, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
     return folder_name
 
@@ -251,6 +153,7 @@ def archive_current_estimation(force=False):
     base_path = resolve_base_path()
     current_path = os.path.join(base_path, "data", "current")
     estimations_path = os.path.join(base_path, "data", "estimations")
+    history_path = os.path.join(base_path, "data", "history.json")
 
     # 检查current文件夹是否存在
     if not os.path.exists(current_path):
@@ -277,7 +180,10 @@ def archive_current_estimation(force=False):
         print("[ERROR] Archive cancelled: please fix the errors above and retry")
         return False
 
-    project_id = metadata.get("project_id", f"project_{datetime.now().strftime('%Y%m%d')}")
+    # === 规范化 project_id：统一用归档日期，消除双时间源漂移 ===
+    archived_date_compact = datetime.now().strftime('%Y%m%d')
+    archived_date_iso = datetime.now().strftime('%Y-%m-%d')
+    project_id = _normalize_project_id(metadata, archived_date_compact)
     project_name = metadata.get("name", "Unnamed Project")
 
     print(f"   Project Name: {project_name}")
@@ -292,18 +198,30 @@ def archive_current_estimation(force=False):
             print("[INFO] Archive cancelled")
             return False
 
-    # 更新索引
+    # 加载 history 的 feature_patterns，供数据驱动的关键词匹配使用
+    history_data = history.load_history(history_path)
+    feature_patterns = history_data.get("feature_patterns", {})
+
+    # 更新索引（project_id 与 folder 同源日期，关键词数据驱动）
     print("\n[INFO] Updating project index...")
     index_path = os.path.join(estimations_path, "index.json")
-    folder_name = update_index(index_path, project_id, metadata)
+    folder_name = update_index(index_path, project_id, metadata, feature_patterns)
+
+    # 更新历史功能模式库（自学习：把新 feature 并入 history.json）
+    print("[INFO] Updating history feature-pattern library (self-learning)...")
+    history.update_history(history_path, project_id, metadata, archived_date_iso)
+    print("   [OK] history.json updated")
 
     # 移动文件
     print(f"[INFO] Moving files to history folder...")
     target_path = os.path.join(estimations_path, folder_name)
 
-    # 如果目标文件夹已存在，先删除
+    # 安全处理：若目标已存在，先备份为 .bak.{时间戳}，避免静默丢数据
     if os.path.exists(target_path):
-        shutil.rmtree(target_path)
+        backup_name = f"{folder_name}.bak.{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        backup_path = os.path.join(estimations_path, backup_name)
+        print(f"   [WARNING] Target exists, backing up old folder to: {backup_name}")
+        shutil.move(target_path, backup_path)
 
     # 移动整个current文件夹
     shutil.move(current_path, target_path)
@@ -320,17 +238,25 @@ def archive_current_estimation(force=False):
 
     print(f"\n[SUCCESS] Archive completed!")
     print(f"   Project saved to: {target_path}")
-    print(f"   Index updated: {index_path}")
+    print(f"   Index updated:    {index_path}")
+    print(f"   History updated:  {history_path}")
     print(f"\n   current folder cleared, ready for new estimation")
 
     return True
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description="归档当前估算到历史估算文件夹"
+    )
+    parser.add_argument(
+        '-f', '--force', action='store_true',
+        help="跳过交互确认"
+    )
+    args = parser.parse_args()
     try:
-        # 支持命令行参数 --force 跳过交互确认
-        force = '--force' in sys.argv or '-f' in sys.argv
-        archive_current_estimation(force=force)
+        ok = archive_current_estimation(force=args.force)
+        sys.exit(0 if ok else 1)
     except Exception as e:
         print(f"\n[ERROR] {str(e)}")
         import traceback
