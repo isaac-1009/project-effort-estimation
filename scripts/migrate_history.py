@@ -20,21 +20,22 @@
 from __future__ import annotations
 
 import argparse
-import io
 import json
+import logging
 import os
 import re
 import sys
 from datetime import datetime
-
-# UTF-8 输出（脚本会打印大量中文 diff）
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # 让 scripts/ 内的相对 import 在直接 `python scripts/migrate_history.py` 时也能工作
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import history  # noqa: E402
 from metadata_schema import ValidationError  # noqa: E402
+from logging_setup import setup_logging  # noqa: E402
+
+setup_logging()
+log = logging.getLogger(__name__)
 
 
 # 匹配 project_id 末尾的 _YYYYMMDD
@@ -110,18 +111,18 @@ def fix_index_ids(index_path: str, dry_run: bool) -> int:
         index["feature_index"] = feature_index
         index["last_updated"] = datetime.now().strftime("%Y-%m-%d")
 
-    print(f"[index.json] {fixed} project_id(s) need fixing:")
+    log.info("[index.json] %d project_id(s) need fixing:", fixed)
     for old, new in rename_map.items():
-        print(f"    {old}")
-        print(f"     -> {new}")
+        log.info("    %s", old)
+        log.info("     -> %s", new)
 
     if fixed and not dry_run:
         with open(index_path, "w", encoding="utf-8") as f:
             json.dump(index, f, ensure_ascii=False, indent=2)
             f.write("\n")
-        print(f"[index.json] written ({fixed} fix(es) applied)")
+        log.info("[index.json] written (%d fix(es) applied)", fixed)
     elif fixed and dry_run:
-        print("[index.json] (dry-run, not written)")
+        log.info("[index.json] (dry-run, not written)")
 
     return fixed
 
@@ -180,25 +181,24 @@ def backfill_history(
             successful_hits = sum(1 for v in hits_summary.values() if v)
 
             if dry_run:
-                print(f"[history] WOULD backfill: {project_id} "
-                      f"({len(metadata.get('features', []))} features)")
-                print(f"           date={archived_date or '(missing)'}")
-                print(f"           features matching a pattern: "
-                      f"{successful_hits}/{len(hits_summary)}")
+                log.info("[history] WOULD backfill: %s (%d features)",
+                         project_id, len(metadata.get("features", [])))
+                log.info("           date=%s", archived_date or "(missing)")
+                log.info("           features matching a pattern: %d/%d",
+                         successful_hits, len(hits_summary))
             else:
                 history.update_history(history_path, project_id, metadata, archived_date)
-                print(f"[history] backfilled: {project_id} "
-                      f"({len(metadata.get('features', []))} features, "
-                      f"{successful_hits} matched)")
+                log.info("[history] backfilled: %s (%d features, %d matched)",
+                         project_id, len(metadata.get("features", [])), successful_hits)
             success += 1
         except ValidationError as e:
             skipped += 1
-            print(f"[history] SKIP {folder}: schema validation failed")
-            print(f"          {str(e).splitlines()[0]}")
+            log.warning("[history] SKIP %s: schema validation failed", folder)
+            log.warning("          %s", str(e).splitlines()[0])
 
     mode = "dry-run" if dry_run else "written"
-    print(f"\n[history.json] {success} project(s) processed ({mode}), "
-          f"{skipped} skipped")
+    log.info("[history.json] %d project(s) processed (%s), %d skipped",
+             success, mode, skipped)
     return success
 
 

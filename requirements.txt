@@ -1,0 +1,9 @@
+# 项目工时估算工具集依赖
+# 安装: pip install -r requirements.txt
+
+xlsxwriter>=3.0      # generate_excel.py 生成 .xlsx 估算文件
+openpyxl>=3.1        # read_excel.py 读取/校验 .xlsx 文件
+
+# 开发依赖（可选，运行时不强制）
+# pytest>=7.0        # 运行 tests/ 下的单元测试
+# ruff>=0.4          # 代码静态检查与格式化

@@ -10,20 +10,22 @@
 
 import argparse
 import json
+import logging
 import os
 import shutil
 import sys
 from datetime import datetime
 from typing import Any
 
-# 设置标准输出编码为 UTF-8（保留：本脚本输出大量中文）
-import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 # 共享模块：schema 校验的单一真相源（消除与 generate_excel.py 的复制粘贴）
 from metadata_schema import ValidationError, validate_metadata_schema
 # 共享模块：history.json 自学习写入逻辑
 import history
+# 统一日志配置（UTF-8 + [LEVEL] 前缀）
+from logging_setup import setup_logging
+
+setup_logging()
+log = logging.getLogger(__name__)
 
 
 # 可选的保留 ID 校验格式：name_YYYYMMDD
@@ -94,7 +96,7 @@ def update_index(index_path, project_id, metadata, feature_patterns):
     # 检查是否已存在
     existing_ids = [p.get("id") for p in index.get("projects", [])]
     if project_id in existing_ids:
-        print(f"[WARNING] Project ID {project_id} already exists, will update record")
+        log.warning("Project ID %s already exists, will update record", project_id)
         # 删除旧记录
         index["projects"] = [p for p in index["projects"] if p.get("id") != project_id]
 
@@ -157,27 +159,27 @@ def archive_current_estimation(force=False):
 
     # 检查current文件夹是否存在
     if not os.path.exists(current_path):
-        print("[ERROR] current folder does not exist")
+        log.error("current folder does not exist")
         return False
 
     # 检查metadata.json是否存在
     metadata_path = os.path.join(current_path, "metadata.json")
     if not os.path.exists(metadata_path):
-        print("[ERROR] metadata.json not found")
+        log.error("metadata.json not found")
         return False
 
     # 加载元数据
-    print("[INFO] Loading project information...")
+    log.info("Loading project information...")
     metadata = load_metadata(metadata_path)
 
     # === Schema 校验 ===
-    print("[INFO] Validating metadata schema...")
+    log.info("Validating metadata schema...")
     try:
         validate_metadata_schema(metadata)
-        print("   [OK] Schema validation passed")
+        log.info("   [OK] Schema validation passed")
     except ValidationError as e:
         print(f"\n{str(e)}\n")
-        print("[ERROR] Archive cancelled: please fix the errors above and retry")
+        log.error("Archive cancelled: please fix the errors above and retry")
         return False
 
     # === 规范化 project_id：统一用归档日期，消除双时间源漂移 ===
@@ -186,16 +188,16 @@ def archive_current_estimation(force=False):
     project_id = _normalize_project_id(metadata, archived_date_compact)
     project_name = metadata.get("name", "Unnamed Project")
 
-    print(f"   Project Name: {project_name}")
-    print(f"   Project ID: {project_id}")
-    print(f"   Total Effort: {metadata.get('total_effort', 0)} person-days")
-    print(f"   Feature Count: {len(metadata.get('features', []))}")
+    log.info("   Project Name: %s", project_name)
+    log.info("   Project ID: %s", project_id)
+    log.info("   Total Effort: %s person-days", metadata.get('total_effort', 0))
+    log.info("   Feature Count: %d", len(metadata.get('features', [])))
 
     # 确认
     if not force:
-        confirm = input(f"\nConfirm to archive this project? (yes/no): ")
+        confirm = input("\nConfirm to archive this project? (yes/no): ")
         if confirm.lower() not in ['yes', 'y']:
-            print("[INFO] Archive cancelled")
+            log.info("Archive cancelled")
             return False
 
     # 加载 history 的 feature_patterns，供数据驱动的关键词匹配使用
@@ -203,24 +205,24 @@ def archive_current_estimation(force=False):
     feature_patterns = history_data.get("feature_patterns", {})
 
     # 更新索引（project_id 与 folder 同源日期，关键词数据驱动）
-    print("\n[INFO] Updating project index...")
+    log.info("Updating project index...")
     index_path = os.path.join(estimations_path, "index.json")
     folder_name = update_index(index_path, project_id, metadata, feature_patterns)
 
     # 更新历史功能模式库（自学习：把新 feature 并入 history.json）
-    print("[INFO] Updating history feature-pattern library (self-learning)...")
+    log.info("Updating history feature-pattern library (self-learning)...")
     history.update_history(history_path, project_id, metadata, archived_date_iso)
-    print("   [OK] history.json updated")
+    log.info("   [OK] history.json updated")
 
     # 移动文件
-    print(f"[INFO] Moving files to history folder...")
+    log.info("Moving files to history folder...")
     target_path = os.path.join(estimations_path, folder_name)
 
     # 安全处理：若目标已存在，先备份为 .bak.{时间戳}，避免静默丢数据
     if os.path.exists(target_path):
         backup_name = f"{folder_name}.bak.{datetime.now().strftime('%Y%m%d%H%M%S')}"
         backup_path = os.path.join(estimations_path, backup_name)
-        print(f"   [WARNING] Target exists, backing up old folder to: {backup_name}")
+        log.warning("Target exists, backing up old folder to: %s", backup_name)
         shutil.move(target_path, backup_path)
 
     # 移动整个current文件夹
@@ -236,11 +238,11 @@ def archive_current_estimation(force=False):
         f.write("Current estimation project files are stored here.\n\n")
         f.write("When estimation is confirmed, use `python scripts/archive_estimation.py` to move it to history.\n")
 
-    print(f"\n[SUCCESS] Archive completed!")
-    print(f"   Project saved to: {target_path}")
-    print(f"   Index updated:    {index_path}")
-    print(f"   History updated:  {history_path}")
-    print(f"\n   current folder cleared, ready for new estimation")
+    log.info("[SUCCESS] Archive completed!")
+    log.info("   Project saved to: %s", target_path)
+    log.info("   Index updated:    %s", index_path)
+    log.info("   History updated:  %s", history_path)
+    log.info("   current folder cleared, ready for new estimation")
 
     return True
 
@@ -257,8 +259,6 @@ if __name__ == '__main__':
     try:
         ok = archive_current_estimation(force=args.force)
         sys.exit(0 if ok else 1)
-    except Exception as e:
-        print(f"\n[ERROR] {str(e)}")
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        log.exception("Archive failed")
         sys.exit(1)
