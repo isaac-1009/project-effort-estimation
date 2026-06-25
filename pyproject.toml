@@ -1,0 +1,28 @@
+[project]
+name = "project-effort-estimation"
+version = "1.1.0"
+description = "AI 辅助的软件项目工时估算工具集"
+requires-python = ">=3.9"
+dependencies = [
+    "xlsxwriter>=3.0",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["scripts"]   # 让测试能直接 import scripts 下的模块
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]  # 行长由格式化工具处理

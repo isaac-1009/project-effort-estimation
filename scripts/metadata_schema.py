@@ -57,8 +57,8 @@ def validate_metadata_schema(metadata: dict[str, Any]) -> None:
     if "total_effort" in metadata and not isinstance(metadata["total_effort"], (int, float)):
         errors.append("[ERROR] total_effort must be a number")
 
-    # === 数值范围检查 ===
-    if "total_effort" in metadata:
+    # === 数值范围检查（仅在类型正确时进行，避免 TypeError）===
+    if "total_effort" in metadata and isinstance(metadata["total_effort"], (int, float)):
         effort = metadata["total_effort"]
         if effort <= 0:
             errors.append(f"[ERROR] total_effort must be > 0, current value: {effort}")
@@ -142,21 +142,26 @@ def _validate_summary(metadata: dict[str, Any], errors: list[str]) -> None:
         if key not in summary:
             errors.append(f"[ERROR] summary.{key} is missing")
 
-    # 数值一致性检查 - 动态计算所有 _development 字段
+    # 数值一致性检查 - 动态计算所有 _development 字段（仅当值都是数字时）
     if "total_development_effort" in summary:
-        calc_dev_total = 0
-        for key, value in summary.items():
-            if key.endswith("_development") and key != "total_development_effort":
-                calc_dev_total += value
+        dev_values = [
+            value for key, value in summary.items()
+            if key.endswith("_development") and key != "total_development_effort"
+        ]
         stated_total = summary["total_development_effort"]
-        if abs(calc_dev_total - stated_total) > _SUMMARY_TOLERANCE:
-            errors.append(
-                f"[ERROR] summary.total_development_effort ({stated_total}) does not match "
-                f"sum of system development effort ({calc_dev_total})"
-            )
+        if all(isinstance(v, (int, float)) for v in dev_values) \
+                and isinstance(stated_total, (int, float)):
+            calc_dev_total = sum(dev_values)
+            if abs(calc_dev_total - stated_total) > _SUMMARY_TOLERANCE:
+                errors.append(
+                    f"[ERROR] summary.total_development_effort ({stated_total}) does not match "
+                    f"sum of system development effort ({calc_dev_total})"
+                )
 
     # 总工时一致性检查：summary.total_effort 必须与顶层 total_effort 一致
-    if "total_effort" in summary and "total_effort" in metadata:
+    # （仅当两者都是数字时才比较，避免类型错误的输入引发 TypeError）
+    if "total_effort" in summary and isinstance(summary["total_effort"], (int, float)) \
+            and "total_effort" in metadata and isinstance(metadata["total_effort"], (int, float)):
         stated_grand = summary["total_effort"]
         if abs(metadata["total_effort"] - stated_grand) > _SUMMARY_TOLERANCE:
             errors.append(
