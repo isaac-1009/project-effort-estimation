@@ -90,7 +90,10 @@
 
 估算优先级：**历史参考 > 功能模式 > 标准工时表**
 
-- 每个归档项目更新 `index.json`（项目索引）和 `history.json`（功能模式库）
+- 每个归档项目自动更新 `index.json`（项目索引）和 `history.json`（功能模式库）
+- 归档时 `archive_estimation.py` 会把新项目的每个 feature 与 24 种标准模式
+  做关键词匹配，命中的 feature id 回填到 `feature_patterns[].examples`，
+  实现"越用越准"的自学习
 - 下次估算通过标签、技术栈、功能关键词匹配相似项目
 - 匹配到相似功能时直接参考历史工时
 
@@ -129,14 +132,23 @@ data/
 project-effort-estimation/
 ├── CLAUDE.md                        # Claude Code 项目指南
 ├── README.md                        # 本文件
+├── requirements.txt                 # Python 依赖（xlsxwriter, openpyxl）
+├── pyproject.toml                   # pytest/ruff 配置 + 依赖声明
 ├── data/
 │   ├── current/                     # 当前估算工作区
 │   ├── estimations/                 # 历史估算（已归档）
-│   │   └── index.json              # 项目索引
-│   └── history.json                # 功能模式库
-└── scripts/
-    ├── generate_excel.py           # Excel 生成脚本
-    └── archive_estimation.py       # 归档脚本
+│   │   └── index.json              # 项目索引 + 功能关键词索引
+│   └── history.json                # 功能模式库(24种) + 历史项目
+├── scripts/
+│   ├── metadata_schema.py          # 共享：metadata.json schema 校验（单一真相源）
+│   ├── history.py                  # 共享：history.json 自学习写入逻辑
+│   ├── logging_setup.py            # 共享：统一日志配置
+│   ├── generate_excel.py           # 从 metadata.json 生成 Excel 估算
+│   ├── read_excel.py               # 读取/校验 Excel 估算文件
+│   ├── archive_estimation.py       # 归档当前估算到历史库
+│   ├── generate_dev_plan.py        # 生成甘特图 HTML
+│   └── migrate_history.py          # 一次性数据修复脚本（已执行）
+└── tests/                          # pytest 单元测试
 ```
 
 ## Skill 配置
@@ -155,3 +167,30 @@ project-effort-estimation/
 | 1-5 | ±30% | 基准估算，依赖标准工时表 |
 | 5-10 | ±20% | 有少量历史参考 |
 | 10-20 | ±15% | 功能模式库较完善 |
+
+> 当前库已积累 10 个项目、162 个 feature，22 种功能模式均有历史实例支撑。
+
+## 安装与开发
+
+### 环境要求
+
+- Python 3.9+
+
+### 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+### 运行测试
+
+```bash
+pip install pytest        # 首次需要
+python -m pytest tests/   # 运行全部单元测试
+```
+
+### 版本控制
+
+项目使用 git 管理。`.claude/settings.local.json` 已在 `.gitignore` 中排除
+（含本机敏感配置）。Excel/HTML 等二进制产物通过 `.gitattributes` 标记为
+binary，文本文件统一 LF 行尾。

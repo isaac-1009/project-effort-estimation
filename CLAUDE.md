@@ -26,9 +26,13 @@
 
 **脚本**（Python 辅助工具）：
 
+- `scripts/metadata_schema.py` - **共享**：metadata.json schema 校验（单一真相源，被多个脚本 import）
+- `scripts/history.py` - **共享**：history.json 自学习写入逻辑（归档时回填功能模式库）
+- `scripts/logging_setup.py` - **共享**：统一日志配置（UTF-8 + [LEVEL] 前缀）
 - `scripts/generate_excel.py` - 从 `metadata.json` 生成 Excel 文件
 - `scripts/read_excel.py` - 读取工时估算 Excel 文件，显示详细工时信息
-- `scripts/archive_estimation.py` - 将当前估算归档到历史
+- `scripts/archive_estimation.py` - 将当前估算归档到历史（同时更新 index.json + history.json）
+- `scripts/generate_dev_plan.py` - 生成开发计划甘特图 HTML
 
 ## 工作流程
 
@@ -56,10 +60,13 @@
 
 **确认后**：
 
-- 运行 `python scripts/archive_estimation.py`
+- 运行 `python scripts/archive_estimation.py`（支持 `--force` 跳过交互确认）
 - 脚本将 `data/current/` 移动到 `data/estimations/{项目名}_{YYYYMMDD}/`
-- 更新 `data/estimations/index.json`
+- `project_id` 统一用归档日期生成（格式 `{name}_YYYYMMDD`），与 folder 同源，避免年份漂移
+- 更新 `data/estimations/index.json`（项目索引 + 功能关键词索引，关键词数据驱动）
+- 更新 `data/history.json`（自学习：把新 feature 并入 projects，命中的功能模式回填 examples）
 - 清空 `data/current/` 准备下一个项目
+- 若目标 folder 已存在，旧目录会备份为 `{folder}.bak.{时间戳}` 而非直接删除
 
 **切勿**直接修改 `data/estimations/` 中的历史估算文件。
 
@@ -87,6 +94,12 @@ cat data/estimations/index.json
 
 # 查看功能模式
 cat data/history.json
+
+# 安装依赖（首次）
+pip install -r requirements.txt
+
+# 运行单元测试
+python -m pytest tests/
 ```
 
 ### 开发计划甘特图
