@@ -1,21 +1,23 @@
 # CLAUDE.md
 
-本文件为 Claude Code (claude.ai/code) 在此代码库中工作时提供指导。
+本文件为 AI 编码助手（Claude Code / ZCode 等）在此代码库中工作时提供指导。
 
 ## 项目概述
 
-这是一个基于 Claude Code 的 **rules 和 skills 系统**的项目工时估算工具。它通过分析需求和参考历史数据来估算软件项目工时（单位：人天）。
+这是一个基于 AI 编码助手 **rules 和 skills 系统**的项目工时估算工具。它通过分析需求和参考历史数据来估算软件项目工时（单位：人天）。
 
-**核心概念**：这不是一个传统的软件项目，而是一个使用结构化 rules 和 skills 提供智能工时估算的 Claude Code 助手。
+**核心概念**：这不是一个传统的软件项目，而是一个使用结构化 rules 和 skills 提供智能工时估算的 AI 助手。
 
 ## 架构
 
 ### 核心组件
 
-**Skill**（在全局配置中定义，不在此仓库中）：
+**Skill**（在用户全局配置中定义，不在此仓库中）：
 
-- `C:\Users\admin\.claude\skills\project-estimation\SKILL.md` - 估算工作流、执行流程
-- `C:\Users\admin\.claude\skills\project-estimation\references\effort-standards.md` - 标准工时表、功能模式、Excel 格式规范
+- `~/.claude/skills/project-estimation/SKILL.md` - 估算工作流、执行流程
+- `~/.claude/skills/project-estimation/references/effort-standards.md` - 标准工时表、功能模式、Excel 格式规范
+
+> 注：实际路径取决于本机配置（如 `%USERPROFILE%\.claude\skills\...`）。仓库内不包含 skill 本体，只含数据与辅助脚本。
 
 **数据结构**：
 
@@ -53,7 +55,7 @@
 **当前估算**（`data/current/`）：
 
 - `metadata.json` - 项目元数据（必需）
-- `estimate.xlsx` - 生成的 Excel 文件
+- `{项目名}估算.xlsx` - 生成的 Excel 文件（由 `generate_excel.py` 产出）
 - `analysis.md` - 项目分析总结
 - `requirements.md` - 原始需求
 - `pending_questions.md` - 待确认问题（如有）
@@ -73,6 +75,28 @@
 ## Excel 格式
 
 Excel 格式规范详见 skill 的 `references/effort-standards.md`，由 `generate_excel.py` 脚本自动生成。
+
+## 开发约定
+
+修改脚本时请遵守以下约定（详见 `README.md` 的项目结构）：
+
+**模块复用**：
+- `metadata.json` 的 schema 校验统一走 `scripts/metadata_schema.py`，**不要**在其它脚本里复制校验逻辑
+- `history.json` 的自学习写入统一走 `scripts/history.py` 的 `update_history()`
+- 日志统一用 `scripts/logging_setup.py` 的 `setup_logging()`，**不要**用 `print("[INFO]...")` 手拼前缀
+
+**编码规范**：
+- 脚本入口用 `argparse`，库函数内**不要**调 `sys.exit()`（抛异常由 `__main__` 决定退出码）
+- magic number（阈值、颜色、列宽等）提取为模块顶部命名常量
+- 修改 `generate_excel.py` 后须保证 Excel 产出不变（可用 `read_excel.py` 核对工时合计）
+
+**测试**：
+- 纯函数（校验、四舍五入、模式匹配等）须有 `tests/` 下的单元测试覆盖
+- 改动后运行 `python -m pytest tests/` 确保全绿
+
+**数据安全**：
+- 切勿直接修改 `data/estimations/` 中的历史估算文件
+- 归档时若目标目录已存在，会自动备份为 `.bak.{时间戳}`，不会静默覆盖
 
 ## 常用命令
 
@@ -202,9 +226,10 @@ python scripts/generate_dev_plan.py <config.json> [output.html]
 
 ## 备注
 
-- 此工具累积历史数据以提高估算准确度
-- 第 1 个项目：基准估算（±30% 准确度）
-- 第 10 个项目：±20% 准确度
-- 第 20 个项目：±15% 准确度
+- 此工具通过归档积累历史数据以提高估算准确度（自学习机制：归档时
+  `archive_estimation.py` 把新 feature 并入 `history.json`，命中的功能模式
+  回填 `examples`）
+- 当前库状态：10 个项目、162 个 feature、22 种功能模式均有历史实例
+- 准确度随项目数提升：1-5 个 ±30%、5-10 个 ±20%、10-20 个 ±15%
 - 始终优先参考历史数据而非标准工时表
 - 有疑问时，主动询问用户以明确需求
