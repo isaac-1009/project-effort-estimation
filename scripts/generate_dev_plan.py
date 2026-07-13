@@ -422,12 +422,16 @@ def validate_config(config: dict) -> list[str]:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python generate_dev_plan.py <config.json> [output.html]")
-        print("  If output path is omitted, writes to data/current/dev-plan.html")
-        sys.exit(1)
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="从 config.json 生成开发计划甘特图 HTML"
+    )
+    parser.add_argument("config_path", help="config.json 路径")
+    parser.add_argument("output_path", nargs="?", default=None,
+                        help="输出 HTML 路径（可选，默认 data/current/dev-plan.html）")
+    args = parser.parse_args()
 
-    config_path = Path(sys.argv[1])
+    config_path = Path(args.config_path)
     if not config_path.exists():
         print(f"Error: config file not found: {config_path}")
         sys.exit(1)
@@ -444,8 +448,8 @@ def main():
 
     html = build_html(config)
 
-    if len(sys.argv) >= 3:
-        output_path = Path(sys.argv[2])
+    if args.output_path:
+        output_path = Path(args.output_path)
     else:
         output_path = Path(__file__).parent.parent / "data" / "current" / "dev-plan.html"
 

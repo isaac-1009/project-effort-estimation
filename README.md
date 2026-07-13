@@ -146,8 +146,7 @@ project-effort-estimation/
 │   ├── generate_excel.py           # 从 metadata.json 生成 Excel 估算
 │   ├── read_excel.py               # 读取/校验 Excel 估算文件
 │   ├── archive_estimation.py       # 归档当前估算到历史库
-│   ├── generate_dev_plan.py        # 生成甘特图 HTML
-│   └── migrate_history.py          # 一次性数据修复脚本（已执行）
+│   └── generate_dev_plan.py        # 生成甘特图 HTML
 └── tests/                          # pytest 单元测试
 ```
 
