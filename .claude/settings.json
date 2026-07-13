@@ -10,7 +10,8 @@
       "Bash(rm -f \"全球员工创意收集活动系统估算.xlsx\" \"全球员工创意收集活动系统待确认问题.md\")",
       "Bash(python scripts/generate_excel.py data/current/metadata.json data/current/estimate.xlsx)",
       "Bash(ls -la *.xlsx)",
-      "Read(//c/Users/admin/Documents/001-项目估算/project-effort-estimation/data/**)"
+      "Read(//c/Users/admin/Documents/001-项目估算/project-effort-estimation/data/**)",
+      "Read(//c/Users/gaoming/.claude/skills/project-estimation/references/**)"
     ],
     "additionalDirectories": [
       "C:\\Users\\admin\\.claude\\rules\\common",

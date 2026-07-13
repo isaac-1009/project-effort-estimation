@@ -1,0 +1,453 @@
+{
+  "project_id": "Facility_三期需求_20260710",
+  "name": "Facility 三期需求",
+  "created_date": "2026-07-10",
+  "total_effort": 108.5,
+  "description": "基于企微Facility应用的功能优化和新需求开发，采用分阶段渐进式交付策略",
+  "systems": [
+    "用户端",
+    "管理后台",
+    "其他"
+  ],
+  "tags": [
+    "企微",
+    "Facility",
+    "数据统计",
+    "工单系统",
+    "评论管理",
+    "名片管理",
+    "ISO认证",
+    "EAG",
+    "AI POC",
+    "工位管理POC",
+    "访客管理",
+    "物业API",
+    "天气预警"
+  ],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）",
+    "backend": "Java/Node.js（复用Facility技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API + Dify API + Workday API + 物业系统API + 天气API"
+  },
+  "features": [
+    {
+      "id": "Facility_三期_001",
+      "system": "用户端",
+      "module": "数据分析",
+      "name": "数据统计展示",
+      "effort_days": 7,
+      "description": "完整的运营数据分析：推文互动数据（阅读量、点赞数、评论数、分享数）、应用入口统计（各功能模块访问量、使用频率）、用户活跃度、时间段趋势分析，提供图表展示",
+      "complexity": "中",
+      "keywords": [
+        "数据统计",
+        "图表",
+        "报表",
+        "数据分析",
+        "仪表盘"
+      ],
+      "patterns": [
+        "数据统计"
+      ],
+      "reference": "数据统计模式（范围4-7人天），完整分析取上限",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_002",
+      "system": "用户端",
+      "module": "工单报修",
+      "name": "工单报修时间段数量限制",
+      "effort_days": 5,
+      "description": "系统可以设置每个时间段（如9:00-12:00）最多接受N个报修单，超过后该时间段自动关闭报修功能，支持管理后台配置时间段规则和数量限制",
+      "complexity": "中",
+      "keywords": [
+        "系统管理",
+        "配置",
+        "设置",
+        "后台",
+        "工单",
+        "报修",
+        "发布",
+        "上线",
+        "状态",
+        "推送"
+      ],
+      "patterns": [
+        "系统管理",
+        "发布管理"
+      ],
+      "reference": "系统管理模式（范围5-8人天），工单扩展取下限",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_003",
+      "system": "用户端",
+      "module": "推文评论",
+      "name": "评论支持图片（前端）",
+      "effort_days": 3.5,
+      "description": "推文评论支持上传最多5张图片，支持图片预览和删除",
+      "complexity": "中",
+      "keywords": [
+        "上传",
+        "图片",
+        "文件",
+        "附件",
+        "问答",
+        "评论",
+        "留言",
+        "互动"
+      ],
+      "patterns": [
+        "文件上传",
+        "问答系统"
+      ],
+      "reference": "文件上传模式（范围3-6人天），前端开发",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_004",
+      "system": "管理后台",
+      "module": "推文评论",
+      "name": "评论图片审核管理",
+      "effort_days": 3.5,
+      "description": "管理后台评论管理列表显示评论配图缩略图，点击查看大图，支持审核通过/拒绝",
+      "complexity": "低",
+      "keywords": [
+        "列表",
+        "详情",
+        "创建",
+        "编辑",
+        "删除",
+        "CRUD",
+        "增删改查",
+        "上传",
+        "图片",
+        "文件",
+        "附件",
+        "问答",
+        "评论",
+        "留言",
+        "互动",
+        "评论管理",
+        "评论审核"
+      ],
+      "patterns": [
+        "CRUD操作",
+        "文件上传",
+        "问答系统",
+        "评论管理"
+      ],
+      "reference": "评论管理模式（范围2-4人天）+文件查看",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_005",
+      "system": "用户端",
+      "module": "名片申请",
+      "name": "名片申请优化（多title支持）",
+      "effort_days": 4,
+      "description": "名片申请时支持选择多个职位title（如高级经理+项目经理），名片展示多个头衔",
+      "complexity": "中",
+      "keywords": [
+        "登录",
+        "注册",
+        "认证",
+        "权限",
+        "角色",
+        "RBAC"
+      ],
+      "patterns": [
+        "认证授权"
+      ],
+      "reference": "认证授权模式（范围3-8人天），多角色逻辑",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_006",
+      "system": "管理后台",
+      "module": "名片管理",
+      "name": "名片数据分析展示",
+      "effort_days": 5,
+      "description": "名片管理后台增加数据分析：申请量统计、制作状态分布、部门分析、时间段趋势，提供图表展示和数据导出",
+      "complexity": "中",
+      "keywords": [
+        "统计",
+        "图表",
+        "报表",
+        "数据分析",
+        "仪表盘",
+        "导出",
+        "下载",
+        "Excel",
+        "CSV"
+      ],
+      "patterns": [
+        "数据统计",
+        "数据导出"
+      ],
+      "reference": "数据统计模式（范围4-7人天），标准工时",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_007",
+      "system": "用户端",
+      "module": "申请管理",
+      "name": "申请合并（统一入口展示）",
+      "effort_days": 3,
+      "description": "空调申请、出门证/货梯申请统一入口展示，后端逻辑保持独立",
+      "complexity": "低",
+      "keywords": [
+        "列表",
+        "详情",
+        "创建",
+        "编辑",
+        "删除",
+        "CRUD",
+        "增删改查"
+      ],
+      "patterns": [
+        "CRUD操作"
+      ],
+      "reference": "简单页面重构，后端逻辑不变",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_008",
+      "system": "用户端",
+      "module": "在场权益",
+      "name": "链接陆家嘴物业小程序",
+      "effort_days": 1,
+      "description": "在Facility应用中添加按钮，点击后带参数跳转到陆家嘴物业小程序特定页面（如我的权益、服务详情）",
+      "complexity": "低",
+      "keywords": [
+        "企微",
+        "企业微信",
+        "企微后台",
+        "企微管理",
+        "企微小程序",
+        "企微H5"
+      ],
+      "patterns": [
+        "企微端"
+      ],
+      "reference": "企微小程序跳转，简单集成",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_009",
+      "system": "用户端",
+      "module": "ISO认证",
+      "name": "ISO 45001认证知识库+宣传渠道页面",
+      "effort_days": 3,
+      "description": "全新开发ISO 45001认证知识库和宣传渠道静态页面，包含知识库展示、文档下载、培训资源等",
+      "complexity": "低",
+      "keywords": [
+        "内容管理",
+        "发布",
+        "编辑",
+        "推文",
+        "文章",
+        "CMS"
+      ],
+      "patterns": [
+        "内容管理"
+      ],
+      "reference": "静态页面+内容展示",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_010",
+      "system": "用户端",
+      "module": "EAG",
+      "name": "EAG以物易物流程静态页面",
+      "effort_days": 2,
+      "description": "全新开发EAG以物易物流程静态页面，包含流程说明、物品展示、交换规则等内容",
+      "complexity": "低",
+      "keywords": [],
+      "patterns": [],
+      "reference": "静态页面开发",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_011",
+      "system": "用户端",
+      "module": "天气预警",
+      "name": "天气预警（主动推送+员工查询）",
+      "effort_days": 4,
+      "description": "集成第三方天气API，支持主动推送预警（台风、暴雨、高温等）到企微，同时员工可在Facility应用中查询当前天气+预警信息",
+      "complexity": "中",
+      "keywords": [
+        "发布",
+        "上线",
+        "状态",
+        "推送",
+        "企微",
+        "企业微信",
+        "企微后台",
+        "企微管理",
+        "企微小程序",
+        "企微H5",
+        "推送记录",
+        "撤回",
+        "定时推送",
+        "消息推送",
+        "消息中心",
+        "通知",
+        "消息管理"
+      ],
+      "patterns": [
+        "发布管理",
+        "企微端",
+        "推送管理",
+        "消息中心"
+      ],
+      "reference": "第三方API集成+消息推送",
+      "phase": 1
+    },
+    {
+      "id": "Facility_三期_012",
+      "system": "用户端",
+      "module": "AI助手",
+      "name": "A1chatbot-行政小智 POC",
+      "effort_days": 5,
+      "description": "POC阶段：验证Dify基础接入可行性，实现企微消息接收→Dify处理→回复的基本问答流程（2-3周）",
+      "complexity": "中",
+      "keywords": [
+        "AI",
+        "问答",
+        "评论",
+        "留言",
+        "互动"
+      ],
+      "patterns": [
+        "问答系统"
+      ],
+      "reference": "POC范围：企微消息→Dify→回复基础流程",
+      "phase": 2
+    },
+    {
+      "id": "Facility_三期_013",
+      "system": "用户端",
+      "module": "工位管理",
+      "name": "工位管理POC",
+      "effort_days": 15,
+      "description": "POC阶段：实现楼层构位平面图可视化、工位的增删改查、状态处理（空闲/占用/维护）、分配、释放等核心功能，收集用户反馈（3-4周）",
+      "complexity": "高",
+      "keywords": [
+        "列表",
+        "详情",
+        "创建",
+        "编辑",
+        "删除",
+        "CRUD",
+        "增删改查",
+        "系统管理",
+        "配置",
+        "设置",
+        "后台",
+        "发布",
+        "上线",
+        "状态",
+        "推送"
+      ],
+      "patterns": [
+        "CRUD操作",
+        "系统管理",
+        "发布管理"
+      ],
+      "reference": "POC范围：楼层可视化+工位基础功能+状态管理",
+      "phase": 2
+    },
+    {
+      "id": "Facility_三期_014",
+      "system": "用户端",
+      "module": "访客管理",
+      "name": "Loffice访客预约流程",
+      "effort_days": 16,
+      "description": "完整的访客预约流程管理：员工申请访客→访客接收邀请→访客到访→闸机开门权限管理→访客离场，支持企微消息通知",
+      "complexity": "高",
+      "keywords": [
+        "审核",
+        "审批",
+        "工作流",
+        "状态流转"
+      ],
+      "patterns": [
+        "审核流程"
+      ],
+      "reference": "审核流程模式×2阶段（申请+到访）",
+      "phase": 3
+    },
+    {
+      "id": "Facility_三期_015",
+      "system": "管理后台",
+      "module": "访客管理",
+      "name": "访客管理后台",
+      "effort_days": 6,
+      "description": "访客管理后台：访客信息CRUD、预约审批、访客记录查询、访客统计分析",
+      "complexity": "中",
+      "keywords": [
+        "列表",
+        "详情",
+        "创建",
+        "编辑",
+        "删除",
+        "CRUD",
+        "增删改查",
+        "审核",
+        "审批",
+        "工作流",
+        "状态流转",
+        "系统管理",
+        "配置",
+        "设置",
+        "后台"
+      ],
+      "patterns": [
+        "CRUD操作",
+        "审核流程",
+        "系统管理"
+      ],
+      "reference": "系统管理+审核流程",
+      "phase": 3
+    },
+    {
+      "id": "Facility_三期_016",
+      "system": "其他",
+      "module": "第三方集成",
+      "name": "物业系统API对接+闸机权限管理",
+      "effort_days": 8,
+      "description": "对接联通物业系统或物业提供的API，实现访客闸机卡权限管理，包含API联调、数据同步、异常处理",
+      "complexity": "高",
+      "keywords": [],
+      "patterns": [],
+      "reference": "第三方API集成，风险高",
+      "phase": 3
+    }
+  ],
+  "summary": {
+    "user_development": 57,
+    "admin_development": 14.5,
+    "other_development": 18.5,
+    "total_development_effort": 90,
+    "testing_effort": 13.5,
+    "other_fixed": {
+      "communication": 2,
+      "environment": 0,
+      "acceptance": 1,
+      "ui_ux_design": 2
+    },
+    "total_effort": 108.5
+  },
+  "notes": [
+    "【项目类型】现有系统新增功能（无环境搭建工时）",
+    "【UI/UX设计】复用企微组件库，设计工时=2人天",
+    "【需求沟通】需求文档部分缺失，工时=2人天",
+    "【测试工时】开发总工时90人天×15%=13.5人天",
+    "【实施方案】分阶段渐进式：优先交付高价值低风险功能，POC独立验证，物业API最后对接",
+    "【风险提示】物业API对接存在技术不确定性，需提前与物业确认API文档和测试环境",
+    "【POC目标】A1chatbot POC验证Dify基础接入（2-3周）；工位管理POC验证核心业务流程+收集用户反馈（3-4周）",
+    "【历史参考】部分功能在之前需求中已实现（评论配图20260608、ISO/EAG 20260427），本次为全新开发或需求变更",
+    "【技术栈】企微H5 + Java/Node.js后端 + MySQL/MongoDB，集成企微API、Dify API、Workday API、物业API、天气API"
+  ]
+}

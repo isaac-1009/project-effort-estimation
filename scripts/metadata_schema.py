@@ -95,6 +95,10 @@ def validate_metadata_schema(metadata: dict[str, Any]) -> None:
     if "summary" in metadata:
         _validate_summary(metadata, errors)
 
+    # === phases 检查（可选字段：阶段细分明细）===
+    if "phases" in metadata:
+        _validate_phases(metadata, errors)
+
     # === 抛出错误 ===
     if errors:
         error_message = "[ERROR] Metadata Schema Validation Failed:\n\n" + "\n".join(errors)
@@ -102,33 +106,83 @@ def validate_metadata_schema(metadata: dict[str, Any]) -> None:
 
 
 def _validate_feature(feature: dict[str, Any], index: int, errors: list[str]) -> None:
-    """校验单个 feature 条目。"""
+    """
+    校验单个 feature 条目。
+
+    支持两种结构：
+    1. 旧结构：feature 直接包含 system, effort_days, description 等字段
+    2. 新结构：feature 包含 sub_systems 数组，每个子项包含 system, effort_days, description
+       （新结构对应新 Excel 8 列布局：一个功能跨企微+PC 多行，C/E 列按功能合并）
+
+    可选字段（两种结构均支持）：
+    - requirement_type: 需求类型（如 "功能优化"/"新功能"），输出到 D 列
+    - remark: 备注，输出到 H 列（sub_systems 子项也可有 remark）
+    """
     prefix = f"features[{index}]"
-    required_feature_fields = ["system", "module", "name", "effort_days", "description", "complexity"]
-    for field in required_feature_fields:
-        if field not in feature:
-            errors.append(f"[ERROR] {prefix} missing field: {field}")
 
-    # 工时检查
-    if "effort_days" in feature:
-        effort = feature["effort_days"]
-        if not isinstance(effort, (int, float)):
-            errors.append(f"[ERROR] {prefix}.effort_days must be a number")
-        elif effort < 0:
-            errors.append(f"[ERROR] {prefix}.effort_days cannot be negative")
-        elif effort == 0:
-            # 工时为 0 只允许在"需求未定"的情况下
-            desc = feature.get("description", "")
-            if "需求未定" not in desc and "undefined" not in desc.lower():
-                errors.append(
-                    f"[WARNING] {prefix}.effort_days=0 but description doesn't mention 'undefined'"
-                )
+    # 可选字段类型检查（两种结构通用）
+    if "requirement_type" in feature and not isinstance(feature["requirement_type"], str):
+        errors.append(f"[ERROR] {prefix}.requirement_type must be a string")
+    if "remark" in feature and not isinstance(feature["remark"], str):
+        errors.append(f"[ERROR] {prefix}.remark must be a string")
 
-    # 复杂度检查
-    if "complexity" in feature and feature["complexity"] not in VALID_COMPLEXITY:
-        errors.append(
-            f"[ERROR] {prefix}.complexity must be one of {VALID_COMPLEXITY}"
-        )
+    # 检查是否使用新结构（sub_systems）
+    if "sub_systems" in feature:
+        # 新结构校验
+        if not isinstance(feature["sub_systems"], list):
+            errors.append(f"[ERROR] {prefix}.sub_systems must be an array")
+        elif len(feature["sub_systems"]) == 0:
+            errors.append(f"[ERROR] {prefix}.sub_systems cannot be empty")
+        else:
+            for j, sub in enumerate(feature["sub_systems"]):
+                sub_prefix = f"{prefix}.sub_systems[{j}]"
+                required_sub_fields = ["system", "effort_days"]
+                for field in required_sub_fields:
+                    if field not in sub:
+                        errors.append(f"[ERROR] {sub_prefix} missing field: {field}")
+
+                # 可选字段类型检查
+                if "remark" in sub and not isinstance(sub["remark"], str):
+                    errors.append(f"[ERROR] {sub_prefix}.remark must be a string")
+                if "effort_days" in sub:
+                    effort = sub["effort_days"]
+                    if not isinstance(effort, (int, float)):
+                        errors.append(f"[ERROR] {sub_prefix}.effort_days must be a number")
+                    elif effort < 0:
+                        errors.append(f"[ERROR] {sub_prefix}.effort_days cannot be negative")
+
+        # 新结构的必填字段
+        new_required_fields = ["module", "name"]
+        for field in new_required_fields:
+            if field not in feature:
+                errors.append(f"[ERROR] {prefix} missing field: {field}")
+    else:
+        # 旧结构校验
+        required_feature_fields = ["system", "module", "name", "effort_days", "description", "complexity"]
+        for field in required_feature_fields:
+            if field not in feature:
+                errors.append(f"[ERROR] {prefix} missing field: {field}")
+
+        # 工时检查
+        if "effort_days" in feature:
+            effort = feature["effort_days"]
+            if not isinstance(effort, (int, float)):
+                errors.append(f"[ERROR] {prefix}.effort_days must be a number")
+            elif effort < 0:
+                errors.append(f"[ERROR] {prefix}.effort_days cannot be negative")
+            elif effort == 0:
+                # 工时为 0 只允许在"需求未定"的情况下
+                desc = feature.get("description", "")
+                if "需求未定" not in desc and "undefined" not in desc.lower():
+                    errors.append(
+                        f"[WARNING] {prefix}.effort_days=0 but description doesn't mention 'undefined'"
+                    )
+
+        # 复杂度检查
+        if "complexity" in feature and feature["complexity"] not in VALID_COMPLEXITY:
+            errors.append(
+                f"[ERROR] {prefix}.complexity must be one of {VALID_COMPLEXITY}"
+            )
 
 
 def _validate_summary(metadata: dict[str, Any], errors: list[str]) -> None:
@@ -168,3 +222,88 @@ def _validate_summary(metadata: dict[str, Any], errors: list[str]) -> None:
                 f"[ERROR] Top-level total_effort ({metadata['total_effort']}) does not match "
                 f"summary.total_effort ({stated_grand})"
             )
+
+
+def _validate_phases(metadata: dict[str, Any], errors: list[str]) -> None:
+    """
+    校验顶层 phases 字段（可选）：阶段细分明细。
+
+    结构约定：
+        phases: [
+            {
+                "name": "设计",              # 阶段名（必填）
+                "total_effort": 30.0,        # 阶段总工时（必填，= subitems 之和）
+                "subitems": [                # 必填，至少 1 项
+                    {"name": "需求沟通", "effort_days": 2.0, "description": "..."}
+                ]
+            }
+        ]
+
+    校验规则：
+    - phases 必须为非空数组
+    - 每个阶段含 name / total_effort / subitems
+    - 阶段 total_effort = 其 subitems 的 effort_days 之和（容差 0.5）
+    - subitem 的 effort_days >= 0
+    """
+    phases = metadata["phases"]
+    if not isinstance(phases, list):
+        errors.append("[ERROR] phases must be an array")
+        return
+    if len(phases) == 0:
+        errors.append("[ERROR] phases cannot be empty (if present)")
+        return
+
+    for i, phase in enumerate(phases):
+        prefix = f"phases[{i}]"
+        if not isinstance(phase, dict):
+            errors.append(f"[ERROR] {prefix} must be an object")
+            continue
+
+        # 必填字段
+        for field in ("name", "total_effort", "subitems"):
+            if field not in phase:
+                errors.append(f"[ERROR] {prefix} missing field: {field}")
+
+        if "name" in phase and not isinstance(phase["name"], str):
+            errors.append(f"[ERROR] {prefix}.name must be a string")
+
+        if "total_effort" in phase:
+            te = phase["total_effort"]
+            if not isinstance(te, (int, float)):
+                errors.append(f"[ERROR] {prefix}.total_effort must be a number")
+            elif te < 0:
+                errors.append(f"[ERROR] {prefix}.total_effort cannot be negative")
+
+        if "subitems" in phase:
+            subs = phase["subitems"]
+            if not isinstance(subs, list) or len(subs) == 0:
+                errors.append(f"[ERROR] {prefix}.subitems must be a non-empty array")
+                continue
+            sub_sum = 0.0
+            sub_sum_valid = True
+            for j, sub in enumerate(subs):
+                sp = f"{prefix}.subitems[{j}]"
+                if not isinstance(sub, dict):
+                    errors.append(f"[ERROR] {sp} must be an object")
+                    sub_sum_valid = False
+                    continue
+                for field in ("name", "effort_days"):
+                    if field not in sub:
+                        errors.append(f"[ERROR] {sp} missing field: {field}")
+                if "effort_days" in sub:
+                    e = sub["effort_days"]
+                    if not isinstance(e, (int, float)):
+                        errors.append(f"[ERROR] {sp}.effort_days must be a number")
+                        sub_sum_valid = False
+                    elif e < 0:
+                        errors.append(f"[ERROR] {sp}.effort_days cannot be negative")
+                    else:
+                        sub_sum += e
+            # 子项之和一致性
+            if sub_sum_valid and "total_effort" in phase \
+                    and isinstance(phase["total_effort"], (int, float)):
+                if abs(sub_sum - phase["total_effort"]) > _SUMMARY_TOLERANCE:
+                    errors.append(
+                        f"[ERROR] {prefix}.total_effort ({phase['total_effort']}) does not match "
+                        f"sum of subitems ({sub_sum})"
+                    )

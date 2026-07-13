@@ -1,0 +1,524 @@
+{
+  "project_id": "汽车金融车商管理平台_20260707",
+  "name": "汽车金融车商管理平台",
+  "created_date": "2026-07-07",
+  "total_effort": 999.5,
+  "description": "在已有产品(PC/Android/iOS，Java后端，无小程序)基础上定制化交付的汽车金融车商管理平台。本版为甲方最终核定版(2026-07-07)，总工时1000人日(50人月)。开发周期2026-08至2026-11(4个月)，UAT及上线2026-12，运维2027-01。覆盖49项明细，每项含开发工时与测试工时拆分。",
+  "systems": [
+    "功能开发",
+    "已有系统测试+bug修复",
+    "数据迁移",
+    "项目级(设计/验收/管理)"
+  ],
+  "tags": [
+    "汽车金融",
+    "车商管理",
+    "渠道管理",
+    "金融产品",
+    "预审进件",
+    "小程序",
+    "uni-app",
+    "Java",
+    "财务结算",
+    "报表分析",
+    "三方对接",
+    "数据迁移",
+    "大项目"
+  ],
+  "tech_stack": {
+    "frontend": "Web(React/Vue) + 车商APP(uni-app打包) + 客户小程序(uni-app)",
+    "backend": "Java + Spring Boot",
+    "database": "MySQL",
+    "integration": "合同电签 + 企微 + 车型库 + 车商生态服务(8个)"
+  },
+  "project_plan": {
+    "total_months": 6,
+    "dev_period": "2026-08 至 2026-11 (4个月)",
+    "uat_release": "2026-12",
+    "maintenance": "2027-01",
+    "phases": {
+      "2026-08": "需求",
+      "2026-09": "开发/设计/用例",
+      "2026-10": "开发/测试",
+      "2026-11": "开发/测试",
+      "2026-12": "UAT/上线",
+      "2027-01": "运维"
+    },
+    "team_effort_pm": {
+      "PM": 4,
+      "功能设计": 4,
+      "UI设计": 2,
+      "测试": 12,
+      "开发-前端": 14,
+      "开发-后端": 14
+    },
+    "total_person_months": 50
+  },
+  "features": [
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "系统管理",
+      "name": "部门/角色/用户/岗位/菜单/公告/日志",
+      "effort_days": 20,
+      "description": "测试20人日；端侧:PC；备注:产品功能已具备：1、主要工作量需要测试工程师验证功能以及客户数据;2、如有BUG需修复。",
+      "complexity": "低",
+      "reference": "系统管理 开发0/测试20人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "工作台",
+      "name": "常用入口/通知公告",
+      "effort_days": 4,
+      "description": "测试4人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "工作台 开发0/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "渠道管理-车商入驻",
+      "name": "申请/协议模板/审核/账号生成",
+      "effort_days": 16,
+      "description": "开发8人日；测试8人日；端侧:PC；备注:产品功能已具备,需要做客制化改动。",
+      "complexity": "中",
+      "reference": "渠道管理-车商入驻 开发8/测试8人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "渠道管理-车商入驻",
+      "name": "线上签署",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:短信。",
+      "complexity": "低",
+      "reference": "渠道管理-车商入驻 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "渠道管理-车商入驻",
+      "name": "企微消息通知",
+      "effort_days": 4.5,
+      "description": "开发4人日；测试0.5人日；端侧:企微。",
+      "complexity": "低",
+      "reference": "渠道管理-车商入驻 开发4/测试0.5人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "渠道管理-车商入驻",
+      "name": "车商人员信息维护",
+      "effort_days": 8,
+      "description": "测试8人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "渠道管理-车商入驻 开发0/测试8人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "渠道管理-车商退出",
+      "name": "预退出/预退出审核/退出申请/退出审核",
+      "effort_days": 20,
+      "description": "测试20人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "渠道管理-车商退出 开发0/测试20人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "渠道管理-车商退出",
+      "name": "企微消息通知",
+      "effort_days": 4.5,
+      "description": "开发4人日；测试0.5人日；端侧:企微。",
+      "complexity": "低",
+      "reference": "渠道管理-车商退出 开发4/测试0.5人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "渠道管理-车商信息管理",
+      "name": "信息列表/查看/修改/历史记录/合同协议管理",
+      "effort_days": 12,
+      "description": "测试12人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "渠道管理-车商信息管理 开发0/测试12人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "渠道管理-其他",
+      "name": "资方/合作方维护",
+      "effort_days": 8,
+      "description": "测试8人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "渠道管理-其他 开发0/测试8人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "金融产品管理-产品配置",
+      "name": "车型库/产品配置/车商分组",
+      "effort_days": 21.5,
+      "description": "开发18人日；测试3.5人日；端侧:PC；备注:产品功能已具备，客户需求与产品差异较大，产品更复杂，客户需求更简单。",
+      "complexity": "中",
+      "reference": "金融产品管理-产品配置 开发18/测试3.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "金融产品管理-产品配置",
+      "name": "金融产品查询",
+      "effort_days": 5,
+      "description": "开发4人日；测试1人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "金融产品管理-产品配置 开发4/测试1人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "金融产品管理-计算器",
+      "name": "金融产品试算",
+      "effort_days": 2.5,
+      "description": "开发2人日；测试0.5人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "金融产品管理-计算器 开发2/测试0.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "金融产品管理-计算器",
+      "name": "还款计划试算",
+      "effort_days": 5,
+      "description": "开发4人日；测试1人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "金融产品管理-计算器 开发4/测试1人日"
+    },
+    {
+      "system": "已有系统测试+bug修复",
+      "module": "风控",
+      "name": "黑名单/重复校验",
+      "effort_days": 4,
+      "description": "测试4人日；端侧:PC；备注:产品功能已具备，可复用，开发几乎没有工作量，主要在测试。",
+      "complexity": "低",
+      "reference": "风控 开发0/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "贷中-请款",
+      "name": "申请/登记上传",
+      "effort_days": 16,
+      "description": "开发8人日；测试8人日；端侧:APP；备注:产品功能已具备,需要做客制化改动。",
+      "complexity": "中",
+      "reference": "贷中-请款 开发8/测试8人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "贷中-请款",
+      "name": "审核/记录查询",
+      "effort_days": 8,
+      "description": "开发4人日；测试4人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "贷中-请款 开发4/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "贷前-预审进件管理",
+      "name": "预审单生成/代填/修改/提交/登记/进件查询",
+      "effort_days": 30,
+      "description": "开发24人日；测试6人日；端侧:APP；备注:新功能，需定制化开发。",
+      "complexity": "高",
+      "reference": "贷前-预审进件管理 开发24/测试6人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "贷前-预审进件管理",
+      "name": "客户扫码填写预审单信息/多语言/进件查询",
+      "effort_days": 12.5,
+      "description": "开发10人日；测试2.5人日；端侧:小程序；备注:当地语言就是新疆的语言，可以提供初版翻译，用户支持人员确认。",
+      "complexity": "中",
+      "reference": "贷前-预审进件管理 开发10/测试2.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "贷前-预审进件管理",
+      "name": "预审单分配/审核/智能推荐/进件提交/单据维护/进件查询",
+      "effort_days": 62.5,
+      "description": "开发50人日；测试12.5人日；端侧:PC；备注:智能推荐规则？按照客户贷款年限、贷款额、客户等级、利率推荐金融产品或资方。",
+      "complexity": "高",
+      "reference": "贷前-预审进件管理 开发50/测试12.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "保险管理",
+      "name": "线索生成/处理",
+      "effort_days": 15,
+      "description": "开发12人日；测试3人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "保险管理 开发12/测试3人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "客户管理",
+      "name": "客户信息维护",
+      "effort_days": 12.5,
+      "description": "开发10人日；测试2.5人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "客户管理 开发10/测试2.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "资产管理",
+      "name": "GPS信息维护/车辆抵押信息维护/客户车辆查询",
+      "effort_days": 17.5,
+      "description": "开发14人日；测试3.5人日；端侧:APP；备注:GPS 安装信息，不用对接三方，界面提供手工维护功能即可。",
+      "complexity": "中",
+      "reference": "资产管理 开发14/测试3.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "资产管理",
+      "name": "客户车辆/保险信息维护",
+      "effort_days": 17.5,
+      "description": "开发14人日；测试3.5人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "资产管理 开发14/测试3.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "车商生态服务",
+      "name": "8个接口对接/调用服务清单/费用维护",
+      "effort_days": 45,
+      "description": "开发36人日；测试9人日；端侧:PC。",
+      "complexity": "高",
+      "reference": "车商生态服务 开发36/测试9人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "车商生态服务",
+      "name": "调用服务清单",
+      "effort_days": 12.5,
+      "description": "开发10人日；测试2.5人日；端侧:APP。",
+      "complexity": "中",
+      "reference": "车商生态服务 开发10/测试2.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-车商佣金",
+      "name": "规则配置/计算/确认/明细查询",
+      "effort_days": 20,
+      "description": "开发16人日；测试4人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "财务管理-车商佣金 开发16/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-车商佣金",
+      "name": "明细查询",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "财务管理-车商佣金 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-车商生态服务费",
+      "name": "结算单生成/确认/明细查询",
+      "effort_days": 20,
+      "description": "开发16人日；测试4人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "财务管理-车商生态服务费 开发16/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-车商生态服务费",
+      "name": "明细查询",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "财务管理-车商生态服务费 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-其他功能",
+      "name": "费用类型/发票维护/凭证上传/费用维护",
+      "effort_days": 25,
+      "description": "开发20人日；测试5人日；端侧:PC。",
+      "complexity": "高",
+      "reference": "财务管理-其他功能 开发20/测试5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "财务管理-其他功能",
+      "name": "费用类型/发票维护/凭证上传/费用维护",
+      "effort_days": 32.5,
+      "description": "开发26人日；测试6.5人日；端侧:APP。",
+      "complexity": "高",
+      "reference": "财务管理-其他功能 开发26/测试6.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-卡券",
+      "name": "卡券维护/发放/核销记录",
+      "effort_days": 19,
+      "description": "开发15人日；测试4人日；端侧:PC；备注:暂不核销卡券，实现发放功能，界面上提供状态维护功能即可。",
+      "complexity": "中",
+      "reference": "运营管理-卡券 开发15/测试4人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-卡券",
+      "name": "我的卡券",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "运营管理-卡券 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-车商圈",
+      "name": "帖子发布/我的帖子",
+      "effort_days": 37.5,
+      "description": "开发30人日；测试7.5人日；端侧:APP。",
+      "complexity": "高",
+      "reference": "运营管理-车商圈 开发30/测试7.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-车商圈",
+      "name": "贴子审核",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:PC。",
+      "complexity": "低",
+      "reference": "运营管理-车商圈 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-APP公告",
+      "name": "公告维护/审核",
+      "effort_days": 17.5,
+      "description": "开发14人日；测试3.5人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "运营管理-APP公告 开发14/测试3.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "运营管理-APP公告",
+      "name": "公告展示",
+      "effort_days": 7.5,
+      "description": "开发6人日；测试1.5人日；端侧:APP。",
+      "complexity": "低",
+      "reference": "运营管理-APP公告 开发6/测试1.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "小程序（布局）",
+      "name": "首页/预审/我的/申请查看/登录/注册/注销",
+      "effort_days": 50,
+      "description": "开发40人日；测试10人日；端侧:小程序。",
+      "complexity": "高",
+      "reference": "小程序（布局） 开发40/测试10人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "车商APP（布局）",
+      "name": "首页/线索/我的",
+      "effort_days": 37.5,
+      "description": "开发30人日；测试7.5人日；端侧:APP。",
+      "complexity": "高",
+      "reference": "车商APP（布局） 开发30/测试7.5人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "报表分析",
+      "name": "经营/产品",
+      "effort_days": 12.5,
+      "description": "开发10人日；测试3人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "报表分析 开发10/测试3人日"
+    },
+    {
+      "system": "功能开发",
+      "module": "报表分析",
+      "name": "业绩",
+      "effort_days": 10,
+      "description": "开发8人日；测试2人日；端侧:APP。",
+      "complexity": "中",
+      "reference": "报表分析 开发8/测试2人日"
+    },
+    {
+      "system": "数据迁移",
+      "module": "数据迁移",
+      "name": "基本数据导入",
+      "effort_days": 10,
+      "description": "开发8人日；测试2人日；端侧:PC。",
+      "complexity": "中",
+      "reference": "数据迁移 开发8/测试2人日"
+    },
+    {
+      "system": "数据迁移",
+      "module": "数据迁移",
+      "name": "业务数据清洗，导入",
+      "effort_days": 19,
+      "description": "开发15人日；测试4人日；端侧:PC；备注:数据迁移数据量可参考马英经理发出的需求文档中，关于非功能需求的描述。。",
+      "complexity": "中",
+      "reference": "数据迁移 开发15/测试4人日"
+    },
+    {
+      "system": "项目级(设计/验收/管理)",
+      "module": "功能设计",
+      "name": "功能设计",
+      "effort_days": 80,
+      "description": "开发80人日。",
+      "complexity": "高",
+      "reference": "功能设计 开发80/测试0人日"
+    },
+    {
+      "system": "项目级(设计/验收/管理)",
+      "module": "UI设计",
+      "name": "UI设计",
+      "effort_days": 40,
+      "description": "开发40人日。",
+      "complexity": "高",
+      "reference": "UI设计 开发40/测试0人日"
+    },
+    {
+      "system": "项目级(设计/验收/管理)",
+      "module": "客户验收/用户手册/上线准备",
+      "name": "客户验收/用户手册/上线准备",
+      "effort_days": 40,
+      "description": "开发20人日；测试20人日。",
+      "complexity": "高",
+      "reference": "客户验收/用户手册/上线准备 开发20/测试20人日"
+    },
+    {
+      "system": "项目级(设计/验收/管理)",
+      "module": "上线跟踪",
+      "name": "上线跟踪",
+      "effort_days": 20,
+      "description": "开发20人日。",
+      "complexity": "高",
+      "reference": "上线跟踪 开发20/测试0人日"
+    },
+    {
+      "system": "项目级(设计/验收/管理)",
+      "module": "管理工时",
+      "name": "管理工时",
+      "effort_days": 80,
+      "description": "开发80人日。",
+      "complexity": "高",
+      "reference": "管理工时 开发80/测试0人日"
+    }
+  ],
+  "summary": {
+    "user_development": 304.0,
+    "admin_development": 695.5,
+    "total_development_effort": 999.5,
+    "testing_effort": 0,
+    "dev_effort": 760,
+    "other_fixed": {
+      "ui_ux_design": 0,
+      "communication": 0,
+      "environment": 0,
+      "acceptance": 0
+    },
+    "total_effort": 999.5
+  },
+  "notes": [
+    "本版(v5)为甲方2026-07-07最终核定版，总工时1000人日(50人月)，开发760+测试240。",
+    "数据来源:data/current/汽车金融车商管理平台估算.xlsx「估算明细」Sheet，49行明细，每行含开发工时(F列)与测试工时(G列)拆分。",
+    "项目周期:2026-08需求→09-11开发/设计/测试→12 UAT/上线→2027-01运维，共6个月。",
+    "人员投入50人月:PM4+功能设计4+UI2+测试12+前端14+后端14。",
+    "项目级条目:功能设计80+UI设计40+客户验收/手册/上线准备40+上线跟踪20+管理工时80=260人日。",
+    "No.41报表(经营/产品)合计12.5(开发10+测试3=13,原表微差0.5),按原表合计计入。",
+    "已有系统测试+bug修复(开发工时=0):系统管理20+工作台4+车商入驻人员维护8+车商退出20+车商信息管理12+资方合作方8+风控4=76人日。",
+    "8个车商生态服务接口已含在车商生态服务模块(开发46+测试11.5=57.5人日)。"
+  ]
+}
