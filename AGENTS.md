@@ -31,10 +31,13 @@
 - `scripts/metadata_schema.py` - **共享**：metadata.json schema 校验（单一真相源，被多个脚本 import）
 - `scripts/history.py` - **共享**：history.json 自学习写入逻辑（归档时回填功能模式库）
 - `scripts/logging_setup.py` - **共享**：统一日志配置（UTF-8 + [LEVEL] 前缀）
-- `scripts/generate_excel.py` - 从 `metadata.json` 生成 Excel 文件
+- `scripts/generate_excel.py` - 从 `metadata.json` 生成 Excel 文件（**8 列布局**，支持 sub_systems 多端结构）
 - `scripts/read_excel.py` - 读取工时估算 Excel 文件，显示详细工时信息
 - `scripts/archive_estimation.py` - 将当前估算归档到历史（同时更新 index.json + history.json）
 - `scripts/generate_dev_plan.py` - 生成开发计划甘特图 HTML
+
+> 已废弃：旧版 6 列 Excel 布局（#/系统/模块/功能/工时/描述）已被 8 列布局取代；
+> `scripts/migrate_history.py` 为一次性迁移脚本，已完成使命并删除。
 
 ## 工作流程
 
@@ -46,7 +49,7 @@
 1. 查找历史参考 → 2. 需求分析 → 3. 工时估算 → 4. 生成文件并验证 → 5. 用户确认与归档
 
 **第4步详细说明**（生成文件并验证）：
-   - 运行 `generate_excel.py` 生成 `estimate.xlsx`
+   - 运行 `generate_excel.py` 生成 `{项目名}估算.xlsx`（8 列布局）
    - 运行 `read_excel.py` 读取并核对工时合计是否与 `metadata.json` 一致
    - 如不一致，检查并修正 `metadata.json` 后重新生成
 
@@ -74,7 +77,45 @@
 
 ## Excel 格式
 
-Excel 格式规范详见 skill 的 `references/effort-standards.md`，由 `generate_excel.py` 脚本自动生成。
+当前使用 **8 列布局**（由 `generate_excel.py` 自动生成），格式规范详见 skill 的 `references/effort-standards.md`。
+
+### 列布局
+
+| 列 | 表头 | 合并规则 | 对齐 |
+|----|------|---------|------|
+| A | # | 按 (module, name) 分组合并 | 居中+上对齐 |
+| B | 模块 | 按连续相同值合并 | 左+上对齐 |
+| C | 功能 | 按 name 分组合并 | 左+上对齐 |
+| D | 需求类型 | 按连续相同值合并 | 左+上对齐 |
+| E | 描述 | 不合并（每行独立） | 左+上对齐 |
+| F | 系统 | 不合并（企微/PC后台/-） | 左+上对齐 |
+| G | 工时(人天) | 不合并 | **右+上对齐** |
+| H | 备注 | 不合并 | 左+上对齐 |
+
+### metadata.json 结构（新）
+
+支持 `sub_systems` 数组，一个功能可跨企微+PC后台多行：
+
+```json
+{
+  "module": "功能开发",
+  "name": "评论支持图片",
+  "requirement_type": "功能优化",
+  "description": "推文评论支持上传图片",
+  "sub_systems": [
+    {"system": "企微", "effort_days": 4, "remark": "上传9张图片"},
+    {"system": "PC后台", "effort_days": 1, "remark": "评论管理显示缩略图"}
+  ]
+}
+```
+
+可选字段：`requirement_type`（需求类型）、`remark`（备注）。
+旧的单 system 字段结构仍向后兼容。
+
+### 公式
+
+- 功能测试行：`=ROUNDUP(SUM(开发区间)*0.15,0)`（动态计算）
+- 合计行：`=ROUNDUP(SUM(所有行),0)`，F 列标"合计"
 
 ## 开发约定
 
@@ -229,7 +270,7 @@ python scripts/generate_dev_plan.py <config.json> [output.html]
 - 此工具通过归档积累历史数据以提高估算准确度（自学习机制：归档时
   `archive_estimation.py` 把新 feature 并入 `history.json`，命中的功能模式
   回填 `examples`）
-- 当前库状态：10 个项目、162 个 feature、22 种功能模式均有历史实例
+- 当前库状态：11 个项目、223 个 feature、24 种功能模式均有历史实例
 - 准确度随项目数提升：1-5 个 ±30%、5-10 个 ±20%、10-20 个 ±15%
 - 始终优先参考历史数据而非标准工时表
 - 有疑问时，主动询问用户以明确需求
