@@ -74,32 +74,51 @@ def load_metadata(metadata_path: str) -> dict:
 
 
 def _build_formats(wb: xlsxwriter.Workbook) -> dict:
-    """构造所有单元格样式，返回格式字典。"""
+    """构造所有单元格样式，返回格式字典。
+
+    对齐规则（按用户要求）：
+    - A/B/C/D/E/F/H 列：左对齐 + 上对齐
+    - G 列（工时）：右对齐 + 上对齐
+    - 表头：居中 + 垂直居中（保持可读性）
+    """
     return {
         "header": wb.add_format({
             "bold": True, "font_color": COLOR_WHITE, "bg_color": COLOR_HEADER_BG,
             "border": 1, "border_color": COLOR_BLACK,
             "align": "center", "valign": "vcenter", "text_wrap": True,
         }),
+        # 普通单元格：左对齐 + 上对齐（A/B/C/D/E/F/H 列）
         "cell": wb.add_format({
             "border": 1, "border_color": COLOR_BLACK,
-            "valign": "vcenter", "text_wrap": True,
+            "align": "left", "valign": "top", "text_wrap": True,
         }),
-        "cell_center": wb.add_format({
+        # 工时单元格：右对齐 + 上对齐（G 列）
+        "cell_effort": wb.add_format({
             "border": 1, "border_color": COLOR_BLACK,
-            "align": "center", "valign": "vcenter",
+            "align": "right", "valign": "top",
         }),
+        # 系统单元格：左对齐 + 上对齐（F 列）
+        "cell_system": wb.add_format({
+            "border": 1, "border_color": COLOR_BLACK,
+            "align": "left", "valign": "top",
+        }),
+        # 合并单元格：左对齐 + 上对齐
         "merge": wb.add_format({
             "border": 1, "border_color": COLOR_BLACK,
-            "align": "left", "valign": "vcenter", "text_wrap": True,
+            "align": "left", "valign": "top", "text_wrap": True,
         }),
+        # 合并单元格（序号/其他行 C-E）：居中 + 上对齐
         "merge_center": wb.add_format({
             "border": 1, "border_color": COLOR_BLACK,
-            "align": "center", "valign": "vcenter",
+            "align": "center", "valign": "top", "text_wrap": True,
         }),
-        "total": wb.add_format({"bold": True, "valign": "vcenter"}),
-        "total_center": wb.add_format({
-            "bold": True, "align": "center", "valign": "vcenter",
+        # 合计行工时：右对齐 + 上对齐
+        "total": wb.add_format({
+            "bold": True, "align": "right", "valign": "top",
+        }),
+        # 合计行其他单元格：左对齐 + 上对齐
+        "total_left": wb.add_format({
+            "bold": True, "align": "left", "valign": "top",
         }),
     }
 
@@ -137,13 +156,15 @@ def _collect_rows(metadata: dict, interactive: bool = False) -> list[tuple]:
                 prev_module_name = key
 
             # 遍历 sub_systems，每个系统一行
+            # 描述优先用 sub_system 自己的，没有则回退到 feature 级描述
+            feature_desc = feature.get("description", "")
             for sub in feature.get("sub_systems", []):
                 rows.append((
                     seq_num,
                     module,
                     name,
                     req_type,
-                    sub.get("description", ""),
+                    sub.get("description") or feature_desc,
                     sub.get("system", ""),
                     round_half(sub.get("effort_days", 0)),
                     sub.get("remark", ""),
@@ -303,11 +324,12 @@ def _merge_consecutive(ws, rows: list[tuple], col: int, fmt_key: str,
 
 def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
     """
-    对数据行应用合并单元格（对齐 Facility 三期新表格结构）。
+    对数据行应用合并单元格。
 
     合并规则：
     1. 功能区行（非"其他"模块）：
-       - A(#)/C(功能)/E(描述) 列：按 (module, name) 分组合并
+       - A(#)/C(功能) 列：按 (module, name) 分组合并
+       - E(描述) 列：**不合并**，每行独立显示（企微行/PC行各有自己的描述）
        - B(模块) 列：按连续相同值合并（同模块跨多功能）
        - D(需求类型) 列：按连续相同值合并
     2. 其他工时行（功能测试/验收发布/需求沟通）：合并 C-E 列
@@ -317,7 +339,8 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
     if total == 0:
         return
 
-    # 第一轮：功能区按 (module, name) 分组合并 A/C/E 列
+    # 第一轮：功能区按 (module, name) 分组合并 A(#) 和 C(功能) 列
+    # 注意：E(描述) 不合并，每行独立显示各自的描述
     i = 0
     while i < total:
         mod_val = rows[i][1]
@@ -336,8 +359,6 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
                            rows[i][0], fmts["merge_center"])
             ws.merge_range(r_start, COL_NAME, r_end, COL_NAME,
                            name_val, fmts["merge"])
-            ws.merge_range(r_start, COL_DESC, r_end, COL_DESC,
-                           rows[i][4], fmts["merge"])
         i = group_end + 1
 
     # 第二轮：B(模块) 和 D(需求类型) 列按连续相同值合并
@@ -383,13 +404,13 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
     ws.write_formula(
         test_row_num, COL_EFFORT,
         test_formula,
-        fmts["total_center"],
+        fmts["cell_effort"],
     )
 
     # 合计行
     total_row = len(rows) + 1  # 0-based，header 在第 0 行
     for c in range(NUM_COLS):
-        ws.write(total_row, c, "", fmts["total_center"])
+        ws.write(total_row, c, "", fmts["total_left"])
 
     # 写入合计公式: =ROUNDUP(SUM(所有数据行工时),0)
     # 求和范围：从首数据行到合计行的前一行（包含功能测试公式行 + 验收/需求等）
@@ -399,7 +420,7 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
         total_formula,
         fmts["total"],
     )
-    ws.write(total_row, COL_SYS, "合计", fmts["total"])
+    ws.write(total_row, COL_SYS, "合计", fmts["total_left"])
 
 
 def generate_excel(metadata_path: str, output_path: str | None = None, interactive: bool = False) -> str:
@@ -438,15 +459,16 @@ def generate_excel(metadata_path: str, output_path: str | None = None, interacti
     rows = _collect_rows(metadata, interactive=interactive)
     for i, (seq, module, name, req_type, desc, system, effort, note) in enumerate(rows):
         r = i + 1  # header 在第 0 行
+        # A/B/C/D/E/F/H 列：左对齐 + 上对齐
         ws.write(r, COL_SEQ, seq, fmts["merge_center"])
         ws.write(r, COL_MOD, module, fmts["cell"])
         ws.write(r, COL_NAME, name, fmts["cell"])
         ws.write(r, COL_TYPE, req_type, fmts["cell"])
         ws.write(r, COL_DESC, desc, fmts["cell"])
-        ws.write(r, COL_SYS, system, fmts["cell_center"])
-        # 功能测试行 effort=None：写公式，其他行写数值
+        ws.write(r, COL_SYS, system, fmts["cell_system"])
+        # G 列（工时）：右对齐 + 上对齐
         if effort is not None:
-            ws.write(r, COL_EFFORT, effort, fmts["cell_center"])
+            ws.write(r, COL_EFFORT, effort, fmts["cell_effort"])
         else:
             # 功能测试行，稍后写入公式
             pass
