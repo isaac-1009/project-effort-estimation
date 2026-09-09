@@ -13,9 +13,9 @@
 
 | 层级 | 位置 | 职责 |
 |------|------|------|
-| **Skill** | `~/.claude/skills/project-estimation/` | 工作流定义、工时标准、执行逻辑 |
+| **Skill** | 用户全局技能目录（本机为 `~/.agents/skills/project-estimation/`） | 工作流定义、工时标准、执行逻辑 |
 | **数据** | `project-effort-estimation/data/` | 历史项目、功能模式库、当前工作区 |
-| **脚本** | `project-effort-estimation/scripts/` | Excel 生成、项目归档 |
+| **脚本** | `project-effort-estimation/scripts/` | Excel/报价生成、项目归档、甘特图 |
 
 ## 操作流程
 
@@ -49,7 +49,16 @@
 1. **提供需求** — 向 Claude 提供项目需求文本
 2. **自动处理** — Claude 执行 5 步工作流，生成文件到 `data/current/`
 3. **审查确认** — 查看 `data/current/` 中的 Excel 和分析文档
-4. **归档** — 确认无误后运行 `python scripts/archive_estimation.py`
+4. **归档** — 确认无误后运行 `python scripts/archive_estimation.py`（若设置了环境变量 `ARCHIVE_MIRROR_DIR`，归档时会把整个归档文件夹额外复制一份到该目录，用于同步到 WeDrive 等）
+
+### 生成报价版
+
+需要对外报价时，基于当前估算生成一份合计恰好等于目标总工时的报价版
+（开发项按比例上浮并精确配平到 0.5 粒度）：
+
+```bash
+python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
+```
 
 ## 工时估算原理
 
@@ -76,7 +85,8 @@
 | 工单系统 | 15人天 | 10-20 |
 | ... | ... | ... |
 
-完整 24 种模式见 `C:\Users\admin\.claude\skills\project-estimation\references\effort-standards.md`
+完整 24 种模式与工时标准见用户全局技能目录下的
+`project-estimation/references/effort-standards.md`
 
 ### 2. 复杂度系数
 
@@ -101,13 +111,14 @@
 
 ```
 开发工时 = Σ(各功能估算工时)
-测试工时 = 开发工时 × 15%（默认）
-固定工时 = 需求沟通(3) + 环境搭建(2) + 验收发布(1) = 6人天
+测试工时 = ROUNDUP(开发工时 × 15%)     ← Excel 公式动态计算
+固定工时 = 需求沟通(1-3) + 环境搭建(2，仅全新独立系统) + 验收发布(1)
 ────────────────────────────────────────
 总工时   = 开发工时 + 测试工时 + 固定工时
 ```
 
-所有工时四舍五入到 0.5 的整数倍（最小估算单位）。
+现有系统新增功能不需要环境搭建工时；所有工时四舍五入到 0.5 的整数倍
+（最小估算单位），合计行不做 ROUNDUP。
 
 ## 数据流转
 
@@ -130,7 +141,7 @@ data/
 
 ```
 project-effort-estimation/
-├── CLAUDE.md                        # Claude Code 项目指南
+├── AGENTS.md / CLAUDE.md            # AI 编码助手项目指南（内容同步维护）
 ├── README.md                        # 本文件
 ├── requirements.txt                 # Python 依赖（xlsxwriter, openpyxl）
 ├── pyproject.toml                   # pytest/ruff 配置 + 依赖声明
@@ -143,21 +154,25 @@ project-effort-estimation/
 │   ├── metadata_schema.py          # 共享：metadata.json schema 校验（单一真相源）
 │   ├── history.py                  # 共享：history.json 自学习写入逻辑
 │   ├── logging_setup.py            # 共享：统一日志配置
-│   ├── generate_excel.py           # 从 metadata.json 生成 Excel 估算
+│   ├── path_safety.py              # 共享：路径安全助手（文件名清洗 + 越界校验）
+│   ├── generate_excel.py           # 从 metadata.json 生成 Excel 估算（8 列布局）
+│   ├── generate_quote.py           # 生成报价版估算（目标总工时精确配平）
 │   ├── read_excel.py               # 读取/校验 Excel 估算文件
-│   ├── archive_estimation.py       # 归档当前估算到历史库
+│   ├── archive_estimation.py       # 归档当前估算到历史库（含镜像复制 + .bak 备份）
 │   └── generate_dev_plan.py        # 生成甘特图 HTML
-└── tests/                          # pytest 单元测试
+└── tests/                          # pytest 单元测试（8 个文件、94 项用例）
 ```
 
 ## Skill 配置
 
-估算工作流定义在以下文件中（全局配置，不在本仓库中）：
+估算工作流定义在用户全局技能目录中（不在本仓库中，实际路径取决于本机配置）：
 
 | 文件 | 内容 |
 |------|------|
-| `~/.claude/skills/project-estimation/SKILL.md` | 5步工作流、执行逻辑、质量检查 |
-| `~/.claude/skills/project-estimation/references/effort-standards.md` | 24种功能模式、复杂度系数、Excel格式规范 |
+| `<skills>/project-estimation/SKILL.md` | 5步工作流、执行逻辑、质量检查 |
+| `<skills>/project-estimation/references/effort-standards.md` | 24种功能模式、复杂度系数、Excel格式规范 |
+
+> 本机（Windows）实际路径为 `C:\Users\<用户名>\.agents\skills\project-estimation\`。
 
 ## 准确度提升机制
 
@@ -167,7 +182,7 @@ project-effort-estimation/
 | 5-10 | ±20% | 有少量历史参考 |
 | 10-20 | ±15% | 功能模式库较完善 |
 
-> 当前库已积累 10 个项目、162 个 feature，22 种功能模式均有历史实例支撑。
+> 当前库已积累 13 个项目、283 个 feature，24 种功能模式中 23 种有历史实例支撑。
 
 ## 安装与开发
 
@@ -190,6 +205,7 @@ python -m pytest tests/   # 运行全部单元测试
 
 ### 版本控制
 
-项目使用 git 管理。`.claude/settings.local.json` 已在 `.gitignore` 中排除
-（含本机敏感配置）。Excel/HTML 等二进制产物通过 `.gitattributes` 标记为
+项目使用 git 管理。`.gitignore` 排除了本机 AI 工具目录
+（`.claude/settings.local.json`、`.zcode/`、`.mimosa/`、`.codegraph/`）
+和 Office 锁文件。Excel/HTML 等二进制产物通过 `.gitattributes` 标记为
 binary，文本文件统一 LF 行尾。

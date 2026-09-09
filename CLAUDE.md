@@ -14,10 +14,10 @@
 
 **Skill**（在用户全局配置中定义，不在此仓库中）：
 
-- `~/.claude/skills/project-estimation/SKILL.md` - 估算工作流、执行流程
-- `~/.claude/skills/project-estimation/references/effort-standards.md` - 标准工时表、功能模式、Excel 格式规范
+- `<skills>/project-estimation/SKILL.md` - 估算工作流、执行流程
+- `<skills>/project-estimation/references/effort-standards.md` - 标准工时表、功能模式、Excel 格式规范
 
-> 注：实际路径取决于本机配置（如 `%USERPROFILE%\.claude\skills\...`）。仓库内不包含 skill 本体，只含数据与辅助脚本。
+> 注：实际路径取决于本机配置（本机为 `%USERPROFILE%\.agents\skills\project-estimation\`）。仓库内不包含 skill 本体，只含数据与辅助脚本。
 
 **数据结构**：
 
@@ -31,10 +31,12 @@
 - `scripts/metadata_schema.py` - **共享**：metadata.json schema 校验（单一真相源，被多个脚本 import）
 - `scripts/history.py` - **共享**：history.json 自学习写入逻辑（归档时回填功能模式库）
 - `scripts/logging_setup.py` - **共享**：统一日志配置（UTF-8 + [LEVEL] 前缀）
+- `scripts/path_safety.py` - **共享**：路径安全助手（文件名清洗 + 子路径越界校验）
 - `scripts/generate_excel.py` - 从 `metadata.json` 生成 Excel 文件（**8 列布局**，支持 sub_systems 多端结构）
 - `scripts/read_excel.py` - 读取工时估算 Excel 文件，显示详细工时信息
 - `scripts/archive_estimation.py` - 将当前估算归档到历史（同时更新 index.json + history.json）
 - `scripts/generate_dev_plan.py` - 生成开发计划甘特图 HTML
+- `scripts/generate_quote.py` - 生成报价版估算（给定目标总工时，按比例上浮开发项并精确配平）
 
 > 已废弃：旧版 6 列 Excel 布局已被 8 列布局取代；`migrate_history.py` 一次性迁移脚本已完成使命并删除。
 
@@ -50,6 +52,8 @@
 **第4步详细说明**（生成文件并验证）：
    - 运行 `generate_excel.py` 生成 `{项目名}估算.xlsx`（8 列布局）
    - 运行 `read_excel.py` 读取并核对工时合计是否与 `metadata.json` 一致
+   - 注意：`read_excel.py` 显示的总计**不含公式行**（功能测试行），
+     比对时须按 ROUNDUP 公式用 Python 实算后再加上
    - 如不一致，检查并修正 `metadata.json` 后重新生成
 
 ### 文件管理
@@ -69,6 +73,7 @@
 - `project_id` 统一用归档日期生成（格式 `{name}_YYYYMMDD`），与 folder 同源，避免年份漂移
 - 更新 `data/estimations/index.json`（项目索引 + 功能关键词索引，关键词数据驱动）
 - 更新 `data/history.json`（自学习：把新 feature 并入 projects，命中的功能模式回填 examples）
+- 若设置了环境变量 `ARCHIVE_MIRROR_DIR`，额外把整个归档文件夹复制一份到该目录（用于同步到 WeDrive 等；失败仅告警，不影响归档，也不回滚）
 - 清空 `data/current/` 准备下一个项目
 - 若目标 folder 已存在，旧目录会备份为 `{folder}.bak.{时间戳}` 而非直接删除
 
@@ -86,7 +91,7 @@
 | B | 模块 | 按连续相同值合并 | 左+上对齐 |
 | C | 功能 | 按 name 分组合并 | 左+上对齐 |
 | D | 需求类型 | 按连续相同值合并 | 左+上对齐 |
-| E | 描述 | 不合并（每行独立） | 左+上对齐 |
+| E | 描述 | 功能组内各行相同时合并，不同则独立 | 左+上对齐 |
 | F | 系统 | 不合并（企微/PC后台/-） | 左+上对齐 |
 | G | 工时(人天) | 不合并 | **右+上对齐** |
 | H | 备注 | 不合并 | 左+上对齐 |
@@ -114,7 +119,7 @@
 ### 公式
 
 - 功能测试行：`=ROUNDUP(SUM(开发区间)*0.15,0)`（动态计算）
-- 合计行：`=ROUNDUP(SUM(所有行),0)`，F 列标"合计"
+- 合计行：`=SUM(所有行)`（不做 ROUNDUP，保留 0.5 粒度），F 列标"合计"
 
 ## 开发约定
 
@@ -124,6 +129,7 @@
 - `metadata.json` 的 schema 校验统一走 `scripts/metadata_schema.py`，**不要**在其它脚本里复制校验逻辑
 - `history.json` 的自学习写入统一走 `scripts/history.py` 的 `update_history()`
 - 日志统一用 `scripts/logging_setup.py` 的 `setup_logging()`，**不要**用 `print("[INFO]...")` 手拼前缀
+- 路径拼接统一走 `scripts/path_safety.py` 的 `sanitize_filename()` / `ensure_within()`，动态片段（如项目名）写盘前必须清洗与校验
 
 **编码规范**：
 - 脚本入口用 `argparse`，库函数内**不要**调 `sys.exit()`（抛异常由 `__main__` 决定退出码）
@@ -152,6 +158,9 @@ python scripts/archive_estimation.py
 
 # 生成开发计划甘特图（需要 config.json 配置文件）
 python scripts/generate_dev_plan.py data/current/dev-plan-config.json
+
+# 生成报价版估算（合计恰好等于给定总工时）
+python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
 
 # 查看项目索引
 cat data/estimations/index.json
@@ -269,7 +278,7 @@ python scripts/generate_dev_plan.py <config.json> [output.html]
 - 此工具通过归档积累历史数据以提高估算准确度（自学习机制：归档时
   `archive_estimation.py` 把新 feature 并入 `history.json`，命中的功能模式
   回填 `examples`）
-- 当前库状态：11 个项目、223 个 feature、24 种功能模式均有历史实例
+- 当前库状态：13 个项目、283 个 feature；24 种功能模式中 23 种已有历史实例
 - 准确度随项目数提升：1-5 个 ±30%、5-10 个 ±20%、10-20 个 ±15%
 - 始终优先参考历史数据而非标准工时表
 - 有疑问时，主动询问用户以明确需求
