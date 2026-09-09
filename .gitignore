@@ -34,3 +34,8 @@ Desktop.ini
 
 # Local Claude settings (per-machine, not shared)
 .claude/settings.local.json
+
+# Local AI-tool workspace dirs (session plans / scan artifacts, per-machine)
+.zcode/
+.mimosa/
+.codegraph/

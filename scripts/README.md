@@ -60,8 +60,12 @@ python scripts/archive_estimation.py
 
 # 此操作会：
 # 1. 将 data/current/ 移动到 data/estimations/{项目名}_{日期}/
-# 2. 更新 data/estimations/index.json
-# 3. 清空 data/current/ 准备下次使用
+#    （目标已存在则备份为 {folder}.bak.{时间戳}，不会静默覆盖）
+# 2. 更新 data/estimations/index.json（项目索引 + 功能关键词索引）
+# 3. 更新 data/history.json（自学习：命中的功能模式回填 examples）
+# 4. 清空 data/current/ 准备下次使用
+# 5. 若设置了环境变量 ARCHIVE_MIRROR_DIR，把整个归档文件夹额外复制一份
+#    到该目录（用于同步到 WeDrive 等；失败仅告警，不影响归档）
 ```
 
 ## 📝 metadata.json 格式
@@ -137,3 +141,18 @@ A: 归档后的文件保存在 `data/estimations/` 文件夹中，可以手动�
 
 ### Q: 如何重新估算已有项目？
 A: 在 `data/current/` 中创建新的 `metadata.json`，基于历史项目参考。
+
+
+## 💰 报价版估算（generate_quote.py）
+
+给定目标总工时，基于基准 metadata 生成"报价版"Excel：开发工时按比例上浮（0.5 人天粒度、
+最大余数法配平，每行不低于基准），系统测试仍按 `ROUNDUP(开发×15%)` 公式自动计提，
+需求沟通/验收发布维持不变，最终合计精确等于目标值。
+
+```bash
+python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
+```
+
+- 目标值必须 ≥ 基准总工时，且为 0.5 人天的整数倍
+- 受测试计提取整影响，个别目标值不可达（如 189→251），脚本会报错并给出最接近的可行值
+- 默认输出到 `data/current/{项目名}估算_报价版.xlsx`

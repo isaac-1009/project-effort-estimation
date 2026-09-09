@@ -453,6 +453,13 @@ def main():
     else:
         output_path = Path(__file__).parent.parent / "data" / "current" / "dev-plan.html"
 
+    # 显式 resolve 固定语义：输出路径由操作者通过 CLI 指定（本机自用工具），
+    # 但若指向已存在的目录则直接报错，而不是在目录上 open 失败
+    output_path = Path(output_path).resolve()
+    if output_path.is_dir():
+        print(f"Error: output path is a directory: {output_path}")
+        sys.exit(1)
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)

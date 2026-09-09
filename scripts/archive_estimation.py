@@ -15,12 +15,14 @@ import os
 import shutil
 import sys
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 # 共享模块：schema 校验的单一真相源（消除与 generate_excel.py 的复制粘贴）
 from metadata_schema import ValidationError, validate_metadata_schema
 # 共享模块：history.json 自学习写入逻辑
 import history
+# 共享模块：路径安全（文件名清洗 + 子路径越界校验）
+from path_safety import ensure_within, sanitize_filename
 # 统一日志配置（UTF-8 + [LEVEL] 前缀）
 from logging_setup import setup_logging
 
@@ -30,6 +32,10 @@ log = logging.getLogger(__name__)
 
 # 可选的保留 ID 校验格式：name_YYYYMMDD
 _ID_DATE_TAIL_LEN = len("_20260101")  # 9
+
+# 镜像目录环境变量名：设置后归档会把整个归档文件夹额外复制一份到该目录
+# （用于同步到 WeDrive 等外部位置）。路径不入库，避免本机路径泄露。
+_MIRROR_DIR_ENV = "ARCHIVE_MIRROR_DIR"
 
 
 def _normalize_project_id(metadata: dict, archived_date_compact: str) -> str:
@@ -51,6 +57,44 @@ def _normalize_project_id(metadata: dict, archived_date_compact: str) -> str:
     ):
         return raw_id
     return f"{name}_{archived_date_compact}"
+
+
+def _copy_to_mirror(mirror_dir: str, src_folder: str, folder_name: str) -> Optional[str]:
+    """
+    把整个归档文件夹复制一份到镜像目录（用于同步到 WeDrive 等外部位置）。
+
+    尽力而为（best-effort）：
+      - 镜像目录不存在则自动创建
+      - 目标已存在则先备份为 {folder}.bak.{时间戳}（与主归档 222-226 行同源策略）
+      - 任何异常都吞掉，仅 log.warning 并返回 None，绝不影响主归档结果
+
+    Args:
+        mirror_dir:   镜像根目录（来自 ARCHIVE_MIRROR_DIR 环境变量）
+        src_folder:   源归档文件夹（estimations/{folder_name}）
+        folder_name:  归档文件夹名
+
+    Returns:
+        成功返回镜像目标路径，失败返回 None。
+    """
+    try:
+        os.makedirs(mirror_dir, exist_ok=True)
+        mirror_target = ensure_within(
+            mirror_dir, os.path.join(mirror_dir, folder_name)
+        )
+
+        # 复用主归档的安全策略：目标已存在先备份，避免静默覆盖
+        if os.path.exists(mirror_target):
+            backup_name = f"{folder_name}.bak.{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            backup_path = os.path.join(mirror_dir, backup_name)
+            log.warning("Mirror target exists, backing up old folder to: %s", backup_name)
+            shutil.move(mirror_target, backup_path)
+
+        shutil.copytree(src_folder, mirror_target)
+        log.info("   [OK] Mirror copied to: %s", mirror_target)
+        return mirror_target
+    except Exception:
+        log.warning("Mirror copy failed (main archive unaffected)", exc_info=True)
+        return None
 
 
 def load_metadata(metadata_path):
@@ -77,7 +121,8 @@ def update_index(index_path, project_id, metadata, feature_patterns):
     archived_date = datetime.now()
     archived_date_compact = archived_date.strftime('%Y%m%d')
     archived_date_iso = archived_date.strftime('%Y-%m-%d')
-    folder_name = f"{metadata['name']}_{archived_date_compact}"
+    # folder 名含用户可控的 metadata.name，先清洗非法字符防止路径穿越
+    folder_name = f"{sanitize_filename(metadata['name'])}_{archived_date_compact}"
 
     # 添加新项目
     project_info = {
@@ -216,7 +261,10 @@ def archive_current_estimation(force=False):
 
     # 移动文件
     log.info("Moving files to history folder...")
-    target_path = os.path.join(estimations_path, folder_name)
+    # 目标目录由 folder_name（含用户可控的 name）拼出，写盘前校验不越界
+    target_path = ensure_within(
+        estimations_path, os.path.join(estimations_path, folder_name)
+    )
 
     # 安全处理：若目标已存在，先备份为 .bak.{时间戳}，避免静默丢数据
     if os.path.exists(target_path):
@@ -238,10 +286,22 @@ def archive_current_estimation(force=False):
         f.write("Current estimation project files are stored here.\n\n")
         f.write("When estimation is confirmed, use `python scripts/archive_estimation.py` to move it to history.\n")
 
+    # === 镜像复制（best-effort）：设置 ARCHIVE_MIRROR_DIR 后，
+    # 把整个归档文件夹额外复制一份到该目录（如 WeDrive 同步盘）。
+    # 失败仅告警，不影响主归档结果，也不回滚。
+    mirror_dir = os.environ.get(_MIRROR_DIR_ENV)
+    mirror_target = None
+    if mirror_dir:
+        mirror_target = _copy_to_mirror(mirror_dir, target_path, folder_name)
+    else:
+        log.debug("Mirror dir not configured (env %s unset), skip", _MIRROR_DIR_ENV)
+
     log.info("[SUCCESS] Archive completed!")
     log.info("   Project saved to: %s", target_path)
     log.info("   Index updated:    %s", index_path)
     log.info("   History updated:  %s", history_path)
+    if mirror_target:
+        log.info("   Mirror copied to: %s", mirror_target)
     log.info("   current folder cleared, ready for new estimation")
 
     return True

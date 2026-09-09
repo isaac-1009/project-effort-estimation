@@ -15,6 +15,7 @@ feature_patterns[].keywords 数据驱动，不硬编码任何中文业务词。
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 from metadata_schema import ValidationError, validate_metadata_schema
@@ -34,7 +35,14 @@ def load_history(history_path: str) -> dict[str, Any]:
 
 
 def save_history(history_path: str, history: dict[str, Any]) -> None:
-    """写回 history.json（UTF-8、不转义中文、缩进 2）。"""
+    """写回 history.json（UTF-8、不转义中文、缩进 2）。
+
+    本函数只允许写 history.json 本身，防止调用方传入其它路径误写文件。
+    """
+    if os.path.basename(os.path.normpath(history_path)) != "history.json":
+        raise ValidationError(
+            f"save_history refuses to write files other than history.json: {history_path!r}"
+        )
     with open(history_path, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
         f.write("\n")

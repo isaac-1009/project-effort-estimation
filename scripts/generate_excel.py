@@ -206,12 +206,25 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
     other_fixed = summary.get("other_fixed", {})
 
     # 功能测试（公式行，effort=None）
-    seq_num += 1
-    rows.append((
-        seq_num, "功能测试", "-", "", "集成测试，系统测试", "-",
-        None,  # None表示使用公式
-        "",
-    ))
+    # 当测试工时已作为独立 feature 行包含在 features 中时，
+    # 设置 summary.other_fixed.testing = false 可跳过此自动追加，避免重复计算。
+    skip_testing = other_fixed.get("testing", True) is False
+    if not skip_testing:
+        seq_num += 1
+        rows.append((
+            seq_num, "功能测试", "-", "", "集成测试，系统测试", "-",
+            None,  # None表示使用公式
+            "",
+        ))
+
+    # UI设计（位于功能测试与验收发布之间）
+    ui_effort = other_fixed.get("ui_ux_design", other_fixed.get("ui_design", 0))
+    if ui_effort > 0:
+        seq_num += 1
+        rows.append((
+            seq_num, "UI/UX设计", "-", "", "界面设计，交互设计", "-",
+            round_half(ui_effort), "",
+        ))
 
     # 验收发布
     acceptance = other_fixed.get("acceptance", 1)
@@ -229,15 +242,6 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
         rows.append((
             seq_num, "需求沟通", "-", "", "沟通，需求文档", "-",
             round_half(communication), "",
-        ))
-
-    # UI设计
-    ui_effort = other_fixed.get("ui_ux_design", other_fixed.get("ui_design", 0))
-    if ui_effort > 0:
-        seq_num += 1
-        rows.append((
-            seq_num, "UI/UX设计", "-", "", "界面设计，交互设计", "-",
-            round_half(ui_effort), "",
         ))
 
     return rows
@@ -298,6 +302,20 @@ def _interactive_collect_other_rows(metadata: dict, rows: list, seq_num: int) ->
     return rows
 
 
+def desc_merge_value(desc_values: list) -> str | None:
+    """
+    判定一组描述值是否可合并：全部相同且非空时返回该描述，否则返回 None。
+
+    用于功能区（同一 module+name 的多行）内 E(描述) 列的合并决策——
+    仅当企微/PC后台等各行的描述文本完全一致（通常是回退到 feature 级描述）
+    时才合并，各行描述不同时保持独立显示。
+    """
+    first = desc_values[0] if desc_values else None
+    if not first or any(v != first for v in desc_values):
+        return None
+    return first
+
+
 def _merge_consecutive(ws, rows: list[tuple], col: int, fmt_key: str,
                        fmts: dict, is_other: bool = False) -> None:
     """
@@ -329,7 +347,7 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
     合并规则：
     1. 功能区行（非"其他"模块）：
        - A(#)/C(功能) 列：按 (module, name) 分组合并
-       - E(描述) 列：**不合并**，每行独立显示（企微行/PC行各有自己的描述）
+       - E(描述) 列：组内各行描述相同时合并（不同则每行独立显示）
        - B(模块) 列：按连续相同值合并（同模块跨多功能）
        - D(需求类型) 列：按连续相同值合并
     2. 其他工时行（功能测试/验收发布/需求沟通）：合并 C-E 列
@@ -340,7 +358,7 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
         return
 
     # 第一轮：功能区按 (module, name) 分组合并 A(#) 和 C(功能) 列
-    # 注意：E(描述) 不合并，每行独立显示各自的描述
+    # E(描述)：组内描述文本完全一致时一并合并，否则每行独立
     i = 0
     while i < total:
         mod_val = rows[i][1]
@@ -359,6 +377,12 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
                            rows[i][0], fmts["merge_center"])
             ws.merge_range(r_start, COL_NAME, r_end, COL_NAME,
                            name_val, fmts["merge"])
+            desc_val = desc_merge_value(
+                [rows[k][COL_DESC] for k in range(i, group_end + 1)]
+            )
+            if desc_val:
+                ws.merge_range(r_start, COL_DESC, r_end, COL_DESC,
+                               desc_val, fmts["merge"])
         i = group_end + 1
 
     # 第二轮：B(模块) 和 D(需求类型) 列按连续相同值合并
@@ -378,7 +402,7 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
     写总计行：测试工时公式 + 合计公式。
     新格式：
       - 功能测试行：公式 =ROUNDUP(SUM(开发工时)*0.15,0)
-      - 合计行：公式 =ROUNDUP(SUM(所有工时),0)，备注列显示"合计"
+      - 合计行：公式 =SUM(所有工时)（不做 ROUNDUP，保留 0.5 粒度），备注列显示"合计"
     """
     # 找到功能测试行（effort=None的那行）
     test_row_idx = None
@@ -387,34 +411,35 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
             test_row_idx = i
             break
 
-    if test_row_idx is None:
-        log.warning("Function test row not found, skipping formula")
-        return
-
-    # 写入功能测试公式
-    test_row_num = test_row_idx + 1  # +1: header 在第 0 行
     effort_col_letter = xl_col_to_name(COL_EFFORT)
-
-    # 计算开发工时范围（从首数据行到功能测试行的前一行，不含测试行本身）
     first_data_row = 2  # Excel 1-based: header=1, 首数据行=2
-    last_dev_row = test_row_num - 1  # 功能测试行的前一行（开发工时最后一行）
 
-    # 写入公式: =ROUNDUP(SUM(开发工时)*0.15,0)
-    test_formula = f"=ROUNDUP(SUM({effort_col_letter}{first_data_row}:{effort_col_letter}{last_dev_row})*0.15,0)"
-    ws.write_formula(
-        test_row_num, COL_EFFORT,
-        test_formula,
-        fmts["cell_effort"],
-    )
+    # 写入功能测试公式（仅当存在功能测试行时）
+    if test_row_idx is not None:
+        test_row_num = test_row_idx + 1  # +1: header 在第 0 行
+        # 公式串用 1-based 展示行号：功能测试行展示行 = test_row_num + 1，
+        # 故开发工时最后一行（展示行）= test_row_num。
+        # （此前误写为 test_row_num - 1，导致公式漏掉最后一个功能行）
+        last_dev_row = test_row_num
+        # 写入公式: =ROUNDUP(SUM(开发工时)*0.15,0)
+        test_formula = f"=ROUNDUP(SUM({effort_col_letter}{first_data_row}:{effort_col_letter}{last_dev_row})*0.15,0)"
+        ws.write_formula(
+            test_row_num, COL_EFFORT,
+            test_formula,
+            fmts["cell_effort"],
+        )
+    else:
+        log.info("Function test row not found (skipped via other_fixed.testing=false), only writing total row")
 
-    # 合计行
+    # 合计行（无论是否存在功能测试行都写入）
     total_row = len(rows) + 1  # 0-based，header 在第 0 行
     for c in range(NUM_COLS):
         ws.write(total_row, c, "", fmts["total_left"])
 
-    # 写入合计公式: =ROUNDUP(SUM(所有数据行工时),0)
-    # 求和范围：从首数据行到合计行的前一行（包含功能测试公式行 + 验收/需求等）
-    total_formula = f"=ROUNDUP(SUM({effort_col_letter}{first_data_row}:{effort_col_letter}{total_row}),0)"
+    # 写入合计公式: =SUM(所有数据行工时)
+    # 直接 SUM 不做 ROUNDUP：工时允许 0.5 粒度（如报价版 249.5），
+    # ROUNDUP 会把小数合计虚增为整数
+    total_formula = f"=SUM({effort_col_letter}{first_data_row}:{effort_col_letter}{total_row})"
     ws.write_formula(
         total_row, COL_EFFORT,
         total_formula,
@@ -423,19 +448,34 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
     ws.write(total_row, COL_SYS, "合计", fmts["total_left"])
 
 
-def generate_excel(metadata_path: str, output_path: str | None = None, interactive: bool = False) -> str:
+def generate_excel(
+    metadata_path: str | None,
+    output_path: str | None = None,
+    interactive: bool = False,
+    metadata_dict: dict | None = None,
+) -> str:
     """
     从metadata.json生成Excel估算文件。
 
     Args:
-        metadata_path: metadata.json文件路径
-        output_path:   输出Excel文件路径（可选；缺省时输出到 metadata 同目录）
-        interactive:   是否交互式询问UI设计、验收发布、需求沟通工时
+        metadata_path:  metadata.json文件路径；metadata_dict 给出时可传 None
+        output_path:    输出Excel文件路径（可选；缺省时输出到 metadata 同目录，
+                        此时必须能从 metadata_path 推断目录）
+        interactive:    是否交互式询问UI设计、验收发布、需求沟通工时
+        metadata_dict:  直接传入 metadata dict（如报价版在内存中改写工时），
+                        跳过文件读取；给出时 output_path 必填
 
     Raises:
         ValidationError: metadata schema 校验失败时抛出（由调用方决定如何处理）
     """
-    metadata = load_metadata(metadata_path)
+    if metadata_dict is not None:
+        metadata = metadata_dict
+        if output_path is None:
+            raise ValueError("metadata_dict 模式下必须显式指定 output_path")
+    else:
+        if metadata_path is None:
+            raise ValueError("metadata_path 与 metadata_dict 至少提供一个")
+        metadata = load_metadata(metadata_path)
 
     # === Schema 校验（复用共享模块）===
     log.info("Validating metadata schema...")
