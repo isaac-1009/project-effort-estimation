@@ -1,0 +1,648 @@
+{
+  "project_id": "行政小智AI助手_20260907",
+  "name": "行政小智AI助手",
+  "created_date": "2026-09-07",
+  "total_effort": 143.0,
+  "description": "行政小智AI助手三阶段详细工时估算（v6，Isaac手改Excel重分配）：Java/Spring Boot 3.5.9 独立服务 + Spring AI、React H5、RDS PG（pgvector，不引入Redis）。阶段一基础问答49.5（11项：LLM选型/多模态可选集成/LLM接入/React对话页/SSE/编排拒答/热点问题/提示词配置/模型更换配置/记录统计/新服务部署）、阶段二知识增强RAG 37（9项）、阶段三数据与办事37.5（7项：DB定义解析71张表/身份鉴权/查询工具/行级权限/白名单报修/注入防护/整体联调试运行）。开发124（服务端104+H5前端12+PC后台前端8，联调已折入开发含自测）+测试ROUNDUP(124×15%)=19=143人天。",
+  "systems": [
+    "H5前端",
+    "PC后台前端",
+    "服务端"
+  ],
+  "tags": [
+    "AI助手",
+    "LLM",
+    "RAG",
+    "SpringAI",
+    "React",
+    "pgvector",
+    "多模态",
+    "SSE",
+    "企微"
+  ],
+  "tech_stack": {
+    "frontend": "React（企微H5对话页：流式渲染、EventSource、多模态上传）；PC后台复用现有框架",
+    "backend": "Java 17 + Spring Boot 3.5.9 独立服务；Spring AI 1.0（主选，备选 LangChain4j，以选型功能定案）",
+    "database": "阿里云 RDS PostgreSQL 18.1（业务库 + pgvector 向量扩展 + 会话上下文存储，不引入Redis）",
+    "integration": "第三方LLM（OpenAI兼容，供应商可配置切换）+ Embedding/Rerank API + 企微API + Facility 内部数据API；部署复用现有 ECS 16G；SLB 反代（SSE 关缓冲）"
+  },
+  "features": [
+    {
+      "system": "服务端",
+      "module": "阶段一：基础问答",
+      "name": "LLM技术选型",
+      "requirement_type": "新功能",
+      "description": "框架选型（Spring AI vs LangChain4j）与LLM供应商选型（能力/价格/多模态支持对比）、流式spike验证",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "框架对比、候选LLM调研（含多模态能力评估）、流式spike、验证与选型报告"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "H5前端",
+      "module": "阶段一：基础问答",
+      "name": "多模态可选技术集成（文档/图片/音频/视频）",
+      "requirement_type": "新功能",
+      "description": "可选模块：若所选LLM支持多模态，问答支持文档/图片/音频/视频上传；依赖LLM技术选型结论，不支持时此模块裁剪",
+      "sub_systems": [
+        {
+          "system": "H5前端",
+          "effort_days": 2.5,
+          "remark": "React多类型文件上传组件、预览与消息气泡展示；"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 5,
+          "remark": "多模态消息适配（base64/URL传LLM）、类型与大小限制；含真实LLM链路自测（含设计）"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段一：基础问答",
+      "name": "第三方LLM接入",
+      "requirement_type": "新功能",
+      "description": "OpenAI兼容接口封装、模型路由、超时重试与降级",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "ChatClient封装/密钥管理/重试降级/流式适配；含实现设计与真实链路自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "H5前端",
+      "module": "阶段一：基础问答",
+      "name": "自建企微H5对话页",
+      "requirement_type": "新功能",
+      "description": "React聊天界面：流式渲染、历史会话列表、输入区与消息状态；配套非流式REST接口（会话列表/历史消息分页）",
+      "sub_systems": [
+        {
+          "system": "H5前端",
+          "effort_days": 5,
+          "remark": "React组件、流式打字机+markdown渲染、会话抽屉；复用现有组件库；含企微真机自测（OAuth免登/样式适配）"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "会话列表/历史消息分页REST接口（PG）"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段一：基础问答",
+      "name": "SSE消息收发通道",
+      "requirement_type": "新功能",
+      "description": "服务端推送、断线重连、消息持久化落RDS PG（多轮会话上下文由PG消息历史组装，不引入Redis）",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "环境搭建：SLB关缓冲、timeout、长连接验证；\n推送实现：SseEmitter推送/心跳/消息落库PG/上下文组装（含设计）；含流式链路自测"
+        },
+        {
+          "system": "H5前端",
+          "effort_days": 2.0,
+          "remark": "EventSource接入、断线重连、消息状态展示"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段一：基础问答",
+      "name": "基础问答编排与拒答策略",
+      "requirement_type": "新功能",
+      "description": "Prompt编排、拒答与引导话术（不瞎编）",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 5,
+          "remark": "Prompt编排与拒答实现（含设计与基础调试）"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段一：基础问答",
+      "name": "热点问题配置",
+      "requirement_type": "新功能",
+      "description": "管理员维护热点/常见问题，前端快捷入口数据源",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 1,
+          "remark": "热点问题维护页"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 2.0,
+          "remark": "配置CRUD、排序与生效（含设计）；"
+        }
+      ],
+      "complexity": "低"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段一：基础问答",
+      "name": "后台提示词配置",
+      "requirement_type": "新功能",
+      "description": "管理员在线配置系统提示词模板，版本管理与生效机制",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 1,
+          "remark": "提示词模板编辑页"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 2.0,
+          "remark": "模板管理、版本与动态生效（含设计）；"
+        }
+      ],
+      "complexity": "低"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段一：基础问答",
+      "name": "大模型更换配置",
+      "requirement_type": "新功能",
+      "description": "管理员配置LLM供应商（base_url/模型名/密钥），动态切换生效",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 1,
+          "remark": "模型配置页"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 2,
+          "remark": "多供应商配置管理、动态切换生效、连通性校验（含设计）；"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段一：基础问答",
+      "name": "聊天记录导出与对话统计",
+      "requirement_type": "新功能",
+      "description": "记录查询/导出、对话量与命中率统计（管理员视角）",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 2.0,
+          "remark": "记录列表/统计页，复用后台框架与图表组件；含导出口径核对"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "记录查询/导出接口、统计聚合（含设计）"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段一：基础问答",
+      "name": "新服务部署",
+      "requirement_type": "新功能",
+      "description": "独立服务首次部署：CI/CD流水线、Docker镜像、多环境配置、网关路由",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 2,
+          "remark": "流水线+镜像+dev/test/prod配置+内存limit；含环境部署与LB路由验证"
+        }
+      ],
+      "complexity": "低"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "知识库技术选型",
+      "requirement_type": "新功能",
+      "description": "开源一体化方案（Dify/FastGPT/RAGFlow/MaxKB）vs 自研pgvector 路线调研与POC；若选开源路线，阶段二后续项工时需按所选平台重新评估",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "开源项目调研与POC（成本/扩展性/安全对比），输出选型结论"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段二：知识增强RAG",
+      "name": "文档上传解析与分块",
+      "requirement_type": "新功能",
+      "description": "多格式文档解析（Word/PDF/MD）、分块策略",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 1,
+          "remark": "上传交互组件，复用现有上传能力"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "解析（Apache POI/pdfbox）、分块（段落+重叠窗口）（含设计）；含多格式样本自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "数据清洗",
+      "requirement_type": "新功能",
+      "description": "清洗规则引擎与批量验证；前提：首批数十~数百份文本型文档，扫描件OCR另立项",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "规则引擎，策略配置，参数调试"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "pgvector向量库设计与开通",
+      "requirement_type": "新功能",
+      "description": "复用阿里云 RDS PostgreSQL 18.1：pgvector扩展开通、表结构与HNSW索引设计、备份策略；零新增服务器",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 2.0,
+          "remark": "扩展开通、表/索引设计、备份与容量评估"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "向量化与检索服务",
+      "requirement_type": "新功能",
+      "description": "Embedding服务（批处理与增量更新）、pgvector混合检索（向量+PG全文RRF融合）",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "Embedding批处理与增量更新；\n混合检索接口（PgVectorStore/TopK/RRF融合）；含命中率抽样自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "重排与RAG编排",
+      "requirement_type": "新功能",
+      "description": "检索→重排→组装→生成链路编排（Spring AI Advisor链骨架）、Rerank接入、引用溯源",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 5,
+          "remark": "链路编排；Rerank接入；引用溯源标注；含端到端链路自测"
+        }
+      ],
+      "complexity": "高"
+    },
+    {
+      "system": "PC后台前端",
+      "module": "阶段二：知识增强RAG",
+      "name": "知识库管理后台",
+      "requirement_type": "新功能",
+      "description": "文档上传/分类/版本管理、知识更新与权限",
+      "sub_systems": [
+        {
+          "system": "PC后台前端",
+          "effort_days": 2,
+          "remark": "文档列表/分类/版本页面；含全流程操作自测"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "知识库CRUD、版本管理、重建索引触发（含设计）；含上传→解析→清洗→向量化→生效链路自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "知识问答效果调优",
+      "requirement_type": "新功能",
+      "description": "召回评测、badcase分析、参数调优",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "评测集建设、badcase分析、分块/TopK/Prompt调优；含与业务方验收效果验证"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段二：知识增强RAG",
+      "name": "试运行反馈调试调优",
+      "requirement_type": "新功能",
+      "description": "灰度试运行期badcase跟进、检索/分块/Prompt参数迭代修正",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 6,
+          "remark": "试运行反馈收集、badcase复现与验证、参数与Prompt迭代"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "DB定义解析",
+      "requirement_type": "新功能",
+      "description": "Facility业务库表结构梳理、数据字典与敏感字段识别（为查询工具/行级鉴权/审计提供依据）",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "表结构梳理、数据字典、敏感字段清单（71张表）"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "企微身份绑定与统一鉴权框架",
+      "requirement_type": "新功能",
+      "description": "企微工号绑定、JWT统一鉴权体系（与主系统同源）",
+      "sub_systems": [
+        {
+          "system": "H5前端",
+          "effort_days": 0.5,
+          "remark": "静默OAuth免登、绑定状态提示"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 2,
+          "remark": "userid↔工号绑定、JWT鉴权中间件（含设计）；含企微环境身份链路自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "Facility数据API实时查询工具",
+      "requirement_type": "新功能",
+      "description": "我的工单、我的停车资格、我的申请进度等实时查询（Function Calling）；行级过滤由主应用内部API承担",
+      "sub_systems": [
+        {
+          "system": "H5前端",
+          "effort_days": 1,
+          "remark": "回答内嵌结构化数据卡片展示"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 8,
+          "remark": "Spring AI Tool Calling工具开发、结果结构化（含设计）；暂定对接Facility查询接口"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "行级数据鉴权/字段脱敏/查询审计",
+      "requirement_type": "新功能",
+      "description": "员工只能查自己的数据、敏感字段脱敏、查询留审计",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 5,
+          "remark": "行级权限（按登录人过滤）、手机号/证件号脱敏、审计日志（含设计）；含越权与脱敏用例自测"
+        }
+      ],
+      "complexity": "高"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "白名单机制与白名单内操作（提交报修）",
+      "requirement_type": "新功能",
+      "description": "操作白名单、二次确认、提交报修闭环；高风险操作（审批类）永不开放",
+      "sub_systems": [
+        {
+          "system": "H5前端",
+          "effort_days": 1,
+          "remark": "二次确认弹窗、报修表单唤起与回执展示"
+        },
+        {
+          "system": "服务端",
+          "effort_days": 4,
+          "remark": "白名单配置、确认令牌机制、报修提交（复用工单接口）（含设计）；含对话→确认→落库全链路自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "注入防护与安全加固",
+      "requirement_type": "新功能",
+      "description": "Prompt注入防护、敏感词与输出过滤",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 3,
+          "remark": "输入指令隔离、敏感词库、输出内容过滤（含设计）；含注入攻击样本自测"
+        }
+      ],
+      "complexity": "中"
+    },
+    {
+      "system": "服务端",
+      "module": "阶段三：数据与办事",
+      "name": "整体联调试运行",
+      "requirement_type": "新功能",
+      "description": "三阶段集成回归、灰度试运行跟进与试运行期调优修正",
+      "sub_systems": [
+        {
+          "system": "服务端",
+          "effort_days": 10.0,
+          "remark": "集成回归、灰度试运行跟进；\n查询/权限/白名单调优修正；反馈复现与修复验证；"
+        }
+      ],
+      "complexity": "中"
+    }
+  ],
+  "phases": [
+    {
+      "name": "阶段一：基础问答",
+      "total_effort": 49.5,
+      "subitems": [
+        {
+          "name": "LLM技术选型",
+          "effort_days": 3
+        },
+        {
+          "name": "多模态可选技术集成",
+          "effort_days": 7.5
+        },
+        {
+          "name": "第三方LLM接入",
+          "effort_days": 4
+        },
+        {
+          "name": "自建企微H5对话页",
+          "effort_days": 8
+        },
+        {
+          "name": "SSE消息收发通道",
+          "effort_days": 6.0
+        },
+        {
+          "name": "基础问答编排与拒答策略",
+          "effort_days": 5
+        },
+        {
+          "name": "热点问题配置",
+          "effort_days": 3.0
+        },
+        {
+          "name": "后台提示词配置",
+          "effort_days": 3.0
+        },
+        {
+          "name": "大模型更换配置",
+          "effort_days": 3
+        },
+        {
+          "name": "聊天记录导出与对话统计",
+          "effort_days": 5.0
+        },
+        {
+          "name": "新服务部署",
+          "effort_days": 2
+        }
+      ]
+    },
+    {
+      "name": "阶段二：知识增强RAG",
+      "total_effort": 37.0,
+      "subitems": [
+        {
+          "name": "知识库技术选型",
+          "effort_days": 3
+        },
+        {
+          "name": "文档上传解析与分块",
+          "effort_days": 4
+        },
+        {
+          "name": "数据清洗",
+          "effort_days": 4
+        },
+        {
+          "name": "pgvector向量库设计与开通",
+          "effort_days": 2.0
+        },
+        {
+          "name": "向量化与检索服务",
+          "effort_days": 4
+        },
+        {
+          "name": "重排与RAG编排",
+          "effort_days": 5
+        },
+        {
+          "name": "知识库管理后台",
+          "effort_days": 6
+        },
+        {
+          "name": "知识问答效果调优",
+          "effort_days": 3
+        },
+        {
+          "name": "试运行反馈调试调优",
+          "effort_days": 6
+        }
+      ]
+    },
+    {
+      "name": "阶段三：数据与办事",
+      "total_effort": 37.5,
+      "subitems": [
+        {
+          "name": "DB定义解析",
+          "effort_days": 3
+        },
+        {
+          "name": "企微身份绑定与统一鉴权框架",
+          "effort_days": 2.5
+        },
+        {
+          "name": "Facility数据API实时查询工具",
+          "effort_days": 9
+        },
+        {
+          "name": "行级数据鉴权/字段脱敏/查询审计",
+          "effort_days": 5
+        },
+        {
+          "name": "白名单机制与白名单内操作（提交报修）",
+          "effort_days": 5
+        },
+        {
+          "name": "注入防护与安全加固",
+          "effort_days": 3
+        },
+        {
+          "name": "整体联调试运行",
+          "effort_days": 10.0
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "user_development": 0,
+    "admin_development": 0,
+    "ai_development": 124.0,
+    "total_development_effort": 124.0,
+    "testing_effort": 19,
+    "other_fixed": {
+      "communication": 0,
+      "environment": 0,
+      "ui_ux_design": 0,
+      "acceptance": 0
+    },
+    "total_effort": 143.0
+  },
+  "notes": [
+    "v4（2026-09-07，以用户手改 Excel 为准同步，前版106.5→140.5，+34）：",
+    "阶段一 40→47.5：LLM选型2→3；多模态5→7.5（服务端2.5→5）；「第三方LLM接入网关」更名「第三方LLM接入」3.5→4；对话页6→8（H5 4.5→5、服务端1.5→3）；SSE 5→5.5（H5 1→1.5，反代口径 Caddy→SLB）；编排3→5（备注简化，意图识别独立项移除-3.5）；热点/提示词/模型更换各+0.5；记录统计4→4.5；部署1.5→2。",
+    "阶段二 25.5→36.5：知识库选型1.5→3；解析分块3→4；数据清洗2→4（规则引擎/策略配置/参数调试）；检索3→4；重排4.5→5；管理后台5→6；试运行反馈调优2→6；pgvector1.5、效果调优3不变。",
+    "阶段三 27→37.5：方案设计与评审移除（-1）；DB定义解析1→3（71张表）；企微身份3→2.5；查询工具5→9；白名单/行级/注入不变；整体联调试运行并入试运行调优后调整为10（原2+2）。",
+    "汇总：开发121.5（服务端102.5+H5前端11.5+PC后台前端7.5），测试ROUNDUP(121.5×15%)=19，总工时140.5；联调角色已折入开发（含自测）。",
+    "延续既定决策：独立Spring Boot服务复用现有ECS、React H5、RDS PG 18.1+pgvector、不引入Redis、无独立UI设计；多模态以所选LLM能力为前提；Facility 三期已同步（AI助手124，总工时347）。",
+    "v5（2026-09-08，与 Facility 三期用户手改Excel对齐）：阶段三 37.5→40（+2.5 落「整体联调试运行」10→12.5）。汇总：开发124（服务端105+H5前端11.5+PC后台前端7.5），测试ROUNDUP(124×15%)=19，总工时143。",
+    "v6（2026-09-08，Isaac 手改 Excel 重分配，总量不变）：整体联调试运行 12.5→10（-2.5，移除对齐三期的临时增量）；+0.5 摊入 5 项：SSE H5前端 1.5→2、热点服务端 1.5→2、提示词服务端 1.5→2、记录统计PC后台 1.5→2、pgvector 1.5→2；并精简 4 条备注尾注（端到端自测/前端联动自测/生效链路自测/切换后问答回归自测）。阶段一49.5/阶段二37/阶段三37.5；开发仍124（服务端104+H5前端12+PC后台前端8），测试19，总143。"
+  ]
+}

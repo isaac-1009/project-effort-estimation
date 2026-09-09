@@ -1,0 +1,520 @@
+{
+  "project_id": "废品与样品管理系统WSMS_20260728",
+  "name": "废品与样品管理系统（WSMS）",
+  "created_date": "2026-07-28",
+  "total_effort": 476,
+  "description": "礼来苏州制药废品与样品管理系统（WSMS）：替代手工记录，覆盖录入→收货→库存/盘点→扣账→销毁全生命周期，满足 GxP、ALCOA+、21 CFR Part 11、Lilly SAE 合规。技术栈 Java/Spring Boot + Web 后台 + PDA 扫码端，部署于礼来本地机房。",
+  "systems": [
+    "web端",
+    "移动扫码端",
+    "-"
+  ],
+  "tags": [
+    "制药",
+    "GxP",
+    "ALCOA+",
+    "21 CFR Part 11",
+    "Lilly",
+    "SAE",
+    "WMS",
+    "废品管理",
+    "样品管理",
+    "电子签名",
+    "审计追踪",
+    "CSV验证",
+    "Java",
+    "PDA扫码",
+    "本地机房",
+    "大项目"
+  ],
+  "tech_stack": {
+    "frontend": "Web 管理后台（Vue/React）+ PDA Android App（扫码端）",
+    "backend": "Java + Spring Boot",
+    "database": "关系型数据库（MySQL/PostgreSQL）",
+    "encryption": "BouncyCastle FIPS（FIPS 140-2 验证）",
+    "integration": "PMX 接口、SSO/AD、邮件、密钥管理系统、CMDB",
+    "deployment": "礼来本地机房（Lilly 内网区）"
+  },
+  "features": [
+    {
+      "system": "web端",
+      "module": "主数据",
+      "name": "主数据管理",
+      "effort_days": 8,
+      "description": "产品主数据：部门/料号/中英文描述/规格/单位/批号/效期/保税标识（UR-070/071）",
+      "complexity": "中",
+      "reference": "CRUD操作 base 3，复杂度中",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "主数据",
+      "name": "库位管理+二维码",
+      "effort_days": 3,
+      "description": "库位设置（如 B16A01）+ 定制二维码标签生成（UR-072）",
+      "complexity": "低",
+      "reference": "二维码 base 1 + CRUD base 3",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "权限",
+      "name": "RBAC权限矩阵",
+      "effort_days": 8,
+      "description": "6 角色分权（用户/HSE/关务/QA/管理员/审计员），功能×角色矩阵界面，权限变更审批+审计（S-02/03）",
+      "complexity": "高",
+      "reference": "认证授权 base 4，复杂度高",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "库存",
+      "name": "库存查询",
+      "effort_days": 6,
+      "description": "当前库存查询、移动记录查询界面（UR-040/044/045）",
+      "complexity": "中",
+      "reference": "CRUD + 查询",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "库存",
+      "name": "库存调整",
+      "effort_days": 8,
+      "description": "库存调整经关务/QA 会签（保税→关务；非保税→QA），二人电子签名（UR-042）",
+      "complexity": "高",
+      "reference": "审核流程 base 6 + 电子签名",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "扣账",
+      "name": "扣账管理",
+      "effort_days": 10,
+      "description": "批量/单个扣账申请，二人复核电子签名，库存冲减唯一发生在确认时（UR-050/051/052/055/056）",
+      "complexity": "高",
+      "reference": "审核流程 base 6，复杂度高",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "扣账",
+      "name": "保税批文管理",
+      "effort_days": 8,
+      "description": "上传留存药监局/海关批文，到期前 30 天提醒，过期自动锁定可扣账标志（UR-054）",
+      "complexity": "中",
+      "reference": "文件上传 + 定时任务",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "销毁",
+      "name": "销毁出厂管理",
+      "effort_days": 6,
+      "description": "记录承接公司/批次/数量/日期，上传销毁单证，流程结束后只读（UR-060）",
+      "complexity": "中",
+      "reference": "审核流程 base 6",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "销毁",
+      "name": "危废月度报表",
+      "effort_days": 8,
+      "description": "月度危险废物产生量/销毁量/在库量报表，按部门/料号透视（UR-062）",
+      "complexity": "高",
+      "reference": "数据统计 base 5，复杂度高",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "审计",
+      "name": "审计追踪查询导出",
+      "effort_days": 8,
+      "description": "完整审计追踪（创建/修改/删除旧值新值/执行人/时间/原因），不可编辑仅查询导出（SEC-72）",
+      "complexity": "高",
+      "reference": "系统管理 + 日志",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "报表",
+      "name": "报表导出Excel/PDF",
+      "effort_days": 4,
+      "description": "库存明细、移动记录、销毁记录导出（UR-041/061）",
+      "complexity": "低",
+      "reference": "数据导出 base 3",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "国际化",
+      "name": "中英文国际化",
+      "effort_days": 4,
+      "description": "界面中英切换，时区 Asia/Shanghai，日期 ISO 8601（NFR-05）",
+      "complexity": "中",
+      "reference": "i18n 标准实现",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "追溯",
+      "name": "全程追溯查询",
+      "effort_days": 6,
+      "description": "库存与移动记录可追溯至录入/收货/移库/扣账/销毁各环节（UR-045）",
+      "complexity": "中",
+      "reference": "跨环节关联查询",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "打印服务",
+      "name": "识别码标签打印",
+      "effort_days": 4,
+      "description": "料号/批号/数量标签，与 PMX 格式一致，内嵌 QR（UR-030/031）",
+      "complexity": "中",
+      "reference": "标签生成 + 打印驱动",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "打印服务",
+      "name": "库位标签打印",
+      "effort_days": 2,
+      "description": "定制 QR 标签（如 B16A01）（UR-033）",
+      "complexity": "低",
+      "reference": "二维码生成",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "打印服务",
+      "name": "打印机集成",
+      "effort_days": 2,
+      "description": "QA/QC 区域打印机设备驱动适配（UR-034）",
+      "complexity": "中",
+      "reference": "硬件驱动",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "电子签名",
+      "name": "电子签名引擎",
+      "effort_days": 12,
+      "description": "21 CFR Part 11：签名人身份/签名含义/时间戳，不可与原记录分离（SEC-70）",
+      "complexity": "高",
+      "reference": "跨扣账/库存调整/销毁复用",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "审计追踪",
+      "name": "审计追踪平台",
+      "effort_days": 15,
+      "description": "ALCOA+ 九要素（Attributable/Legible/Contemporaneous/Original/Accurate/Complete/Consistent/Enduring/Available）（SEC-73）",
+      "complexity": "高",
+      "reference": "高可靠性，防篡改",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "工作流",
+      "name": "二人复核工作流",
+      "effort_days": 8,
+      "description": "关键操作强制二人复核，复核人独立于操作人，双方分别电子签名（SEC-71）",
+      "complexity": "高",
+      "reference": "业务约束复杂",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "加密",
+      "name": "FIPS 140-2加密实现",
+      "effort_days": 8,
+      "description": "BouncyCastle FIPS 密码模块，TLS 1.2+/AES-256（SEC-21）",
+      "complexity": "高",
+      "reference": "选型受限",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "安全日志",
+      "name": "安全日志Lilly标准",
+      "effort_days": 8,
+      "description": "登录/权限变更/扣账/销毁/主数据变更/接口调用日志，字段含用户ID/源IP/时间戳/操作类型/目标/前后值（SEC-30/31/32）",
+      "complexity": "中",
+      "reference": "日志平台对接",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "web端",
+      "module": "库存",
+      "name": "扫码盘点",
+      "effort_days": 6,
+      "description": "盘点结果查看、盘盈盘亏自动比对与报表（后台）",
+      "complexity": "中",
+      "reference": "数据统计 + 扫码",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "移动扫码端",
+      "module": "PDA App",
+      "name": "扫码录入",
+      "effort_days": 4,
+      "description": "扫描 PMX/本系统标签完成录入，重复扫描告警（UR-004）",
+      "complexity": "中",
+      "reference": "扫码 + 去重逻辑",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "移动扫码端",
+      "module": "PDA App",
+      "name": "扫码收货确认",
+      "effort_days": 3,
+      "description": "扫码确认收货，记录确认人/时间（UR-020/021/022）",
+      "complexity": "中",
+      "reference": "扫码 + 状态流转",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "移动扫码端",
+      "module": "PDA App",
+      "name": "扫码盘点",
+      "effort_days": 4,
+      "description": "PDA 批量扫码盘点动作，结果上传（PDA App）",
+      "complexity": "中",
+      "reference": "批量扫码 + 比对",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "移动扫码端",
+      "module": "PDA App",
+      "name": "扫码扣账",
+      "effort_days": 4,
+      "description": "扫描一个标签实现扣账，电子签名确认（UR-032/052）",
+      "complexity": "中",
+      "reference": "扫码 + 电子签名",
+      "requirement_type": "功能开发"
+    },
+    {
+      "system": "-",
+      "module": "接口",
+      "name": "PMX接口对接",
+      "effort_days": 18,
+      "description": "REST/HTTPS，T+1全量+事件增量，幂等+重试+对账，凭据存企业密钥系统（UR-090）",
+      "complexity": "高",
+      "reference": "ESB 级接口，PMX 有现成接口假设",
+      "requirement_type": "外部API集成"
+    },
+    {
+      "system": "-",
+      "module": "接口",
+      "name": "SSO/AD集成",
+      "effort_days": 4,
+      "description": "Lilly 企业 SSO/AD 认证，不允许独立密码（UR-092/SEC-10）",
+      "complexity": "中",
+      "reference": "OAuth/LDAP",
+      "requirement_type": "外部API集成"
+    },
+    {
+      "system": "-",
+      "module": "接口",
+      "name": "邮件平台集成",
+      "effort_days": 2,
+      "description": "到期提醒邮件发送（UR-016/054）",
+      "complexity": "低",
+      "reference": "SMTP/企业邮件",
+      "requirement_type": "外部API集成"
+    },
+    {
+      "system": "-",
+      "module": "接口",
+      "name": "密钥管理系统对接",
+      "effort_days": 2,
+      "description": "加密密钥/证书托管至 Lilly 企业密钥系统（SEC-22）",
+      "complexity": "中",
+      "reference": "凭据托管",
+      "requirement_type": "外部API集成"
+    },
+    {
+      "system": "-",
+      "module": "接口",
+      "name": "CMDB注册+日志代理",
+      "effort_days": 2,
+      "description": "服务器注册 CMDB + 部署企业日志代理（SEC-41）",
+      "complexity": "低",
+      "reference": "企业规范对接",
+      "requirement_type": "外部API集成"
+    },
+    {
+      "system": "-",
+      "module": "系统测试",
+      "name": "系统测试",
+      "effort_days": 37,
+      "description": "集成测试+系统测试，按实际开发工时（web端152+移动扫码端15+外部API集成28=195）的约 19% 估算",
+      "complexity": "中",
+      "requirement_type": "-",
+      "reference": "195 × 19% ≈ 37"
+    },
+    {
+      "system": "-",
+      "module": "CSV验证",
+      "name": "CSV验证文档IQ/OQ/PQ",
+      "effort_days": 15,
+      "description": "GxP 计算机系统验证：IQ/OQ/PQ 协议+执行报告，我方全责（URS GxP 要求）",
+      "complexity": "高",
+      "reference": "制药行业硬门槛，参考汽车金融客户验收 40",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "SAE评审",
+      "name": "SAE安全评审配合整改",
+      "effort_days": 12,
+      "description": "Lilly SAE 网络安全评审，威胁建模+SAST/DAST/SCA 配合+2 轮整改（SEC-01~04/60~65），保守预留",
+      "complexity": "高",
+      "reference": "实际 ±50%，渗透测试若客户付费第三方则不计入",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "迁移",
+      "name": "历史数据清洗导入",
+      "effort_days": 15,
+      "description": "废品/留样历史记录（PMX+Excel 结构化数据）清洗+导入",
+      "complexity": "中",
+      "reference": "参考汽车金融数据迁移 29，按客户确认 15",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "设计",
+      "name": "功能设计FS/DS",
+      "effort_days": 40,
+      "description": "业务流程/数据模型/系统架构/接口方案/权限矩阵详细设计（G-01）",
+      "complexity": "高",
+      "reference": "参考汽车金融功能设计 80，本项目规模适中",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "UI/UX",
+      "name": "UI/UX全新设计",
+      "effort_days": 35,
+      "description": "全新视觉风格，页面数>15（后台管理+扫码端多页面），中英文双语",
+      "complexity": "高",
+      "reference": "参考汽车金融 UI 设计 40",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "沟通",
+      "name": "需求沟通",
+      "effort_days": 2,
+      "description": "URS 已详细但缺交互稿/接口定义，需澄清",
+      "complexity": "中",
+      "reference": "文档部分缺失",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "环境",
+      "name": "环境搭建",
+      "effort_days": 3,
+      "description": "本地机房 3 套环境（Dev/QA/UAT/Prod）+ 网络/防火墙开通配合（I-01）",
+      "complexity": "中",
+      "reference": "新项目",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "管理",
+      "name": "项目管理",
+      "effort_days": 42,
+      "description": "6 个月中型团队（8-10 人）PM 工时，约总工时 8%",
+      "complexity": "中",
+      "reference": "参考汽车金融管理工时 80",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "验收",
+      "name": "客户验收+用户手册+SOP培训",
+      "effort_days": 20,
+      "description": "用户手册/管理员手册/SOP 培训，制药行业文档要求高",
+      "complexity": "中",
+      "reference": "参考汽车金融客户验收 40",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "上线",
+      "name": "上线切换+跟踪",
+      "effort_days": 15,
+      "description": "上线切换+1 周稳定期跟踪",
+      "complexity": "中",
+      "reference": "参考汽车金融上线跟踪 20",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "发布",
+      "name": "验收发布",
+      "effort_days": 15,
+      "description": "验证闭环+正式发布",
+      "complexity": "中",
+      "reference": "固定",
+      "requirement_type": "-"
+    },
+    {
+      "system": "-",
+      "module": "质保",
+      "name": "2年质保期运维",
+      "effort_days": 30,
+      "description": "URS 明确要求 2 年售后服务质保",
+      "complexity": "中",
+      "reference": "URS 服务范围",
+      "requirement_type": "-"
+    }
+  ],
+  "summary": {
+    "user_development": 15,
+    "admin_development": 180,
+    "total_development_effort": 195,
+    "data_migration": 15,
+    "testing_effort": 37,
+    "project_level_total": 172,
+    "warranty": 30,
+    "total_effort": 476,
+    "other_fixed": {
+      "ui_ux_design": 0,
+      "communication": 0,
+      "environment": 0,
+      "acceptance": 0,
+      "testing": false
+    }
+  },
+  "notes": [
+    "总工时 476 人天（约 24 人月），按 6 个月中型团队（8-10 人）估算（4 人平均投入）。",
+    "技术栈：Java/Spring Boot + Web 后台 + PDA Android App，部署礼来本地机房。",
+    "扫码端按 PDA App（15 人天）估算。备选方案：扫码枪 HID 降至 5 人天；企微小程序升至 20 人天。",
+    "PMX 接口按【PMX 有现成接口】假设（18 人天）。若 PMX 需双方开发，需增加 10-15 人天。",
+    "CSV 验证文档按我方全责估算（15 人天，含 IQ/OQ/PQ 协议+执行报告）。",
+    "SAE 安全评审按保守预留（12 人天，2 轮整改）。实际波动可能 ±50%；渗透测试若由客户付费第三方则不计入。",
+    "数据迁移按 15 人天估算（客户确认）。若纸质记录占比高或多源数据，需增至 25-40 人天。",
+    "参考项目：汽车金融车商管理平台（999.5 人天，相似度 60%，同为 Web+移动端+多外部对接+数据迁移大型项目）。",
+    "风险提示：URS 的【一次性上线成功】条款（I-03）风险完全转嫁供应商，建议谈判改为分阶段上线+容许回滚。",
+    "本次为全口径估算（含合规+对接+质保）。若需投标报价口径，建议额外预留 10-15% 风险 buffer（66-100 人天）。"
+  ],
+  "pending_questions": [
+    "【A类-影响工时】PMX 接口规格：客户能否提供 API 文档？PMX 侧是否需开发？（当前假设：PMX 有现成接口）",
+    "【A类-影响工时】历史数据迁移范围：存量数据量、格式（Excel/纸质/混合）、清洗深度？（当前假设：15 人天）",
+    "【A类-影响工时】移动扫码端形态：PDA App / 扫码枪 HID / 企微小程序？（当前假设：PDA App）",
+    "【A类-影响工时】CSV 验证责任划分：IQ/OQ/PQ 谁写谁执行？偏差处理谁负责？（当前假设：我方全责）",
+    "【B类-建议确认】部署环境：本地机房具体规格？Lilly 网络安全区（DMZ/Internal Zone）开通周期？",
+    "【B类-建议确认】SAE 评审窗口期：Lilly 内部 SAE 评审排期多长？整改轮次有无上限？",
+    "【B类-建议确认】渗透测试：由客户付费第三方还是我方负责？",
+    "【B类-建议确认】UR-030 标签种类矛盾：标题写【四类标签】正文只列 2 类，另外 2 类是什么？",
+    "【C类-可选】是否需要提供投标报价口径（额外预留 10-15% 风险 buffer）？"
+  ]
+}

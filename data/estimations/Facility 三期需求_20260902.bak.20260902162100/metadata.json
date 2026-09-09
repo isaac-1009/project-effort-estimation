@@ -1,0 +1,263 @@
+{
+  "project_id": "Facility_三期需求_20260713",
+  "name": "Facility 三期需求",
+  "created_date": "2026-07-13",
+  "total_effort": 183,
+  "description": "基于企微Facility应用的功能优化和新需求开发，采用分阶段渐进式交付策略",
+  "systems": [
+    "企微",
+    "PC后台",
+    "Gateway",
+    "其他"
+  ],
+  "tags": [
+    "企微",
+    "Facility",
+    "数据统计",
+    "工单系统",
+    "评论管理",
+    "ISO认证",
+    "EAG",
+    "AI POC",
+    "工位管理POC",
+    "访客管理",
+    "天气预警",
+    "DAC接口",
+    "Gateway",
+    "OpenAPI"
+  ],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家）",
+    "backend": "Java/Node.js（复用Facility技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API + Dify API + 物业系统API + 天气API"
+  },
+  "features": [
+    {
+      "module": "功能开发",
+      "name": "应用数据统计展示",
+      "requirement_type": "功能优化",
+      "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 5,
+          "description": "统计应用，所有模块使用情况，推文互动数据统计展示"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 2,
+          "remark": "数据统计，展示，导出"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "工单报修时间段数量限制",
+      "requirement_type": "功能优化",
+      "description": "工单报修修改（限制时间段可报修数量）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 2,
+          "remark": "报修时间段数量限制"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "评论支持图片",
+      "requirement_type": "功能优化",
+      "description": "推文评论支持上传图片（最多九张）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 4,
+          "remark": "评论时可上传最多9张图片，支持图片预览和删除"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 1,
+          "remark": "评论管理列表中显示评论配图缩略图，点击可查看大图"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "名片申请优化",
+      "requirement_type": "功能优化",
+      "description": "多title，数据分析展示",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "名片申请支持多title选择"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 2,
+          "remark": "名片数据分析展示"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "名片审核优化",
+      "requirement_type": "功能优化",
+      "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 1,
+          "remark": "DAC接口字段解析+存储扩展，名片审核审批人取值增加fallback逻辑"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "在场权益",
+      "requirement_type": "功能优化",
+      "description": "链接陆家嘴物业小程序，跳转过去",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 2,
+          "remark": "在场权益维护，链接跳转"
+        }
+      ]
+    },
+    {
+      "system": "Gateway",
+      "module": "功能开发",
+      "name": "新增OpenAPI接口",
+      "requirement_type": "新功能",
+      "effort_days": 2,
+      "description": "Gateway 新增 openapi 3个（旧版Excel已确认，未划删除线）",
+      "complexity": "低",
+      "reference": "旧版Excel手工增补行，原metadata遗漏"
+    },
+    {
+      "module": "功能开发",
+      "name": "ISO 45001认证",
+      "requirement_type": "新功能",
+      "description": "知识库、宣传渠道（静态页面）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 10,
+          "remark": "知识库分类查看，关键词搜索，附件下载，支持转发和收藏，数据统计"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 15,
+          "remark": "知识库（图文+附件）维护，支持推送，关键字搜索，统计展示"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "EAG",
+      "requirement_type": "新功能",
+      "description": "静态页，以物易物流程支持",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 20,
+          "remark": "物品管理（标题，分类，描述，图片等），搜索，企微私聊，换物匹配申请，同意，完成，下架等，静态页内容维护"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 8,
+          "remark": "物品信息查看与审核（下架），数据统计"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "A1chatbot-行政小智",
+      "requirement_type": "新功能",
+      "description": "POC阶段：验证Dify基础接入可行性，实现企微消息接收→Dify处理→回复的基本问答流程",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 8,
+          "remark": "Dify API集成调试，页面交互开发，历史聊天记录存储"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 5,
+          "remark": "数据统计，聊天记录导出"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "工位、办公室管理系统",
+      "requirement_type": "新功能",
+      "description": "POC阶段：实现楼层构位平面图可视化、工位的增删改查、状态处理、分配、释放等核心功能",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 10,
+          "remark": "工位楼层展示，工位信息搜索"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 20,
+          "remark": "工位楼层创建，工位的增删改查、状态处理（空闲/占用/维护）、分配、释放等核心功能"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "Loffice前滩总部访客管理及大楼闸机权限",
+      "requirement_type": "新功能",
+      "description": "访客管理、闸机卡权限管理",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 10,
+          "remark": "访客信息填写，审核，获取闸机权限"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 12,
+          "remark": "闸机卡权限管理（需对接物业），访客信息查看与审核，数据统计"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "天气预警",
+      "requirement_type": "新功能",
+      "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 5,
+          "remark": "第三方API接口，数据展示，企微消息推送"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "user_development": 79,
+    "admin_development": 66,
+    "other_development": 2,
+    "total_development_effort": 147,
+    "testing_effort": 23,
+    "other_fixed": {
+      "communication": 8,
+      "environment": 0,
+      "acceptance": 5
+    },
+    "total_effort": 183
+  },
+  "notes": [
+    "2026-09-02 调取归档 Facility 三期需求_20260713（原总工时 188 人天）修订，依据用户在旧版 Excel 中的手工编辑核对：",
+    "① 移除「申请合并」（旧版 Excel 已划删除线并清空工时，企微4+PC后台4，-8 人天）；",
+    "② 补入「Gateway 新增OpenAPI接口 3个」（旧版 Excel 增补行、工时保留 2 人天，原 metadata 遗漏，+2 人天）；",
+    "③ 新增「名片审核优化」：DAC接口增加 manager_id_modified 字段，manager id 不存在时用此字段（PC后台 +1 人天；参考企微Dify AI助手系统 DAC 完整对接 3 人天）。",
+    "汇总：开发 147（企微79 + PC后台66 + Gateway2），测试 ROUNDUP(147×15%)=23，需求沟通 8，验收发布 5，总工时 183 人天。"
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-07-13",
-  "total_features": 223,
+  "last_updated": "2026-09-09",
+  "total_features": 300,
   "projects": [
     {
       "project_id": "企微推文_20250326",
@@ -4860,6 +4860,1598 @@
           ]
         }
       ]
+    },
+    {
+      "project_id": "废品与样品管理系统（WSMS）_20260902",
+      "name": "废品与样品管理系统（WSMS）",
+      "created_date": "2026-09-02",
+      "tech_stack": {
+        "frontend": "Web 管理后台（Vue/React）+ PDA Android App（扫码端）",
+        "backend": "Java + Spring Boot",
+        "database": "关系型数据库（MySQL/PostgreSQL）",
+        "encryption": "BouncyCastle FIPS（FIPS 140-2 验证）",
+        "integration": "PMX 接口、SSO/AD、邮件、密钥管理系统、CMDB",
+        "deployment": "礼来本地机房（Lilly 内网区）"
+      },
+      "features": [
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_001",
+          "system": "web端",
+          "module": "主数据",
+          "name": "主数据管理",
+          "effort_days": 8,
+          "description": "产品主数据：部门/料号/中英文描述/规格/单位/批号/效期/保税标识（UR-070/071）",
+          "complexity": "中",
+          "keywords": [
+            "主数据管理"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_002",
+          "system": "web端",
+          "module": "主数据",
+          "name": "库位管理+二维码",
+          "effort_days": 3,
+          "description": "库位设置（如 B16A01）+ 定制二维码标签生成（UR-072）",
+          "complexity": "低",
+          "keywords": [
+            "库位管理+二维码",
+            "二维码",
+            "扫码",
+            "QR码",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "二维码",
+            "系统管理",
+            "标签管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_003",
+          "system": "web端",
+          "module": "权限",
+          "name": "RBAC权限矩阵",
+          "effort_days": 8,
+          "description": "6 角色分权（用户/HSE/关务/QA/管理员/审计员），功能×角色矩阵界面，权限变更审批+审计（S-02/03）",
+          "complexity": "高",
+          "keywords": [
+            "RBAC权限矩阵",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC",
+            "审核",
+            "审批",
+            "工作流",
+            "状态流转"
+          ],
+          "patterns": [
+            "认证授权",
+            "审核流程"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_004",
+          "system": "web端",
+          "module": "库存",
+          "name": "库存查询",
+          "effort_days": 6,
+          "description": "当前库存查询、移动记录查询界面（UR-040/044/045）",
+          "complexity": "中",
+          "keywords": [
+            "库存查询"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_005",
+          "system": "web端",
+          "module": "库存",
+          "name": "库存调整",
+          "effort_days": 8,
+          "description": "库存调整经关务/QA 会签（保税→关务；非保税→QA），二人电子签名（UR-042）",
+          "complexity": "高",
+          "keywords": [
+            "库存调整"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_006",
+          "system": "web端",
+          "module": "扣账",
+          "name": "扣账管理",
+          "effort_days": 10,
+          "description": "批量/单个扣账申请，二人复核电子签名，库存冲减唯一发生在确认时（UR-050/051/052/055/056）",
+          "complexity": "高",
+          "keywords": [
+            "扣账管理"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_007",
+          "system": "web端",
+          "module": "扣账",
+          "name": "保税批文管理",
+          "effort_days": 8,
+          "description": "上传留存药监局/海关批文，到期前 30 天提醒，过期自动锁定可扣账标志（UR-054）",
+          "complexity": "中",
+          "keywords": [
+            "保税批文管理",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入"
+          ],
+          "patterns": [
+            "文件上传"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_008",
+          "system": "web端",
+          "module": "销毁",
+          "name": "销毁出厂管理",
+          "effort_days": 6,
+          "description": "记录承接公司/批次/数量/日期，上传销毁单证，流程结束后只读（UR-060）",
+          "complexity": "中",
+          "keywords": [
+            "销毁出厂管理",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入"
+          ],
+          "patterns": [
+            "文件上传"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_009",
+          "system": "web端",
+          "module": "销毁",
+          "name": "危废月度报表",
+          "effort_days": 8,
+          "description": "月度危险废物产生量/销毁量/在库量报表，按部门/料号透视（UR-062）",
+          "complexity": "高",
+          "keywords": [
+            "危废月度报表",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘"
+          ],
+          "patterns": [
+            "数据统计"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_010",
+          "system": "web端",
+          "module": "审计",
+          "name": "审计追踪查询导出",
+          "effort_days": 8,
+          "description": "完整审计追踪（创建/修改/删除旧值新值/执行人/时间/原因），不可编辑仅查询导出（SEC-72）",
+          "complexity": "高",
+          "keywords": [
+            "审计追踪查询导出",
+            "列表",
+            "详情",
+            "创建",
+            "编辑",
+            "删除",
+            "CRUD",
+            "增删改查",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV",
+            "内容管理",
+            "发布",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "CRUD操作",
+            "数据导出",
+            "内容管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_011",
+          "system": "web端",
+          "module": "报表",
+          "name": "报表导出Excel/PDF",
+          "effort_days": 4,
+          "description": "库存明细、移动记录、销毁记录导出（UR-041/061）",
+          "complexity": "低",
+          "keywords": [
+            "报表导出Excel/PDF",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV"
+          ],
+          "patterns": [
+            "数据统计",
+            "数据导出"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_012",
+          "system": "web端",
+          "module": "国际化",
+          "name": "中英文国际化",
+          "effort_days": 4,
+          "description": "界面中英切换，时区 Asia/Shanghai，日期 ISO 8601（NFR-05）",
+          "complexity": "中",
+          "keywords": [
+            "中英文国际化"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_013",
+          "system": "web端",
+          "module": "追溯",
+          "name": "全程追溯查询",
+          "effort_days": 6,
+          "description": "库存与移动记录可追溯至录入/收货/移库/扣账/销毁各环节（UR-045）",
+          "complexity": "中",
+          "keywords": [
+            "全程追溯查询"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_014",
+          "system": "web端",
+          "module": "打印服务",
+          "name": "识别码标签打印",
+          "effort_days": 4,
+          "description": "料号/批号/数量标签，与 PMX 格式一致，内嵌 QR（UR-030/031）",
+          "complexity": "中",
+          "keywords": [
+            "识别码标签打印",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "标签管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_015",
+          "system": "web端",
+          "module": "打印服务",
+          "name": "库位标签打印",
+          "effort_days": 2,
+          "description": "定制 QR 标签（如 B16A01）（UR-033）",
+          "complexity": "低",
+          "keywords": [
+            "库位标签打印",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "标签管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_016",
+          "system": "web端",
+          "module": "打印服务",
+          "name": "打印机集成",
+          "effort_days": 2,
+          "description": "QA/QC 区域打印机设备驱动适配（UR-034）",
+          "complexity": "中",
+          "keywords": [
+            "打印机集成"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_017",
+          "system": "web端",
+          "module": "电子签名",
+          "name": "电子签名引擎",
+          "effort_days": 12,
+          "description": "21 CFR Part 11：签名人身份/签名含义/时间戳，不可与原记录分离（SEC-70）",
+          "complexity": "高",
+          "keywords": [
+            "电子签名引擎"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_018",
+          "system": "web端",
+          "module": "审计追踪",
+          "name": "审计追踪平台",
+          "effort_days": 15,
+          "description": "ALCOA+ 九要素（Attributable/Legible/Contemporaneous/Original/Accurate/Complete/Consistent/Enduring/Available）（SEC-73）",
+          "complexity": "高",
+          "keywords": [
+            "审计追踪平台"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_019",
+          "system": "web端",
+          "module": "工作流",
+          "name": "二人复核工作流",
+          "effort_days": 8,
+          "description": "关键操作强制二人复核，复核人独立于操作人，双方分别电子签名（SEC-71）",
+          "complexity": "高",
+          "keywords": [
+            "二人复核工作流",
+            "审核",
+            "审批",
+            "工作流",
+            "状态流转"
+          ],
+          "patterns": [
+            "审核流程"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_020",
+          "system": "web端",
+          "module": "加密",
+          "name": "FIPS 140-2加密实现",
+          "effort_days": 8,
+          "description": "BouncyCastle FIPS 密码模块，TLS 1.2+/AES-256（SEC-21）",
+          "complexity": "高",
+          "keywords": [
+            "FIPS 140-2加密实现"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_021",
+          "system": "web端",
+          "module": "安全日志",
+          "name": "安全日志Lilly标准",
+          "effort_days": 8,
+          "description": "登录/权限变更/扣账/销毁/主数据变更/接口调用日志，字段含用户ID/源IP/时间戳/操作类型/目标/前后值（SEC-30/31/32）",
+          "complexity": "中",
+          "keywords": [
+            "安全日志Lilly标准",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_022",
+          "system": "web端",
+          "module": "库存",
+          "name": "扫码盘点",
+          "effort_days": 6,
+          "description": "盘点结果查看、盘盈盘亏自动比对与报表（后台）",
+          "complexity": "中",
+          "keywords": [
+            "扫码盘点",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "二维码",
+            "扫码",
+            "QR码",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台"
+          ],
+          "patterns": [
+            "数据统计",
+            "二维码",
+            "系统管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_023",
+          "system": "移动扫码端",
+          "module": "PDA App",
+          "name": "扫码录入",
+          "effort_days": 4,
+          "description": "扫描 PMX/本系统标签完成录入，重复扫描告警（UR-004）",
+          "complexity": "中",
+          "keywords": [
+            "扫码录入",
+            "二维码",
+            "扫码",
+            "QR码",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "二维码",
+            "标签管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_024",
+          "system": "移动扫码端",
+          "module": "PDA App",
+          "name": "扫码收货确认",
+          "effort_days": 3,
+          "description": "扫码确认收货，记录确认人/时间（UR-020/021/022）",
+          "complexity": "中",
+          "keywords": [
+            "扫码收货确认",
+            "二维码",
+            "扫码",
+            "QR码"
+          ],
+          "patterns": [
+            "二维码"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_025",
+          "system": "移动扫码端",
+          "module": "PDA App",
+          "name": "扫码盘点",
+          "effort_days": 4,
+          "description": "PDA 批量扫码盘点动作，结果上传（PDA App）",
+          "complexity": "中",
+          "keywords": [
+            "扫码盘点",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入",
+            "二维码",
+            "扫码",
+            "QR码"
+          ],
+          "patterns": [
+            "文件上传",
+            "二维码"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_026",
+          "system": "移动扫码端",
+          "module": "PDA App",
+          "name": "扫码扣账",
+          "effort_days": 4,
+          "description": "扫描一个标签实现扣账，电子签名确认（UR-032/052）",
+          "complexity": "中",
+          "keywords": [
+            "扫码扣账",
+            "二维码",
+            "扫码",
+            "QR码",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "二维码",
+            "标签管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_027",
+          "system": "-",
+          "module": "接口",
+          "name": "PMX接口对接",
+          "effort_days": 18,
+          "description": "REST/HTTPS，T+1全量+事件增量，幂等+重试+对账，凭据存企业密钥系统（UR-090）",
+          "complexity": "高",
+          "keywords": [
+            "PMX接口对接"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_028",
+          "system": "-",
+          "module": "接口",
+          "name": "SSO/AD集成",
+          "effort_days": 4,
+          "description": "Lilly 企业 SSO/AD 认证，不允许独立密码（UR-092/SEC-10）",
+          "complexity": "中",
+          "keywords": [
+            "SSO/AD集成",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_029",
+          "system": "-",
+          "module": "接口",
+          "name": "邮件平台集成",
+          "effort_days": 2,
+          "description": "到期提醒邮件发送（UR-016/054）",
+          "complexity": "低",
+          "keywords": [
+            "邮件平台集成"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_030",
+          "system": "-",
+          "module": "接口",
+          "name": "密钥管理系统对接",
+          "effort_days": 2,
+          "description": "加密密钥/证书托管至 Lilly 企业密钥系统（SEC-22）",
+          "complexity": "中",
+          "keywords": [
+            "密钥管理系统对接"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_031",
+          "system": "-",
+          "module": "接口",
+          "name": "CMDB注册+日志代理",
+          "effort_days": 2,
+          "description": "服务器注册 CMDB + 部署企业日志代理（SEC-41）",
+          "complexity": "低",
+          "keywords": [
+            "CMDB注册+日志代理",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_032",
+          "system": "-",
+          "module": "系统测试",
+          "name": "系统测试",
+          "effort_days": 37,
+          "description": "集成测试+系统测试，按实际开发工时（web端152+移动扫码端15+外部API集成28=195）的约 19% 估算",
+          "complexity": "中",
+          "keywords": [
+            "系统测试",
+            "二维码",
+            "扫码",
+            "QR码"
+          ],
+          "patterns": [
+            "二维码"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_033",
+          "system": "-",
+          "module": "CSV验证",
+          "name": "CSV验证文档IQ/OQ/PQ",
+          "effort_days": 15,
+          "description": "GxP 计算机系统验证：IQ/OQ/PQ 协议+执行报告，我方全责（URS GxP 要求）",
+          "complexity": "高",
+          "keywords": [
+            "CSV验证文档IQ/OQ/PQ",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV"
+          ],
+          "patterns": [
+            "数据导出"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_034",
+          "system": "-",
+          "module": "SAE评审",
+          "name": "SAE安全评审配合整改",
+          "effort_days": 12,
+          "description": "Lilly SAE 网络安全评审，威胁建模+SAST/DAST/SCA 配合+2 轮整改（SEC-01~04/60~65），保守预留",
+          "complexity": "高",
+          "keywords": [
+            "SAE安全评审配合整改"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_035",
+          "system": "-",
+          "module": "迁移",
+          "name": "历史数据清洗导入",
+          "effort_days": 15,
+          "description": "废品/留样历史记录（PMX+Excel 结构化数据）清洗+导入",
+          "complexity": "中",
+          "keywords": [
+            "历史数据清洗导入",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV"
+          ],
+          "patterns": [
+            "文件上传",
+            "数据导出"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_036",
+          "system": "-",
+          "module": "设计",
+          "name": "功能设计FS/DS",
+          "effort_days": 40,
+          "description": "业务流程/数据模型/系统架构/接口方案/权限矩阵详细设计（G-01）",
+          "complexity": "高",
+          "keywords": [
+            "功能设计FS/DS",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_037",
+          "system": "-",
+          "module": "UI/UX",
+          "name": "UI/UX全新设计",
+          "effort_days": 35,
+          "description": "全新视觉风格，页面数>15（后台管理+扫码端多页面），中英文双语",
+          "complexity": "高",
+          "keywords": [
+            "UI/UX全新设计",
+            "二维码",
+            "扫码",
+            "QR码",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台"
+          ],
+          "patterns": [
+            "二维码",
+            "系统管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_038",
+          "system": "-",
+          "module": "沟通",
+          "name": "需求沟通",
+          "effort_days": 2,
+          "description": "URS 已详细但缺交互稿/接口定义，需澄清",
+          "complexity": "中",
+          "keywords": [
+            "需求沟通"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_039",
+          "system": "-",
+          "module": "环境",
+          "name": "环境搭建",
+          "effort_days": 3,
+          "description": "本地机房 3 套环境（Dev/QA/UAT/Prod）+ 网络/防火墙开通配合（I-01）",
+          "complexity": "中",
+          "keywords": [
+            "环境搭建"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_040",
+          "system": "-",
+          "module": "管理",
+          "name": "项目管理",
+          "effort_days": 42,
+          "description": "6 个月中型团队（8-10 人）PM 工时，约总工时 8%",
+          "complexity": "中",
+          "keywords": [
+            "项目管理"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_041",
+          "system": "-",
+          "module": "验收",
+          "name": "客户验收+用户手册+SOP培训",
+          "effort_days": 20,
+          "description": "用户手册/管理员手册/SOP 培训，制药行业文档要求高",
+          "complexity": "中",
+          "keywords": [
+            "客户验收+用户手册+SOP培训"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_042",
+          "system": "-",
+          "module": "上线",
+          "name": "上线切换+跟踪",
+          "effort_days": 15,
+          "description": "上线切换+1 周稳定期跟踪",
+          "complexity": "中",
+          "keywords": [
+            "上线切换+跟踪",
+            "发布",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "发布管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_043",
+          "system": "-",
+          "module": "发布",
+          "name": "验收发布",
+          "effort_days": 15,
+          "description": "验证闭环+正式发布",
+          "complexity": "中",
+          "keywords": [
+            "验收发布",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "内容管理",
+            "发布管理"
+          ]
+        },
+        {
+          "id": "废品与样品管理系统（WSMS）_20260902_044",
+          "system": "-",
+          "module": "质保",
+          "name": "2年质保期运维",
+          "effort_days": 30,
+          "description": "URS 明确要求 2 年售后服务质保",
+          "complexity": "中",
+          "keywords": [
+            "2年质保期运维"
+          ],
+          "patterns": []
+        }
+      ]
+    },
+    {
+      "project_id": "Facility 三期需求_20260902",
+      "name": "Facility 三期需求",
+      "created_date": "2026-09-02",
+      "tech_stack": {
+        "frontend": "企微H5（嵌入美外之家）",
+        "backend": "Java/Node.js（复用Facility技术栈）",
+        "database": "MySQL/MongoDB",
+        "integration": "企微API + Dify API + 物业系统API + 天气API"
+      },
+      "features": [
+        {
+          "id": "Facility 三期需求_20260902_001",
+          "system": "",
+          "module": "功能开发",
+          "name": "应用数据统计展示",
+          "effort_days": 0,
+          "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
+          "complexity": "",
+          "keywords": [
+            "应用数据统计展示",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "数据统计",
+            "问答系统",
+            "内容管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_002",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修时间段数量限制",
+          "effort_days": 0,
+          "description": "工单报修修改（限制时间段可报修数量）",
+          "complexity": "",
+          "keywords": [
+            "工单报修时间段数量限制",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_003",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-处理人查看全部工单",
+          "effort_days": 0,
+          "description": "工单报修优化：增加处理人查看全部工单范围",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-处理人查看全部工单",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_004",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-提交工单填手机号",
+          "effort_days": 0,
+          "description": "工单报修优化：提交工单增加填写手机号，默认从Workday带出，可修改",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-提交工单填手机号",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_005",
+          "system": "",
+          "module": "功能开发",
+          "name": "评论支持图片",
+          "effort_days": 0,
+          "description": "推文评论支持上传图片（最多九张）",
+          "complexity": "",
+          "keywords": [
+            "评论支持图片",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS",
+            "评论管理",
+            "评论审核"
+          ],
+          "patterns": [
+            "文件上传",
+            "问答系统",
+            "内容管理",
+            "评论管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_006",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片申请优化",
+          "effort_days": 0,
+          "description": "多title，数据分析展示",
+          "complexity": "",
+          "keywords": [
+            "名片申请优化",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘"
+          ],
+          "patterns": [
+            "数据统计"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_007",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片审核优化",
+          "effort_days": 0,
+          "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
+          "complexity": "",
+          "keywords": [
+            "名片审核优化",
+            "审核",
+            "审批",
+            "工作流",
+            "状态流转"
+          ],
+          "patterns": [
+            "审核流程"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_008",
+          "system": "",
+          "module": "功能开发",
+          "name": "在场权益",
+          "effort_days": 0,
+          "description": "链接陆家嘴物业小程序，跳转过去",
+          "complexity": "",
+          "keywords": [
+            "在场权益"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260902_009",
+          "system": "",
+          "module": "功能开发",
+          "name": "门禁卡管理页面图片跳转",
+          "effort_days": 0,
+          "description": "门禁卡管理：页面图片增加点击可跳转",
+          "complexity": "低",
+          "keywords": [
+            "门禁卡管理页面图片跳转",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入"
+          ],
+          "patterns": [
+            "文件上传"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_010",
+          "system": "Gateway",
+          "module": "功能开发",
+          "name": "新增OpenAPI接口",
+          "effort_days": 2,
+          "description": "Gateway 新增 openapi 3个",
+          "complexity": "低",
+          "keywords": [
+            "新增OpenAPI接口"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260902_011",
+          "system": "",
+          "module": "功能开发",
+          "name": "ISO 45001认证",
+          "effort_days": 0,
+          "description": "知识库、宣传渠道（静态页面）",
+          "complexity": "",
+          "keywords": [
+            "ISO 45001认证",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_012",
+          "system": "",
+          "module": "功能开发",
+          "name": "EAG",
+          "effort_days": 0,
+          "description": "静态页，以物易物流程支持",
+          "complexity": "",
+          "keywords": [
+            "EAG"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260902_013",
+          "system": "",
+          "module": "功能开发",
+          "name": "A1chatbot-行政小智",
+          "effort_days": 0,
+          "description": "POC阶段：验证Dify基础接入可行性，实现企微消息接收→Dify处理→回复的基本问答流程",
+          "complexity": "",
+          "keywords": [
+            "A1chatbot-行政小智",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "企微",
+            "企业微信",
+            "企微后台",
+            "企微管理",
+            "企微小程序",
+            "企微H5"
+          ],
+          "patterns": [
+            "问答系统",
+            "企微后台",
+            "企微端"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_014",
+          "system": "",
+          "module": "功能开发",
+          "name": "工位、办公室管理系统",
+          "effort_days": 0,
+          "description": "POC阶段：实现楼层构位平面图可视化、工位的增删改查、状态处理、分配、释放等核心功能",
+          "complexity": "",
+          "keywords": [
+            "工位、办公室管理系统",
+            "列表",
+            "详情",
+            "创建",
+            "编辑",
+            "删除",
+            "CRUD",
+            "增删改查",
+            "发布",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "CRUD操作",
+            "发布管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_015",
+          "system": "",
+          "module": "功能开发",
+          "name": "Loffice前滩总部访客管理及大楼闸机权限",
+          "effort_days": 0,
+          "description": "访客管理、闸机卡权限管理",
+          "complexity": "",
+          "keywords": [
+            "Loffice前滩总部访客管理及大楼闸机权限",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260902_016",
+          "system": "",
+          "module": "功能开发",
+          "name": "天气预警",
+          "effort_days": 0,
+          "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
+          "complexity": "",
+          "keywords": [
+            "天气预警",
+            "发布",
+            "上线",
+            "状态",
+            "推送",
+            "企微",
+            "企业微信",
+            "企微后台",
+            "企微管理",
+            "企微小程序",
+            "企微H5",
+            "推送记录",
+            "撤回",
+            "定时推送",
+            "消息推送",
+            "消息中心",
+            "通知",
+            "消息管理"
+          ],
+          "patterns": [
+            "发布管理",
+            "企微后台",
+            "企微端",
+            "推送管理",
+            "消息中心"
+          ]
+        }
+      ]
+    },
+    {
+      "project_id": "Facility 三期需求_20260909",
+      "name": "Facility 三期需求",
+      "created_date": "2026-09-09",
+      "tech_stack": {
+        "frontend": "企微H5（嵌入美外之家）",
+        "backend": "Java/Node.js（复用Facility技术栈）",
+        "database": "MySQL/MongoDB",
+        "integration": "企微API + Workday API + DAC + 第三方LLM（OpenAI兼容）+ 天气API"
+      },
+      "features": [
+        {
+          "id": "Facility 三期需求_20260909_001",
+          "system": "",
+          "module": "功能开发",
+          "name": "应用数据统计展示",
+          "effort_days": 0,
+          "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
+          "complexity": "",
+          "keywords": [
+            "应用数据统计展示",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "数据统计",
+            "问答系统",
+            "内容管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_002",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修时间段数量限制",
+          "effort_days": 0,
+          "description": "工单报修修改（限制时间段可报修数量）",
+          "complexity": "中",
+          "keywords": [
+            "工单报修时间段数量限制",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_003",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-处理人查看全部工单范围",
+          "effort_days": 0,
+          "description": "处理人可查看全部工单，扩大查询范围",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-处理人查看全部工单范围",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_004",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-提交工单填手机号",
+          "effort_days": 0,
+          "description": "提交工单增加手机号，默认从Workday带出且可修改",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-提交工单填手机号",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_005",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-工单评价",
+          "effort_days": 0,
+          "description": "工单完成后提交人评价（打分+描述），PC后台查看评价",
+          "complexity": "中",
+          "keywords": [
+            "工单报修优化-工单评价",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "系统管理",
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_006",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-数据统计与报告",
+          "effort_days": 0,
+          "description": "工单数据统计看板与报告导出（含工单评价统计）",
+          "complexity": "中",
+          "keywords": [
+            "工单报修优化-数据统计与报告",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "数据统计",
+            "数据导出",
+            "工单系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_007",
+          "system": "",
+          "module": "功能开发",
+          "name": "评论支持图片",
+          "effort_days": 0,
+          "description": "推文评论支持上传图片（最多九张）",
+          "complexity": "",
+          "keywords": [
+            "评论支持图片",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS",
+            "评论管理",
+            "评论审核"
+          ],
+          "patterns": [
+            "文件上传",
+            "问答系统",
+            "内容管理",
+            "评论管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_008",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片申请优化",
+          "effort_days": 0,
+          "description": "多title，数据分析展示",
+          "complexity": "",
+          "keywords": [
+            "名片申请优化",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘"
+          ],
+          "patterns": [
+            "数据统计"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_009",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片审核优化",
+          "effort_days": 0,
+          "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
+          "complexity": "",
+          "keywords": [
+            "名片审核优化",
+            "审核",
+            "审批",
+            "工作流",
+            "状态流转"
+          ],
+          "patterns": [
+            "审核流程"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_010",
+          "system": "",
+          "module": "功能开发",
+          "name": "门禁卡管理页面图片跳转",
+          "effort_days": 0,
+          "description": "门禁卡管理：页面图片增加点击可跳转",
+          "complexity": "低",
+          "keywords": [
+            "门禁卡管理页面图片跳转",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入"
+          ],
+          "patterns": [
+            "文件上传"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_011",
+          "system": "Gateway",
+          "module": "功能开发",
+          "name": "新增OpenAPI接口",
+          "effort_days": 2,
+          "description": "Gateway 新增 openapi 3个",
+          "complexity": "低",
+          "keywords": [
+            "新增OpenAPI接口"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260909_012",
+          "system": "",
+          "module": "功能开发",
+          "name": "机器人接口对接",
+          "effort_days": 0,
+          "description": "机器人接口对接：提供开放的API接口供机器人读取所需数据",
+          "complexity": "低",
+          "keywords": [
+            "机器人接口对接"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260909_013",
+          "system": "",
+          "module": "功能开发",
+          "name": "ISO 45001认证",
+          "effort_days": 0,
+          "description": "知识库、宣传渠道（静态页面）",
+          "complexity": "",
+          "keywords": [
+            "ISO 45001认证",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_014",
+          "system": "",
+          "module": "功能开发",
+          "name": "EAG",
+          "effort_days": 0,
+          "description": "以物易物流程支持\n（9/7有提到要有一些回收数据要展示，这个需求未明确未估算）",
+          "complexity": "",
+          "keywords": [
+            "EAG"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "Facility 三期需求_20260909_015",
+          "system": "",
+          "module": "功能开发",
+          "name": "行政小智-AI助手",
+          "effort_days": 0,
+          "description": "三阶段：基础问答 / 知识增强RAG / 数据与办事（阶段明细见各行描述）",
+          "complexity": "高",
+          "keywords": [
+            "行政小智-AI助手",
+            "问答",
+            "评论",
+            "留言",
+            "互动"
+          ],
+          "patterns": [
+            "问答系统"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_016",
+          "system": "",
+          "module": "功能开发",
+          "name": "工位、办公室管理系统",
+          "effort_days": 0,
+          "description": "工位与办公室管理：平面图编辑与查看、台账、固定分配与按天共享预订、统计看板与报告导出、基础数据维护（含Workday人事同步）、基础平面图数据建设",
+          "complexity": "高",
+          "keywords": [
+            "工位、办公室管理系统",
+            "列表",
+            "详情",
+            "创建",
+            "编辑",
+            "删除",
+            "CRUD",
+            "增删改查",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV",
+            "内容管理",
+            "发布",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "CRUD操作",
+            "数据统计",
+            "数据导出",
+            "内容管理"
+          ]
+        },
+        {
+          "id": "Facility 三期需求_20260909_017",
+          "system": "",
+          "module": "功能开发",
+          "name": "天气预警",
+          "effort_days": 0,
+          "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
+          "complexity": "",
+          "keywords": [
+            "天气预警",
+            "发布",
+            "上线",
+            "状态",
+            "推送",
+            "企微",
+            "企业微信",
+            "企微后台",
+            "企微管理",
+            "企微小程序",
+            "企微H5",
+            "推送记录",
+            "撤回",
+            "定时推送",
+            "消息推送",
+            "消息中心",
+            "通知",
+            "消息管理"
+          ],
+          "patterns": [
+            "发布管理",
+            "企微后台",
+            "企微端",
+            "推送管理",
+            "消息中心"
+          ]
+        }
+      ]
     }
   ],
   "feature_patterns": {
@@ -4905,7 +6497,12 @@
         "营运部信息化系统_20260519_022",
         "营运部信息化系统_20260519_035",
         "汽车金融车商管理平台_20260707_009",
-        "Facility_三期需求_20260713_010"
+        "Facility_三期需求_20260713_010",
+        "废品与样品管理系统（WSMS）_20260902_010",
+        "Facility 三期需求_20260902_007",
+        "Facility 三期需求_20260902_011",
+        "Facility 三期需求_20260902_014",
+        "Facility 三期需求_20260909_016"
       ],
       "effort_range": [
         2,
@@ -4949,7 +6546,17 @@
         "汽车金融车商管理平台_20260707_001",
         "汽车金融车商管理平台_20260707_039",
         "Facility_三期需求_20260713_007",
-        "Facility_三期需求_20260713_011"
+        "Facility_三期需求_20260713_011",
+        "废品与样品管理系统（WSMS）_20260902_003",
+        "废品与样品管理系统（WSMS）_20260902_021",
+        "废品与样品管理系统（WSMS）_20260902_028",
+        "废品与样品管理系统（WSMS）_20260902_031",
+        "废品与样品管理系统（WSMS）_20260902_036",
+        "Facility 三期需求_20260902_008",
+        "Facility 三期需求_20260902_012",
+        "Facility 三期需求_20260902_011",
+        "Facility 三期需求_20260902_015",
+        "Facility 三期需求_20260909_013"
       ],
       "effort_range": [
         3,
@@ -4988,7 +6595,16 @@
         "汽车金融车商管理平台_20260707_032",
         "汽车金融车商管理平台_20260707_043",
         "汽车金融车商管理平台_20260707_044",
-        "Facility_三期需求_20260713_003"
+        "Facility_三期需求_20260713_003",
+        "废品与样品管理系统（WSMS）_20260902_007",
+        "废品与样品管理系统（WSMS）_20260902_008",
+        "废品与样品管理系统（WSMS）_20260902_025",
+        "废品与样品管理系统（WSMS）_20260902_035",
+        "Facility 三期需求_20260902_003",
+        "Facility 三期需求_20260902_005",
+        "Facility 三期需求_20260902_009",
+        "Facility 三期需求_20260909_007",
+        "Facility 三期需求_20260909_010"
       ],
       "effort_range": [
         3,
@@ -5043,7 +6659,12 @@
         "汽车金融车商管理平台_20260707_017",
         "汽车金融车商管理平台_20260707_020",
         "汽车金融车商管理平台_20260707_036",
-        "汽车金融车商管理平台_20260707_037"
+        "汽车金融车商管理平台_20260707_037",
+        "废品与样品管理系统（WSMS）_20260902_003",
+        "废品与样品管理系统（WSMS）_20260902_019",
+        "Facility 三期需求_20260902_005",
+        "Facility 三期需求_20260902_007",
+        "Facility 三期需求_20260909_009"
       ],
       "effort_range": [
         4,
@@ -5074,7 +6695,17 @@
         "营运部信息化系统_20260519_019",
         "营运部信息化系统_20260519_029",
         "Facility_三期需求_20260713_001",
-        "Facility_三期需求_20260713_004"
+        "Facility_三期需求_20260713_004",
+        "废品与样品管理系统（WSMS）_20260902_009",
+        "废品与样品管理系统（WSMS）_20260902_011",
+        "废品与样品管理系统（WSMS）_20260902_022",
+        "Facility 三期需求_20260902_001",
+        "Facility 三期需求_20260902_004",
+        "Facility 三期需求_20260902_006",
+        "Facility 三期需求_20260909_001",
+        "Facility 三期需求_20260909_006",
+        "Facility 三期需求_20260909_008",
+        "Facility 三期需求_20260909_016"
       ],
       "effort_range": [
         4,
@@ -5163,7 +6794,15 @@
         "ADMIN_002",
         "Facility_三期需求_20260713_001",
         "Facility_三期需求_20260713_003",
-        "Facility_三期需求_20260713_009"
+        "Facility_三期需求_20260713_009",
+        "Facility 三期需求_20260902_001",
+        "Facility 三期需求_20260902_003",
+        "Facility 三期需求_20260902_010",
+        "Facility 三期需求_20260902_005",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260909_001",
+        "Facility 三期需求_20260909_007",
+        "Facility 三期需求_20260909_015"
       ],
       "effort_range": [
         5,
@@ -5183,7 +6822,15 @@
         "营运部信息化系统_20260519_001",
         "营运部信息化系统_20260519_016",
         "营运部信息化系统_20260519_018",
-        "汽车金融车商管理平台_20260707_019"
+        "汽车金融车商管理平台_20260707_019",
+        "废品与样品管理系统（WSMS）_20260902_002",
+        "废品与样品管理系统（WSMS）_20260902_022",
+        "废品与样品管理系统（WSMS）_20260902_023",
+        "废品与样品管理系统（WSMS）_20260902_024",
+        "废品与样品管理系统（WSMS）_20260902_025",
+        "废品与样品管理系统（WSMS）_20260902_026",
+        "废品与样品管理系统（WSMS）_20260902_032",
+        "废品与样品管理系统（WSMS）_20260902_037"
       ],
       "effort_range": [
         1,
@@ -5232,7 +6879,11 @@
         "营运部信息化系统_20260519_036",
         "营运部信息化系统_20260519_037",
         "汽车金融车商管理平台_20260707_011",
-        "汽车金融车商管理平台_20260707_027"
+        "汽车金融车商管理平台_20260707_027",
+        "废品与样品管理系统（WSMS）_20260902_002",
+        "废品与样品管理系统（WSMS）_20260902_022",
+        "废品与样品管理系统（WSMS）_20260902_037",
+        "Facility 三期需求_20260909_005"
       ],
       "effort_range": [
         5,
@@ -5262,7 +6913,14 @@
         "营运部信息化系统_20260519_017",
         "营运部信息化系统_20260519_023",
         "营运部信息化系统_20260519_024",
-        "营运部信息化系统_20260519_025"
+        "营运部信息化系统_20260519_025",
+        "废品与样品管理系统（WSMS）_20260902_010",
+        "废品与样品管理系统（WSMS）_20260902_011",
+        "废品与样品管理系统（WSMS）_20260902_033",
+        "废品与样品管理系统（WSMS）_20260902_035",
+        "Facility 三期需求_20260902_007",
+        "Facility 三期需求_20260909_006",
+        "Facility 三期需求_20260909_016"
       ],
       "effort_range": [
         2,
@@ -5302,7 +6960,15 @@
         "营运部信息化系统_20260519_041",
         "汽车金融车商管理平台_20260707_035",
         "Facility_三期需求_20260713_001",
-        "Facility_三期需求_20260713_003"
+        "Facility_三期需求_20260713_003",
+        "废品与样品管理系统（WSMS）_20260902_010",
+        "废品与样品管理系统（WSMS）_20260902_043",
+        "Facility 三期需求_20260902_001",
+        "Facility 三期需求_20260902_003",
+        "Facility 三期需求_20260902_005",
+        "Facility 三期需求_20260909_001",
+        "Facility 三期需求_20260909_007",
+        "Facility 三期需求_20260909_016"
       ],
       "effort_range": [
         8,
@@ -5353,7 +7019,14 @@
         "汽车金融车商管理平台_20260707_047",
         "汽车金融车商管理平台_20260707_048",
         "Facility_三期需求_20260713_010",
-        "Facility_三期需求_20260713_012"
+        "Facility_三期需求_20260713_012",
+        "废品与样品管理系统（WSMS）_20260902_042",
+        "废品与样品管理系统（WSMS）_20260902_043",
+        "Facility 三期需求_20260902_011",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260902_014",
+        "Facility 三期需求_20260902_016",
+        "Facility 三期需求_20260909_017"
       ],
       "effort_range": [
         3,
@@ -5378,7 +7051,12 @@
         "渠道管理Helpdesk_20260330_004",
         "渠道管理Helpdesk_20260330_010",
         "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_010",
-        "营运部信息化系统_20260519_032"
+        "营运部信息化系统_20260519_032",
+        "废品与样品管理系统（WSMS）_20260902_002",
+        "废品与样品管理系统（WSMS）_20260902_014",
+        "废品与样品管理系统（WSMS）_20260902_015",
+        "废品与样品管理系统（WSMS）_20260902_023",
+        "废品与样品管理系统（WSMS）_20260902_026"
       ],
       "effort_range": [
         2,
@@ -5401,7 +7079,10 @@
         "Facility需求追加_20260608_003",
         "Facility需求追加_20260608_004",
         "ADMIN_002",
-        "Facility_三期需求_20260713_003"
+        "Facility_三期需求_20260713_003",
+        "Facility 三期需求_20260902_003",
+        "Facility 三期需求_20260902_005",
+        "Facility 三期需求_20260909_007"
       ],
       "effort_range": [
         2,
@@ -5472,7 +7153,11 @@
         "汽车金融车商管理平台_20260707_005",
         "汽车金融车商管理平台_20260707_008",
         "Facility_三期需求_20260713_009",
-        "Facility_三期需求_20260713_012"
+        "Facility_三期需求_20260713_012",
+        "Facility 三期需求_20260902_010",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260902_016",
+        "Facility 三期需求_20260909_017"
       ],
       "effort_range": [
         6,
@@ -5506,7 +7191,11 @@
         "汽车金融车商管理平台_20260707_005",
         "汽车金融车商管理平台_20260707_008",
         "Facility_三期需求_20260713_009",
-        "Facility_三期需求_20260713_012"
+        "Facility_三期需求_20260713_012",
+        "Facility 三期需求_20260902_010",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260902_016",
+        "Facility 三期需求_20260909_017"
       ],
       "effort_range": [
         6,
@@ -5531,7 +7220,10 @@
         "企微Dify AI助手系统_20260420_013",
         "渠道管理Helpdesk_20260330_009",
         "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "Facility_三期需求_20260713_012"
+        "Facility_三期需求_20260713_012",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260902_016",
+        "Facility 三期需求_20260909_017"
       ],
       "effort_range": [
         3,
@@ -5562,7 +7254,10 @@
         "汽车金融车商管理平台_20260707_002",
         "汽车金融车商管理平台_20260707_005",
         "汽车金融车商管理平台_20260707_008",
-        "Facility_三期需求_20260713_012"
+        "Facility_三期需求_20260713_012",
+        "Facility 三期需求_20260902_013",
+        "Facility 三期需求_20260902_016",
+        "Facility 三期需求_20260909_017"
       ],
       "effort_range": [
         3,
@@ -5582,7 +7277,15 @@
       "examples": [
         "USER_001",
         "ADMIN_001",
-        "Facility_三期需求_20260713_002"
+        "Facility_三期需求_20260713_002",
+        "Facility 三期需求_20260902_002",
+        "Facility 三期需求_20260902_003",
+        "Facility 三期需求_20260902_004",
+        "Facility 三期需求_20260909_002",
+        "Facility 三期需求_20260909_003",
+        "Facility 三期需求_20260909_004",
+        "Facility 三期需求_20260909_005",
+        "Facility 三期需求_20260909_006"
       ],
       "effort_range": [
         10,
