@@ -42,7 +42,9 @@ TESTING_RATE = 0.15
 FIXED_KEYS = ("acceptance", "communication", "ui_ux_design", "ui_design")
 
 # _collect_rows 中"其他工时行"的模块名（这些行不参与上浮）
-OTHER_MODULES = {"功能测试", "验收发布", "需求沟通", "UI/UX设计", "环境搭建"}
+# 注意：环境搭建是显式功能行（模块名可为"环境搭建"），必须留在开发合计内，
+# 否则基准总价会比 Excel 实际合计少环境工时、报价版合计对不上
+OTHER_MODULES = {"功能测试", "验收发布", "需求沟通", "UI/UX设计"}
 
 
 def excel_roundup(x: float) -> int:
@@ -183,29 +185,29 @@ def build_quote_metadata(
             f"工时行数不匹配：metadata 展开 {idx} 行，分配到 {len(dev_values)} 行"
         )
 
-    # 重算 summary（企微→用户端 / PC后台→管理后台 / 其余→其他）
-    user = admin = other = 0.0
+    # 重算 summary：按系统动态回写 *_development 分项桶
+    # （企微→user / 对外H5→external_h5 / PC后台→admin / 其余→other；
+    #   先清旧桶再回写，避免基准 summary 中未被覆盖的分项残留导致校验不平）
+    system_sums: dict[str, float] = {}
     for feature in quote.get("features", []):
-        if "sub_systems" in feature:
-            entries = feature["sub_systems"]
-        else:
-            entries = [feature]
+        entries = feature.get("sub_systems") or [feature]
         for entry in entries:
             system = entry.get("system", "")
-            effort = float(entry.get("effort_days", 0))
-            if system == "企微":
-                user += effort
-            elif system == "PC后台":
-                admin += effort
-            else:
-                other += effort
+            system_sums[system] = system_sums.get(system, 0.0) + float(entry.get("effort_days", 0))
 
     testing = excel_roundup(dev_target * TESTING_RATE) if testing_enabled(quote["summary"]) else 0
     summary = quote.setdefault("summary", {})
-    summary["user_development"] = ge.round_half(user)
-    summary["admin_development"] = ge.round_half(admin)
-    if other:
-        summary["other_development"] = ge.round_half(other)
+    for key in [k for k in summary
+                if k.endswith("_development") and k != "total_development_effort"]:
+        del summary[key]
+    bucket_keys = {"企微": "user_development", "对外H5": "external_h5_development",
+                   "PC后台": "admin_development"}
+    for system, effort in system_sums.items():
+        bucket = bucket_keys.get(system, "other_development")
+        summary[bucket] = ge.round_half(summary.get(bucket, 0) + effort)
+    # schema 必填桶兜底（无对应系统行时补 0）
+    summary.setdefault("user_development", 0)
+    summary.setdefault("admin_development", 0)
     summary["total_development_effort"] = dev_target
     summary["testing_effort"] = testing
     summary["total_effort"] = target_total

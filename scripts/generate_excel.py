@@ -223,7 +223,7 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
         seq_num += 1
         rows.append((
             seq_num, "UI/UX设计", "-", "", "界面设计，交互设计", "-",
-            round_half(ui_effort), "",
+            round_half(ui_effort), other_fixed.get("ui_ux_design_note", ""),
         ))
 
     # 验收发布
@@ -232,7 +232,7 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
         seq_num += 1
         rows.append((
             seq_num, "验收发布", "-", "", "验收技术支持，系统发布", "-",
-            round_half(acceptance), "",
+            round_half(acceptance), other_fixed.get("acceptance_note", ""),
         ))
 
     # 需求沟通
@@ -241,7 +241,7 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
         seq_num += 1
         rows.append((
             seq_num, "需求沟通", "-", "", "沟通，需求文档", "-",
-            round_half(communication), "",
+            round_half(communication), other_fixed.get("communication_note", ""),
         ))
 
     return rows
@@ -352,7 +352,9 @@ def _apply_merges(ws, rows: list[tuple], fmts: dict) -> None:
        - D(需求类型) 列：按连续相同值合并
     2. 其他工时行（功能测试/验收发布/需求沟通）：合并 C-E 列
     """
-    OTHER_MODULES = {"功能测试", "验收发布", "需求沟通", "UI/UX设计", "环境搭建"}
+    # 环境搭建是显式功能行（模块名可为"环境搭建"），不走 C-E 合并，
+    # 否则其 需求类型/描述 列会被功能名覆盖
+    OTHER_MODULES = {"功能测试", "验收发布", "需求沟通", "UI/UX设计"}
     total = len(rows)
     if total == 0:
         return

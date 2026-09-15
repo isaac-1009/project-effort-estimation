@@ -4,7 +4,8 @@
 工时估算Excel读取脚本
 
 用法：
-    python scripts/read_excel.py <excel文件路径>
+    python scripts/read_excel.py <excel文件路径>           # 人类可读报告
+    python scripts/read_excel.py <excel文件路径> --json    # 结构化 JSON（程序化读取）
     python scripts/read_excel.py data/current/estimate.xlsx
 
 重构要点：
@@ -17,6 +18,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import sys
@@ -241,10 +243,17 @@ def read_excel(file_path: str, *, print_report: bool = True) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="读取工时估算 Excel 文件")
     parser.add_argument("file_path", help="Excel 文件路径")
+    parser.add_argument(
+        "--json", action="store_true",
+        help="输出结构化 JSON（rows/systems/total_effort）而非人类可读报告；"
+             "程序化读取（同步 metadata、生成后校验）一律走本模式",
+    )
     args = parser.parse_args()
 
     try:
-        read_excel(args.file_path)
+        result = read_excel(args.file_path, print_report=not args.json)
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except FileNotFoundError as e:
         log.error("%s", e)

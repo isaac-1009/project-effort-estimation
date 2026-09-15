@@ -13,6 +13,7 @@ import pytest
 
 from generate_quote import (
     base_totals,
+    build_quote_metadata,
     distribute_uplift,
     excel_roundup,
     generate_quote,
@@ -159,3 +160,33 @@ class TestGenerateQuoteIntegration:
         assert result["target_total"] == 249.5
         assert result["dev_target"] == 205.5
         assert _quote_excel_dev_sum(out) == 249.5
+
+
+class TestBuildQuoteMetadataSummaryBuckets:
+    """summary 分项桶必须与上浮后的功能行一致：基准残留桶要清除、新系统要入桶。
+
+    回归背景：build_quote_metadata 曾硬编码只回写 企微/PC后台 两桶，
+    基准 summary 里的 external_h5_development 残留旧值导致 schema 校验不平。
+    """
+
+    def test_stale_buckets_cleared(self, valid_metadata_factory):
+        meta = valid_metadata_factory()
+        meta["summary"]["external_h5_development"] = 6  # 基准残留桶
+        quote = build_quote_metadata(meta, [3.0, 5.0], 8.0, 19.0, 1.0)
+        buckets = {
+            k: v for k, v in quote["summary"].items()
+            if k.endswith("_development") and k != "total_development_effort"
+        }
+        assert sum(buckets.values()) == 8.0
+        assert "external_h5_development" not in buckets
+
+    def test_external_h5_bucket_written(self, valid_metadata_factory):
+        meta = valid_metadata_factory()
+        meta["features"][0]["system"] = "对外H5"
+        quote = build_quote_metadata(meta, [3.0, 5.0], 8.0, 19.0, 1.0)
+        assert quote["summary"]["external_h5_development"] == 3
+        buckets = [
+            v for k, v in quote["summary"].items()
+            if k.endswith("_development") and k != "total_development_effort"
+        ]
+        assert sum(buckets) == 8.0
