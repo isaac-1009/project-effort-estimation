@@ -1,0 +1,217 @@
+{
+  "project_id": "小美龙再生邮局_20260915",
+  "name": "小美龙再生邮局",
+  "created_date": "2026-09-15",
+  "total_effort": 65,
+  "description": "Facility 新增「小美龙再生邮局」模块：员工闲置物品投递登记、ABCD 分类、以物易物、公益流转/资源回收/专业处理、环保积分、个人/部门排行榜、月度与年度数据统计及后台管理；企微 H5 员工端 + PC 后台行政端",
+  "systems": [
+    "企微",
+    "PC后台",
+    "其他"
+  ],
+  "tags": [
+    "企微",
+    "Facility",
+    "环保积分",
+    "排行榜",
+    "物品管理",
+    "数据统计",
+    "H5 UI设计",
+    "ESG"
+  ],
+  "tech_stack": {
+    "frontend": "企微H5（嵌入美外之家，复用 Facility 载体）",
+    "backend": "Java/Node.js（复用 Facility 技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（OAuth/应用消息推送，复用现有推送通道）"
+  },
+  "features": [
+    {
+      "module": "功能开发",
+      "name": "邮局首页",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "企微端模块入口与邮局主页：品牌头图、四步流程（带来/投递/分类/下一站）与四站循环机制介绍、各功能区入口导航",
+      "system": "企微",
+      "effort_days": 2,
+      "remark": "含原型设计及功能开发"
+    },
+    {
+      "module": "功能开发",
+      "name": "项目指南页",
+      "requirement_type": "新功能",
+      "complexity": "低",
+      "description": "项目说明、投递规则、可接收物品及 A/B/C/D 分类标准静态展示，支持跳转指定推文",
+      "system": "企微",
+      "effort_days": 1,
+      "remark": ""
+    },
+    {
+      "module": "功能开发",
+      "name": "我的环保积分",
+      "requirement_type": "新功能",
+      "complexity": "低",
+      "description": "员工查看当前环保积分及积分明细流水（来源：投递计分/交换奖励/公益奖励），按月分组展示",
+      "system": "企微",
+      "effort_days": 3,
+      "remark": "个人维度查询+流水列表，无复杂交互"
+    },
+    {
+      "module": "功能开发",
+      "name": "排行榜",
+      "requirement_type": "新功能",
+      "description": "个人榜（月度积分榜、年度总榜、TOP10 及年度环保达人）与部门榜（按人均环保积分排名、年度最环保部门）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 5,
+          "remark": "榜单展示页：月/年/个人/部门多维度切换，奖牌视觉与环保达人展示；"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 3,
+          "remark": "榜单统计计算：个人积分累计排名、部门人均=部门总积分/部门人数、月度年度榜单生成"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "以物易物列表",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "在架物品浏览/搜索筛选（类别）/物品详情（图集、上架时间），已预约物品显示状态标识",
+      "system": "企微",
+      "effort_days": 4,
+      "remark": "邮局自营库存展示，非员工互挂；"
+    },
+    {
+      "module": "功能开发",
+      "name": "在线预约",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "物品详情发起预约：选开放时段提交（时段限额校验、物品锁定），注明领取或带物交换意向",
+      "system": "企微",
+      "effort_days": 3,
+      "remark": "时段数据来自后台配置；被预约物品对他人显示已预约"
+    },
+    {
+      "module": "功能开发",
+      "name": "我的预约",
+      "requirement_type": "新功能",
+      "complexity": "低",
+      "description": "预约列表（待到店/已完成/已取消/已失效）与取消预约",
+      "system": "企微",
+      "effort_days": 2,
+      "remark": "个人维度查询，无复杂交互"
+    },
+    {
+      "module": "功能开发",
+      "name": "物品上架管理",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "物品台账A类选品上架/编辑上架信息/下架/重新上架；库存状态机（在架→已预约→已领取/已交换/已下架）",
+      "system": "PC后台",
+      "effort_days": 3,
+      "remark": "发布方为管理员；审核为邮局线下当面把关不建流程"
+    },
+    {
+      "module": "功能开发",
+      "name": "开放时段配置",
+      "requirement_type": "新功能",
+      "complexity": "低",
+      "description": "每月交换周开放时段及每段限额配置",
+      "system": "PC后台",
+      "effort_days": 1,
+      "remark": "供企微预约选择"
+    },
+    {
+      "module": "功能开发",
+      "name": "预约管理",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "预约列表查询（按时段/物品/状态）、到店核销（领取完成/交换完成）、未到店失效标记",
+      "system": "PC后台",
+      "effort_days": 2,
+      "remark": "后台手动核销，无扫码"
+    },
+    {
+      "module": "功能开发",
+      "name": "交换结果登记",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "交换完成登记，员工带来的新物品回流录入物品台账并关联本次交换",
+      "system": "PC后台",
+      "effort_days": 2,
+      "remark": "回流物品可进入下月上架流程"
+    },
+    {
+      "module": "功能开发",
+      "name": "以物易物数据统计",
+      "requirement_type": "新功能",
+      "complexity": "低",
+      "description": "在架量/预约量/领取率/交换率等运营统计",
+      "system": "PC后台",
+      "effort_days": 2,
+      "remark": "可并入全模块数据统计页"
+    },
+    {
+      "module": "功能开发",
+      "name": "物品登记台账",
+      "requirement_type": "新功能",
+      "description": "物品台账：新增/编辑/详情/列表，记录投递日期、员工、部门、物品类别、数量等；支持 PC 后台与企微端管理员登记",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 4,
+          "remark": "CRUD+批量导入 基础（含类别）上加员工/部门数据联动；审核为邮局线下把关不建系统流程"
+        },
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "管理员企微端登记和编辑物品：移动端登记表单+编辑+列表，复用后台接口与企微 OAuth"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "积分激励管理",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "基础环保积分自动计算（每 3 件有效物品=1 分，累计）；交换成功奖励积分自动追加（读取本模块以物易物交换结果）；公益奖励积分人工登记；积分流水记录",
+      "system": "PC后台",
+      "effort_days": 5,
+      "remark": "纯积分体系（无勋章/等级展示），低于勋章积分模式；交换奖励积分读取本模块以物易物的交换结果"
+    },
+    {
+      "module": "功能开发",
+      "name": "数据统计及可视化",
+      "requirement_type": "新功能",
+      "complexity": "中",
+      "description": "月度运营统计（参与人数/收集物品量/找到新主人/公益流转/资源回收/积分）；年度 KPI 汇总（参与率/再利用率/公益贡献等）；可视化图表页供月报年报及 ESG 汇报",
+      "system": "PC后台",
+      "effort_days": 4,
+      "remark": "参照数据统计模式；含图表可视化;导出"
+    }
+  ],
+  "summary": {
+    "user_development": 23,
+    "admin_development": 26,
+    "total_development_effort": 49,
+    "testing_effort": 8,
+    "other_fixed": {
+      "communication": 1,
+      "environment": 0,
+      "acceptance": 2,
+      "ui_ux_design": 5,
+      "ui_ux_design_note": "页面+首页入口icon"
+    },
+    "total_effort": 65
+  },
+  "notes": [
+    "现有系统新增功能：复用 Facility 技术栈与部署环境，环境搭建 0 人天",
+    "以物易物为自营库存+预约到店模式（2026-09-15 依据会议录音推倒重估），模块开发 19.5 人天",
+    "2026-09-15 手改同步：在线预约 3、开放时段配置 1、预约管理 2、需求沟通 1",
+    "Excel批量导入、物品分类与状态流转并入物品登记台账；查询导出并入数据统计及可视化；企微消息通知已剔除本期",
+    "H5 端 UI 设计 5 人天（页面+首页入口icon）；验收发布 2"
+  ]
+}

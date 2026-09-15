@@ -1,0 +1,340 @@
+{
+  "project_id": "RGI荣誉勋章_20260911",
+  "name": "RGI 荣誉勋章",
+  "created_date": "2026-09-11",
+  "total_effort": 83,
+  "description": "RGI 企业微信模块「荣誉勋章」：全新企微 H5（对内互动+对外名片）+ PC 管理后台。销售专业能力展示（能力墙名片/徽章/TAG）、能力检索互助（搜索/同事详情/留言墙）、排名（RGI/ER-PH 双榜）与后台数据维护体系。以 Figma「更新版」原型 + Isaac 2026-09-11 范围裁定为准。",
+  "systems": [
+    "企微",
+    "对外H5",
+    "PC后台",
+    "其他"
+  ],
+  "tags": [
+    "企微",
+    "RGI",
+    "荣誉勋章",
+    "徽章",
+    "能力展示",
+    "搜索",
+    "留言墙",
+    "排行榜",
+    "分享链接",
+    "DAC"
+  ],
+  "tech_stack": {
+    "frontend": "企微H5（对内互动端+对外名片端，参照 Facility 载体）",
+    "backend": "Java/Node.js（新建独立服务，类 Facility 技术栈）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（OAuth/工作台入口/分享）+ DAC 员工数据同步"
+  },
+  "features": [
+    {
+      "module": "功能开发",
+      "name": "首页",
+      "requirement_type": "新功能",
+      "description": "对内主页：搜索框（项目/能力）、问候+徽章墙、统计三数（勋章/完成培训/被点赞）、我的专业能力卡+去展示、我的技能数 + 去互动、我的排名入口、能力维护",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 4,
+          "remark": "聚合页各组件"
+        }
+      ],
+      "complexity": "中",
+      "reference": "企微端 base 8；聚合展示页参考 Facility 应用数据统计展示（企微5）"
+    },
+    {
+      "module": "功能开发",
+      "name": "我的技能树",
+      "requirement_type": "新功能",
+      "description": "按 7 条产品线分组展示细分能力，Lv.1/Lv.2 等级样式；已获得亮显、未获得灰显可见",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "产品线分组折叠 + 等级样式 + 灰显状态，数据来自培训记录"
+        }
+      ],
+      "complexity": "中",
+      "reference": "CRUD/标签展示类 base 3-5；Figma 更新版已有整页设计"
+    },
+    {
+      "module": "功能开发",
+      "name": "能力/背景搜索",
+      "requirement_type": "新功能",
+      "description": "关键词搜索 + 筛选面板（地区▼/能力▼/Tag 排序）+ 徽章 chips 多选 + 重置/确定，结果为同事卡片列表；搜索历史保留（前端本地存储）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "搜索页+筛选面板+结果列表  + 多条件搜索接口（按产品线能力/经历 TAG/地区组合查询）；搜索历史 localStorage 前端处理不入后端"
+        }
+      ],
+      "complexity": "中",
+      "reference": "DSM 能力/背景搜索核心需求；Figma 更新版含筛选页+结果页"
+    },
+    {
+      "module": "功能开发",
+      "name": "同事详情页",
+      "requirement_type": "新功能",
+      "description": "能力/经验双 tab：能力=技能树视图；经验=工作履历（含友商任职及负责产品）；展示被点赞数",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "双 tab 切换 + 履历时间线展示 + 点赞数，数据来自员工经历维护"
+        }
+      ],
+      "complexity": "中",
+      "reference": "Figma 更新版 313-1279 同事详情（含 Abbott/强生履历实例）"
+    },
+    {
+      "module": "功能开发",
+      "name": "我的排名",
+      "requirement_type": "新功能",
+      "description": "RGI 榜与 ER/PH 榜两套榜单分开排名，支持榜单切换查看",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 4,
+          "remark": "双榜切换+列表展示  + 榜单计算服务（按维度聚合员工得分排序，双口径）"
+        }
+      ],
+      "complexity": "中",
+      "reference": "排行榜模式 base 6（5-8）；双榜单计算在后端"
+    },
+    {
+      "module": "功能开发",
+      "name": "留言墙",
+      "requirement_type": "新功能",
+      "description": "个人留言墙：可评论、回复（二级回复）、删除；内容先发后审（默认可见）",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 3,
+          "remark": "留言列表+发布+回复链+删除 + 被点赞数联动"
+        }
+      ],
+      "complexity": "中",
+      "reference": "问答系统 base 6（5-8）；替代朋友圈式社区（Isaac 裁定暂无社区模块）"
+    },
+    {
+      "module": "功能开发",
+      "name": "个人资料维护",
+      "requirement_type": "新功能",
+      "description": "头像、职位、地区等名片展示字段维护；姓名/工号等 HR 字段同步不可改",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 2,
+          "remark": "资料编辑表单+头像上传，HR 字段只读"
+        }
+      ],
+      "complexity": "低",
+      "reference": "CRUD base 3（2-5）低复杂度；原型未单独出页按轻量处理"
+    },
+    {
+      "module": "功能开发",
+      "name": "我的能力墙",
+      "requirement_type": "新功能",
+      "description": "对外名片：个人头卡（照片/姓名/职位/地区/logo）+ 徽章墙 + 分享按钮；7 条产品线可展开卡片，细分能力清单带认证日期；HCP 经分享链接免登录只读",
+      "sub_systems": [
+        {
+          "system": "对外H5",
+          "effort_days": 4,
+          "remark": "名片页高还原度实现（徽章墙/产品线主题色卡/展开交互） + 只读数据接口与免登录态"
+        }
+      ]
+    },
+    {
+      "module": "功能开发",
+      "name": "字典维护",
+      "requirement_type": "新功能",
+      "description": "基础数据字典：产品线（7 条中文名）/细分能力项/能力等级/地区/Tag 分类，支撑搜索筛选分组",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 5,
+          "remark": "类字典 CRUD + 字典项与能力/徽章关联校验"
+        }
+      ],
+      "complexity": "中",
+      "reference": "店铺基本数据维护 4（营运部）；车型库/产品配置 21.5（车商，规模更大）"
+    },
+    {
+      "module": "功能开发",
+      "name": "培训数据管理",
+      "requirement_type": "新功能",
+      "description": "培训数据手工录入 + 批量导入（Excel）；定期更新销售专业能力",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 4,
+          "remark": "录入表单  + Excel 导入解析与数据校验  + 导入结果报告"
+        }
+      ],
+      "complexity": "中",
+      "reference": "培训视频分类+上传 5（营运部）；文件上传 base 4；不对接 LMS（已确认）"
+    },
+    {
+      "module": "功能开发",
+      "name": "徽章管理",
+      "requirement_type": "新功能",
+      "description": "徽章/勋章图标素材上传维护、名称/描述/排序、与 TAG 类型绑定、产品线图标与主题色配置、上下架",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 3,
+          "remark": "素材上传+列表管理  + TAG 绑定与产品线主题色配置"
+        }
+      ],
+      "complexity": "中",
+      "reference": "标签管理 base 3；卡券维护 19（车商，含发放核销更重）"
+    },
+    {
+      "module": "功能开发",
+      "name": "TAG 系统管理",
+      "requirement_type": "新功能",
+      "description": "TAG 类型维护（实战跟台、项目先锋、友商经历…）、解锁规则配置（行为/数量/口碑三路，各解锁实战 TAG 1/3）",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 4,
+          "remark": "TAG 类型 CRUD  + 解锁规则配置引擎（三路规则参数化、阈值与 1/3 逻辑需求不清晰）"
+        }
+      ],
+      "complexity": "高",
+      "reference": "规则配置/计算 20（车商，计费级规则引擎）；本项规则面窄取裁剪值；1/3 细则待 QA"
+    },
+    {
+      "module": "功能开发",
+      "name": "解锁评估维护",
+      "requirement_type": "新功能",
+      "description": "TCS 行为评估录入；DSM 跟台数量维护；DSM 客户口碑评价维护；解锁确认流程（三方确认链）",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 5,
+          "remark": "三类评估录入表单  + 解锁触发与确认流程流转（直线经理→TCS→客户映射）（需求不清晰）"
+        }
+      ],
+      "complexity": "高",
+      "reference": "审核流程 base 6（4-8）；确认链与三路解锁映射待 QA，按可配置流程估"
+    },
+    {
+      "module": "功能开发",
+      "name": "员工经历维护",
+      "requirement_type": "新功能",
+      "description": "工作履历（含友商任职公司与负责产品）后台维护，供同事详情「经验」tab 展示",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 3,
+          "remark": "多段履历编辑（公司/岗位/时间/产品线）+ 按员工检索"
+        }
+      ],
+      "complexity": "中",
+      "reference": "CRUD base 3-5；Isaac 指定由后台维护（前端不开放编辑）"
+    },
+    {
+      "module": "功能开发",
+      "name": "留言墙与培训留言管理",
+      "requirement_type": "新功能",
+      "description": "留言/回复列表查看、内容审核（默认可见、违规删除/下架）、审核记录查询",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 3,
+          "remark": "留言列表与详情  + 删除/下架操作与审核记录 （先发后审无待审队列）"
+        }
+      ],
+      "complexity": "中",
+      "reference": "评论管理 base 3；贴子审核 7.5（车商，完整前置审核流更重）"
+    },
+    {
+      "module": "功能开发",
+      "name": "用户与角色权限",
+      "requirement_type": "新功能",
+      "description": "角色（销售/DSM/TCS/MKT/LT）权限配置；员工基础数据 DAC 同步；企微 OAuth 登录与身份绑定",
+      "sub_systems": [
+        {
+          "system": "企微",
+          "effort_days": 2,
+          "remark": "企微 OAuth 静默登录 + 员工身份绑定"
+        },
+        {
+          "system": "PC后台",
+          "effort_days": 3,
+          "remark": "RBAC 角色权限（ 角色功能矩阵） + DAC 员工数据同步（参照企微Dify DAC 对接 ）"
+        }
+      ],
+      "complexity": "高",
+      "reference": "系统用户角色维护 6+5（营运部）；DAC 同步 3（企微Dify AI助手系统）；会议签到企微OAuth登录"
+    },
+    {
+      "module": "功能开发",
+      "name": "数据统计看板",
+      "requirement_type": "新功能",
+      "description": "培训完成、TAG 解锁、点赞/留言互动、名片访问统计，含 RGI/ER-PH 双榜单排名数据",
+      "sub_systems": [
+        {
+          "system": "PC后台",
+          "effort_days": 4,
+          "remark": "多维统计图表 （趋势/分布/榜单数据视图）+ 名片访问埋点"
+        }
+      ],
+      "complexity": "中",
+      "reference": "数据统计与报告 7（Facility 工单统计）；数据概览 6（营运部）；含双榜单+访问埋点取 8"
+    },
+    {
+      "module": "功能开发",
+      "name": "六边形雷达图",
+      "requirement_type": "可选功能",
+      "description": "多产品专业培训等级维度展示（六边形雷达图）",
+      "sub_systems": [
+        {
+          "system": "对外H5",
+          "effort_days": 2,
+          "remark": "雷达图组件（SVG/Canvas 渲染+等级数据映射）；可选功能，确认不做时移除"
+        }
+      ]
+    },
+    {
+      "module": "环境搭建",
+      "name": "新环境搭建",
+      "requirement_type": "固定项",
+      "description": "新系统独立部署（企微 H5 + PC 后台），开发/测试/生产环境",
+      "sub_systems": [
+        {
+          "system": "其他",
+          "effort_days": 2,
+          "remark": "新项目固定 2 人天"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "user_development": 24,
+    "external_h5_development": 6,
+    "admin_development": 34,
+    "total_development_effort": 64,
+    "testing_effort": 10,
+    "other_fixed": {
+      "communication": 4,
+      "environment": 2,
+      "acceptance": 3,
+      "ui_ux_design": 0
+    },
+    "total_effort": 83
+  },
+  "notes": [
+    "估算依据：Figma「更新版」原型（红框范围）+ Isaac 2026-09-11 范围裁定（雷达图可选计价；排名/留言墙纳入；搜索分组后台维护；搜索历史前端；经历后台维护；RGI/ER-PH 双榜）。",
+    "技术栈按类 Facility 载体（新企微 H5 + PC 后台，独立服务），环境搭建按新项目 2 人天计。",
+    "2026-09-14 依据 Isaac 手改 Excel 同步（Excel 为真相源）：① 移除「培训记录与留言评价」「分享链接管理」；② 「我的能力墙 One Page」更名「我的能力墙」；③ 本次估算不含 UI/UX 设计；④ 雷达图（可选功能）移至末尾。",
+    "2026-09-14 二次修订（工时调整，仍以手改 Excel 为真相源）：① 工时整体下调——技能树/搜索/同事详情/留言墙 4→3，徽章 4→3、TAG 5→4、解锁评估 6→5，雷达图 3→2；② 首页描述改为「我的技能数+去互动、我的排名入口、能力维护」（原进度条/点亮矩阵移除）；③ 备注中的内部工时拆分明细清除；④ TAG 系统管理/解锁评估维护备注标注「需求不清晰」；⑤ 环境搭建行改为 模块=环境搭建/功能=新环境搭建。",
+    "汇总：开发 64（企微 24 + 对外H5 6 + PC后台 34）+ 环境 2，测试 ROUNDUP(66×15%)=10（基数含环境行），需求沟通 4、验收 3、UI 0，总计 83 人天（含可选雷达图 2，客户不做则 81）。",
+    "高复杂度项：TAG 系统管理、解锁评估维护（需求不清晰，已预留调整空间）、用户与角色权限（DAC 对接）。",
+    "待 QA 三项不阻塞框架：MKT 具体功能、TAG 1/3 规则细则、徽章完整清单；确认后按字典/维护类 3-5 人天/项补充。"
+  ]
+}
