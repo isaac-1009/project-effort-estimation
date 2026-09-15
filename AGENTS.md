@@ -37,6 +37,8 @@
 - `scripts/archive_estimation.py` - 将当前估算归档到历史（同时更新 index.json + history.json）
 - `scripts/generate_dev_plan.py` - 生成开发计划甘特图 HTML
 - `scripts/generate_quote.py` - 生成报价版估算（给定目标总工时，按比例上浮开发项并精确配平）
+- `scripts/fill_medtronic_quote.py` - 按 `templates/Medtronic_template.xlsx` 生成 Medtronic 客户报价单
+  （读估算 Excel 自动填功能行/固定项，单价列 C 留空由商务填写）
 
 > 已废弃：旧版 6 列 Excel 布局（#/系统/模块/功能/工时/描述）已被 8 列布局取代；
 > `scripts/migrate_history.py` 为一次性迁移脚本，已完成使命并删除。
@@ -53,6 +55,7 @@
 **第4步详细说明**（生成文件并验证）：
    - 运行 `generate_excel.py` 生成 `{项目名}估算.xlsx`（8 列布局）
    - 运行 `read_excel.py` 读取并核对工时合计是否与 `metadata.json` 一致
+     （读取 Excel 一律走本脚本，程序化读取加 `--json`，详见开发约定「Excel 读取」）
    - 注意：`read_excel.py` 显示的总计**不含公式行**（功能测试行），
      比对时须按 ROUNDUP 公式用 Python 实算后再加上
    - 如不一致，检查并修正 `metadata.json` 后重新生成
@@ -132,6 +135,14 @@
 - 日志统一用 `scripts/logging_setup.py` 的 `setup_logging()`，**不要**用 `print("[INFO]...")` 手拼前缀
 - 路径拼接统一走 `scripts/path_safety.py` 的 `sanitize_filename()` / `ensure_within()`，动态片段（如项目名）写盘前必须清洗与校验
 
+**Excel 读取**：
+- 读取/核对工时估算 Excel **一律使用 `scripts/read_excel.py`**：人工核对用默认文本输出；
+  程序化读取（同步 metadata、生成后校验、对比手改差异）加 `--json` 拿结构化结果
+- **不要**用 LLM 临时写 openpyxl 代码逐格解析 Excel——脚本已内置合并单元格前向填充、
+  公式行/合计行跳过与去重，自写解析必然重复踩这些坑
+- 已知边界：默认输出与 `--json` 的 rows **均不含公式行**（功能测试行），
+  功能测试值须按 `=ROUNDUP(SUM(开发区间)*0.15,0)` 口径用 Python 实算
+
 **编码规范**：
 - 脚本入口用 `argparse`，库函数内**不要**调 `sys.exit()`（抛异常由 `__main__` 决定退出码）
 - magic number（阈值、颜色、列宽等）提取为模块顶部命名常量
@@ -151,8 +162,8 @@
 # 从 metadata 生成 Excel
 python scripts/generate_excel.py data/current/metadata.json
 
-# 读取工时估算Excel
-python scripts/read_excel.py <excel文件路径>
+# 读取工时估算Excel（程序化读取加 --json，详见开发约定「Excel 读取」）
+python scripts/read_excel.py <excel文件路径> [--json]
 
 # 归档当前估算到历史
 python scripts/archive_estimation.py
@@ -162,6 +173,9 @@ python scripts/generate_dev_plan.py data/current/dev-plan-config.json
 
 # 生成报价版估算（合计恰好等于给定总工时）
 python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
+
+# 生成 Medtronic 客户报价单（按模板填功能行，单价列留空待商务填写）
+python scripts/fill_medtronic_quote.py <估算.xlsx> --name "项目名" [-o 输出.xlsx]
 
 # 查看项目索引
 cat data/estimations/index.json
@@ -279,7 +293,7 @@ python scripts/generate_dev_plan.py <config.json> [output.html]
 - 此工具通过归档积累历史数据以提高估算准确度（自学习机制：归档时
   `archive_estimation.py` 把新 feature 并入 `history.json`，命中的功能模式
   回填 `examples`）
-- 当前库状态：13 个项目、283 个 feature；24 种功能模式中 23 种已有历史实例
+- 当前库状态：16 个项目、330 个 feature；24 种功能模式均已积累历史实例
 - 准确度随项目数提升：1-5 个 ±30%、5-10 个 ±20%、10-20 个 ±15%
 - 始终优先参考历史数据而非标准工时表
 - 有疑问时，主动询问用户以明确需求
