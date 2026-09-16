@@ -73,8 +73,8 @@
 **确认后**：
 
 - 运行 `python scripts/archive_estimation.py`（支持 `--force` 跳过交互确认）
-- 脚本将 `data/current/` 移动到 `data/estimations/{项目名}_{YYYYMMDD}/`
-- `project_id` 统一用归档日期生成（格式 `{name}_YYYYMMDD`），与 folder 同源，避免年份漂移
+- 脚本将 `data/current/` 移动到 `data/estimations/{YYYYMMDD}_{项目名}/`（2026-09-16 起日期前置）
+- `project_id` 统一用归档日期生成（格式 `{YYYYMMDD}_{name}`），与 folder 同源，避免年份漂移
 - 更新 `data/estimations/index.json`（项目索引 + 功能关键词索引，关键词数据驱动）
 - 更新 `data/history.json`（自学习：把新 feature 并入 projects，命中的功能模式回填 examples）
 - 若设置了环境变量 `ARCHIVE_MIRROR_DIR`，额外把整个归档文件夹复制一份到该目录（用于同步到 WeDrive 等；失败仅告警，不影响归档，也不回滚）
@@ -292,8 +292,9 @@ python scripts/generate_dev_plan.py <config.json> [output.html]
 
 - 此工具通过归档积累历史数据以提高估算准确度（自学习机制：归档时
   `archive_estimation.py` 把新 feature 并入 `history.json`，命中的功能模式
-  回填 `examples`）
-- 当前库状态：16 个项目、330 个 feature；24 种功能模式均已积累历史实例
+  回填 `examples`；多端 sub_systems 功能按各端工时合计入库并保留明细，
+  2026-09-16 已回填存量 0 工时记录）
+- 当前库状态：19 个项目、358 个 feature；24 种功能模式均已积累历史实例
 - 准确度随项目数提升：1-5 个 ±30%、5-10 个 ±20%、10-20 个 ±15%
 - 始终优先参考历史数据而非标准工时表
 - 有疑问时，主动询问用户以明确需求
