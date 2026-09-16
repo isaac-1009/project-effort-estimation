@@ -23,7 +23,7 @@ from metadata_schema import ValidationError
 from read_excel import read_excel
 
 FACILITY_METADATA = os.path.join(
-    "data", "estimations", "Facility 三期需求_20260902", "metadata.json"
+    "data", "estimations", "20260902_Facility 三期需求", "metadata.json"
 )
 
 

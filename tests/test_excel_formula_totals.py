@@ -113,3 +113,80 @@ class TestFormulaRanges:
         # 10 个功能行：展示行 2-11，功能测试行在展示行 12
         v = ws.cell(row=12, column=7).value
         assert v == "=ROUNDUP(SUM(G2:G11)*0.15,0)"
+
+
+class TestStaticTestingEffort:
+    """other_fixed.testing_effort 静态测试工时：写死数值、不写15%公式。"""
+
+    @staticmethod
+    def _metadata_with_static_testing(tmp_path, testing_effort, note=""):
+        metadata = {
+            "project_id": "静态测试_20260916",
+            "name": "静态测试",
+            "created_date": "2026-09-16",
+            "total_effort": 10,
+            "description": "测试静态测试工时行",
+            "systems": ["企微"],
+            "tags": [],
+            "tech_stack": {"frontend": "H5", "backend": "Java", "database": "MySQL"},
+            "features": [
+                {
+                    "module": "功能开发",
+                    "name": "功能A",
+                    "requirement_type": "新功能",
+                    "description": "A",
+                    "complexity": "低",
+                    "system": "企微",
+                    "effort_days": 3,
+                },
+                {
+                    "module": "功能开发",
+                    "name": "功能B",
+                    "requirement_type": "新功能",
+                    "description": "B",
+                    "complexity": "低",
+                    "system": "企微",
+                    "effort_days": 5,
+                },
+            ],
+            "summary": {
+                "user_development": 8,
+                "admin_development": 0,
+                "total_development_effort": 8,
+                "testing_effort": testing_effort,
+                "other_fixed": {
+                    "acceptance": 0,
+                    "communication": 0,
+                    "ui_ux_design": 0,
+                    "testing_effort": testing_effort,
+                    "testing_note": note,
+                },
+                "total_effort": 10,
+            },
+        }
+        path = tmp_path / "metadata.json"
+        path.write_text(json.dumps(metadata, ensure_ascii=False), encoding="utf-8")
+        return path
+
+    def test_static_testing_effort_writes_value_not_formula(self, tmp_path):
+        path = self._metadata_with_static_testing(tmp_path, 3)
+        out = generate_excel(str(path), str(tmp_path / "out.xlsx"))
+        ws = openpyxl.load_workbook(out)["工时估算"]
+        # 功能测试行（展示行 4）写静态值 3，而非 ROUNDUP 公式
+        v = ws.cell(row=4, column=7).value
+        assert isinstance(v, (int, float)) and v == 3
+        # 合计行仍为 SUM 公式，覆盖到功能测试行
+        assert ws.cell(row=5, column=7).value == "=SUM(G2:G4)"
+
+    def test_static_testing_note_propagates(self, tmp_path):
+        note = "原功能测试45 + 小美龙再生邮局专项测试8"
+        path = self._metadata_with_static_testing(tmp_path, 3, note)
+        out = generate_excel(str(path), str(tmp_path / "out.xlsx"))
+        ws = openpyxl.load_workbook(out)["工时估算"]
+        assert ws.cell(row=4, column=8).value == note
+
+    def test_no_testing_effort_keeps_formula(self, tmp_path, formula_metadata_path):
+        """不给 testing_effort 时行为不变：仍写 ROUNDUP 公式。"""
+        out = generate_excel(str(formula_metadata_path), str(tmp_path / "out.xlsx"))
+        ws = openpyxl.load_workbook(out)["工时估算"]
+        assert ws.cell(row=4, column=7).value == "=ROUNDUP(SUM(G2:G3)*0.15,0)"

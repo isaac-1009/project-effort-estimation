@@ -96,3 +96,63 @@ class TestBuildProjectRecord:
             "X_20260101", metadata, "2026-01-01", feature_patterns
         )
         assert record["features"][0]["id"] == "X_20260101_001"
+
+    def test_sub_systems_effort_summed(self, feature_patterns):
+        """多端功能（sub_systems）：effort_days 记各端合计，明细随行保留。"""
+        metadata = {
+            "name": "X",
+            "tech_stack": {},
+            "features": [
+                {
+                    "name": "EAG",
+                    "description": "以物易物",
+                    "sub_systems": [
+                        {"system": "企微", "effort_days": 26, "remark": "r1"},
+                        {"system": "PC后台", "effort_days": 30, "remark": "r2"},
+                    ],
+                },
+            ],
+        }
+        record = _build_project_record(
+            "X_20260101", metadata, "2026-01-01", feature_patterns
+        )
+        feat = record["features"][0]
+        assert feat["effort_days"] == 56
+        assert feat["system"] == ""
+        assert feat["sub_systems"] == [
+            {"system": "企微", "effort_days": 26},
+            {"system": "PC后台", "effort_days": 30},
+        ]
+
+    def test_single_system_feature_has_no_sub_systems_key(self, feature_patterns):
+        """单端功能：effort 原样透传，不产生 sub_systems 键。"""
+        metadata = {
+            "name": "X",
+            "tech_stack": {},
+            "features": [
+                {"name": "天气预警", "description": "", "system": "企微", "effort_days": 5},
+            ],
+        }
+        record = _build_project_record(
+            "X_20260101", metadata, "2026-01-01", feature_patterns
+        )
+        feat = record["features"][0]
+        assert feat["effort_days"] == 5
+        assert "sub_systems" not in feat
+
+    def test_empty_sub_systems_falls_back_to_top_level(self, feature_patterns):
+        """sub_systems 为空列表时按单端功能处理。"""
+        metadata = {
+            "name": "X",
+            "tech_stack": {},
+            "features": [
+                {"name": "f", "description": "", "system": "企微",
+                 "effort_days": 2, "sub_systems": []},
+            ],
+        }
+        record = _build_project_record(
+            "X_20260101", metadata, "2026-01-01", feature_patterns
+        )
+        feat = record["features"][0]
+        assert feat["effort_days"] == 2
+        assert "sub_systems" not in feat

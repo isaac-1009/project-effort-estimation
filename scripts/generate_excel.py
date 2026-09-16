@@ -195,7 +195,7 @@ def _collect_rows(metadata: dict, interactive: bool = False) -> list[tuple]:
 
 def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: int) -> list:
     """
-    收集其他工时行（功能测试、验收发布、需求沟通、UI设计）。
+    收集其他工时行（功能测试、UI设计、需求沟通、验收发布）。
     支持交互式询问。
     """
     if interactive:
@@ -208,31 +208,25 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
     # 功能测试（公式行，effort=None）
     # 当测试工时已作为独立 feature 行包含在 features 中时，
     # 设置 summary.other_fixed.testing = false 可跳过此自动追加，避免重复计算。
+    # other_fixed.testing_effort 给出静态值时按该值写死（不走15%公式），
+    # 用于测试口径不随开发合计重算的场景（如并入自带独立测试估算的模块）。
     skip_testing = other_fixed.get("testing", True) is False
     if not skip_testing:
         seq_num += 1
+        test_effort = other_fixed.get("testing_effort")
         rows.append((
             seq_num, "功能测试", "-", "", "集成测试，系统测试", "-",
-            None,  # None表示使用公式
-            "",
+            round_half(test_effort) if test_effort is not None else None,  # None表示使用公式
+            other_fixed.get("testing_note", ""),
         ))
 
-    # UI设计（位于功能测试与验收发布之间）
+    # UI设计（位于功能测试与需求沟通之间）
     ui_effort = other_fixed.get("ui_ux_design", other_fixed.get("ui_design", 0))
     if ui_effort > 0:
         seq_num += 1
         rows.append((
             seq_num, "UI/UX设计", "-", "", "界面设计，交互设计", "-",
             round_half(ui_effort), other_fixed.get("ui_ux_design_note", ""),
-        ))
-
-    # 验收发布
-    acceptance = other_fixed.get("acceptance", 1)
-    if acceptance > 0:
-        seq_num += 1
-        rows.append((
-            seq_num, "验收发布", "-", "", "验收技术支持，系统发布", "-",
-            round_half(acceptance), other_fixed.get("acceptance_note", ""),
         ))
 
     # 需求沟通
@@ -244,13 +238,22 @@ def _collect_other_rows(metadata: dict, rows: list, interactive: bool, seq_num: 
             round_half(communication), other_fixed.get("communication_note", ""),
         ))
 
+    # 验收发布
+    acceptance = other_fixed.get("acceptance", 1)
+    if acceptance > 0:
+        seq_num += 1
+        rows.append((
+            seq_num, "验收发布", "-", "", "验收技术支持，系统发布", "-",
+            round_half(acceptance), other_fixed.get("acceptance_note", ""),
+        ))
+
     return rows
 
 
 def _interactive_collect_other_rows(metadata: dict, rows: list, seq_num: int) -> list:
     """
     交互式收集其他工时行。
-    询问用户：UI设计、验收发布、需求沟通工时。
+    询问用户：UI设计、需求沟通、验收发布工时。
     """
     import builtins
     input_func = builtins.input
@@ -265,17 +268,6 @@ def _interactive_collect_other_rows(metadata: dict, rows: list, seq_num: int) ->
         "",
     ))
 
-    # 验收发布
-    print("验收发布工时（人天）[默认1，直接回车使用默认值]:")
-    acceptance_input = input_func().strip()
-    acceptance = float(acceptance_input) if acceptance_input else 1.0
-    if acceptance > 0:
-        seq_num += 1
-        rows.append((
-            seq_num, "验收发布", "-", "", "验收技术支持，系统发布", "-",
-            round_half(acceptance), "",
-        ))
-
     # 需求沟通
     print("需求沟通工时（人天）[默认2，直接回车使用默认值]:")
     communication_input = input_func().strip()
@@ -285,6 +277,17 @@ def _interactive_collect_other_rows(metadata: dict, rows: list, seq_num: int) ->
         rows.append((
             seq_num, "需求沟通", "-", "", "沟通，需求文档", "-",
             round_half(communication), "",
+        ))
+
+    # 验收发布
+    print("验收发布工时（人天）[默认1，直接回车使用默认值]:")
+    acceptance_input = input_func().strip()
+    acceptance = float(acceptance_input) if acceptance_input else 1.0
+    if acceptance > 0:
+        seq_num += 1
+        rows.append((
+            seq_num, "验收发布", "-", "", "验收技术支持，系统发布", "-",
+            round_half(acceptance), "",
         ))
 
     # UI设计（可选）
@@ -406,18 +409,18 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
       - 功能测试行：公式 =ROUNDUP(SUM(开发工时)*0.15,0)
       - 合计行：公式 =SUM(所有工时)（不做 ROUNDUP，保留 0.5 粒度），备注列显示"合计"
     """
-    # 找到功能测试行（effort=None的那行）
+    # 找到功能测试行（effort=None 表示写公式；静态 testing_effort 行已按普通数据行写入）
     test_row_idx = None
     for i, row in enumerate(rows):
-        if row[1] == "功能测试" and row[6] is None:
+        if row[1] == "功能测试":
             test_row_idx = i
             break
 
     effort_col_letter = xl_col_to_name(COL_EFFORT)
     first_data_row = 2  # Excel 1-based: header=1, 首数据行=2
 
-    # 写入功能测试公式（仅当存在功能测试行时）
-    if test_row_idx is not None:
+    # 写入功能测试公式（仅当存在功能测试行且未给静态值时）
+    if test_row_idx is not None and rows[test_row_idx][6] is None:
         test_row_num = test_row_idx + 1  # +1: header 在第 0 行
         # 公式串用 1-based 展示行号：功能测试行展示行 = test_row_num + 1，
         # 故开发工时最后一行（展示行）= test_row_num。
@@ -430,7 +433,7 @@ def _write_totals(ws, rows: list[tuple], fmts: dict) -> None:
             test_formula,
             fmts["cell_effort"],
         )
-    else:
+    elif test_row_idx is None:
         log.info("Function test row not found (skipped via other_fixed.testing=false), only writing total row")
 
     # 合计行（无论是否存在功能测试行都写入）

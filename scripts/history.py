@@ -53,6 +53,26 @@ def _feature_text(feature: dict[str, Any]) -> str:
     return f"{feature.get('name', '')} {feature.get('description', '')}"
 
 
+def feature_effort_summary(feature: dict[str, Any]) -> tuple[float, list[dict[str, Any]]]:
+    """
+    取一个 feature 的工时合计与多端明细。
+
+    单端功能：返回 (effort_days, [])。
+    多端功能（sub_systems，如企微+PC后台）：顶层无工时字段，返回
+    (各端工时合计, 各端明细)，避免 history.json 把多端功能记成 0 工时。
+    sub_systems 存在时优先生效（它是比顶层 system/effort_days 更完整的形态）。
+    """
+    sub = feature.get("sub_systems") or []
+    if sub:
+        total = sum(s.get("effort_days", 0) for s in sub)
+        detail = [
+            {"system": s.get("system", ""), "effort_days": s.get("effort_days", 0)}
+            for s in sub
+        ]
+        return total, detail
+    return feature.get("effort_days", 0), []
+
+
 def match_patterns(
     feature: dict[str, Any],
     feature_patterns: dict[str, Any],
@@ -99,19 +119,21 @@ def _build_project_record(
         # feature_id: 优先用 metadata 里的 id，否则用 {project_id}_{序号}
         fid = feat.get("id") or f"{project_id}_{i + 1:03d}"
 
-        features_record.append(
-            {
-                "id": fid,
-                "system": feat.get("system", ""),
-                "module": feat.get("module", ""),
-                "name": feat.get("name", ""),
-                "effort_days": feat.get("effort_days", 0),
-                "description": feat.get("description", ""),
-                "complexity": feat.get("complexity", ""),
-                "keywords": keywords,
-                "patterns": hits,
-            }
-        )
+        effort, sub_detail = feature_effort_summary(feat)
+        rec: dict[str, Any] = {
+            "id": fid,
+            "system": feat.get("system", ""),
+            "module": feat.get("module", ""),
+            "name": feat.get("name", ""),
+            "effort_days": effort,
+            "description": feat.get("description", ""),
+            "complexity": feat.get("complexity", ""),
+            "keywords": keywords,
+            "patterns": hits,
+        }
+        if sub_detail:
+            rec["sub_systems"] = sub_detail
+        features_record.append(rec)
 
     return {
         "project_id": project_id,
