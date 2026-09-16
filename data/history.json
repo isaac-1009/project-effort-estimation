@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-09-15",
-  "total_features": 334,
+  "last_updated": "2026-09-16",
+  "total_features": 358,
   "projects": [
     {
       "project_id": "企微推文_20250326",
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "project_id": "Facility 需求追加_20260427",
+      "project_id": "20260427_Facility 需求追加",
       "name": "Facility 需求追加",
       "created_date": "2026-04-27",
       "tech_stack": {
@@ -319,7 +319,7 @@
       ]
     },
     {
-      "project_id": "Facility需求追加_20260608",
+      "project_id": "20260608_Facility需求追加",
       "name": "Facility 需求追加（评论配图+尊巴报名）",
       "created_date": "2026-06-08",
       "tech_stack": {
@@ -631,7 +631,7 @@
       ]
     },
     {
-      "project_id": "企微Dify AI助手系统_20260420",
+      "project_id": "20260420_企微Dify AI助手系统",
       "name": "企微Dify AI助手系统",
       "created_date": "2026-04-20",
       "tech_stack": {
@@ -974,7 +974,7 @@
       ]
     },
     {
-      "project_id": "企微图文推送投票功能_20260528",
+      "project_id": "20260528_企微图文推送投票功能",
       "name": "企微图文推送投票功能",
       "created_date": "2026-05-28",
       "tech_stack": {
@@ -1136,7 +1136,7 @@
       ]
     },
     {
-      "project_id": "会议签到系统_20260622",
+      "project_id": "20260622_会议签到系统",
       "name": "会议签到系统",
       "created_date": "2026-06-22",
       "tech_stack": {
@@ -1663,7 +1663,7 @@
       ]
     },
     {
-      "project_id": "内部流程与知识管理系统_20260329",
+      "project_id": "20260329_内部流程与知识管理系统",
       "name": "内部流程与知识管理系统",
       "created_date": "2026-03-29",
       "tech_stack": {
@@ -2061,7 +2061,7 @@
       ]
     },
     {
-      "project_id": "渠道管理Helpdesk_20260330",
+      "project_id": "20260330_渠道管理Helpdesk",
       "name": "渠道管理Helpdesk",
       "created_date": "2026-03-30",
       "tech_stack": {
@@ -2304,7 +2304,7 @@
       ]
     },
     {
-      "project_id": "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409",
+      "project_id": "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案",
       "name": "渠道管理Helpdesk需求变更_第三方RTC语音方案",
       "created_date": "2026-04-09",
       "tech_stack": {
@@ -2858,7 +2858,7 @@
       ]
     },
     {
-      "project_id": "营运部信息化系统_20260519",
+      "project_id": "20260519_营运部信息化系统",
       "name": "营运部信息化系统",
       "created_date": "2026-05-19",
       "tech_stack": {
@@ -3739,7 +3739,7 @@
       ]
     },
     {
-      "project_id": "汽车金融车商管理平台_20260707",
+      "project_id": "20260707_汽车金融车商管理平台",
       "name": "汽车金融车商管理平台",
       "created_date": "2026-07-07",
       "tech_stack": {
@@ -4572,7 +4572,7 @@
       ]
     },
     {
-      "project_id": "Facility_三期需求_20260713",
+      "project_id": "20260713_Facility_三期需求",
       "name": "Facility 三期需求",
       "created_date": "2026-07-13",
       "tech_stack": {
@@ -4587,7 +4587,7 @@
           "system": "",
           "module": "功能开发",
           "name": "应用数据统计展示",
-          "effort_days": 0,
+          "effort_days": 7,
           "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
           "complexity": "",
           "keywords": [
@@ -4612,6 +4612,16 @@
             "数据统计",
             "问答系统",
             "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -4619,7 +4629,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修时间段数量限制",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "工单报修修改（限制时间段可报修数量）",
           "complexity": "",
           "keywords": [
@@ -4631,6 +4641,12 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -4638,7 +4654,7 @@
           "system": "",
           "module": "功能开发",
           "name": "评论支持图片",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "推文评论支持上传图片（最多九张）",
           "complexity": "",
           "keywords": [
@@ -4666,6 +4682,16 @@
             "问答系统",
             "内容管理",
             "评论管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -4673,7 +4699,7 @@
           "system": "",
           "module": "功能开发",
           "name": "名片申请优化",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "多title，数据分析展示",
           "complexity": "",
           "keywords": [
@@ -4686,6 +4712,16 @@
           ],
           "patterns": [
             "数据统计"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -4693,33 +4729,49 @@
           "system": "",
           "module": "功能开发",
           "name": "申请合并",
-          "effort_days": 0,
+          "effort_days": 8,
           "description": "空调，出门证/货梯两项申请合并",
           "complexity": "",
           "keywords": [
             "申请合并"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 4
+            }
+          ]
         },
         {
           "id": "Facility_三期需求_20260713_006",
           "system": "",
           "module": "功能开发",
           "name": "在场权益",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "链接陆家嘴物业小程序，跳转过去",
           "complexity": "",
           "keywords": [
             "在场权益"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
         },
         {
           "id": "Facility_三期需求_20260713_007",
           "system": "",
           "module": "功能开发",
           "name": "ISO 45001认证",
-          "effort_days": 0,
+          "effort_days": 25,
           "description": "知识库、宣传渠道（静态页面）",
           "complexity": "",
           "keywords": [
@@ -4733,6 +4785,16 @@
           ],
           "patterns": [
             "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 15
+            }
           ]
         },
         {
@@ -4740,20 +4802,30 @@
           "system": "",
           "module": "功能开发",
           "name": "EAG",
-          "effort_days": 0,
+          "effort_days": 28,
           "description": "静态页，以物易物流程支持",
           "complexity": "",
           "keywords": [
             "EAG"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 20
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 8
+            }
+          ]
         },
         {
           "id": "Facility_三期需求_20260713_009",
           "system": "",
           "module": "功能开发",
           "name": "A1chatbot-行政小智",
-          "effort_days": 0,
+          "effort_days": 13,
           "description": "POC阶段：验证Dify基础接入可行性，实现企微消息接收→Dify处理→回复的基本问答流程",
           "complexity": "",
           "keywords": [
@@ -4773,6 +4845,16 @@
             "问答系统",
             "企微后台",
             "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 8
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 5
+            }
           ]
         },
         {
@@ -4780,7 +4862,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工位、办公室管理系统",
-          "effort_days": 0,
+          "effort_days": 30,
           "description": "POC阶段：实现楼层构位平面图可视化、工位的增删改查、状态处理、分配、释放等核心功能",
           "complexity": "",
           "keywords": [
@@ -4800,6 +4882,16 @@
           "patterns": [
             "CRUD操作",
             "发布管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 20
+            }
           ]
         },
         {
@@ -4807,7 +4899,7 @@
           "system": "",
           "module": "功能开发",
           "name": "Loffice前滩总部访客管理及大楼闸机权限",
-          "effort_days": 0,
+          "effort_days": 22,
           "description": "访客管理、闸机卡权限管理",
           "complexity": "",
           "keywords": [
@@ -4821,6 +4913,16 @@
           ],
           "patterns": [
             "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 12
+            }
           ]
         },
         {
@@ -4828,7 +4930,7 @@
           "system": "",
           "module": "功能开发",
           "name": "天气预警",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
           "complexity": "",
           "keywords": [
@@ -4857,12 +4959,18 @@
             "企微端",
             "推送管理",
             "消息中心"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            }
           ]
         }
       ]
     },
     {
-      "project_id": "废品与样品管理系统（WSMS）_20260902",
+      "project_id": "20260902_废品与样品管理系统（WSMS）",
       "name": "废品与样品管理系统（WSMS）",
       "created_date": "2026-09-02",
       "tech_stack": {
@@ -5683,7 +5791,7 @@
       ]
     },
     {
-      "project_id": "Facility 三期需求_20260902",
+      "project_id": "20260902_Facility 三期需求",
       "name": "Facility 三期需求",
       "created_date": "2026-09-02",
       "tech_stack": {
@@ -5698,7 +5806,7 @@
           "system": "",
           "module": "功能开发",
           "name": "应用数据统计展示",
-          "effort_days": 0,
+          "effort_days": 7,
           "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
           "complexity": "",
           "keywords": [
@@ -5723,6 +5831,16 @@
             "数据统计",
             "问答系统",
             "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -5730,7 +5848,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修时间段数量限制",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "工单报修修改（限制时间段可报修数量）",
           "complexity": "",
           "keywords": [
@@ -5742,6 +5860,12 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -5749,7 +5873,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-处理人查看全部工单",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "工单报修优化：增加处理人查看全部工单范围",
           "complexity": "低",
           "keywords": [
@@ -5761,6 +5885,12 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -5768,7 +5898,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-提交工单填手机号",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "工单报修优化：提交工单增加填写手机号，默认从Workday带出，可修改",
           "complexity": "低",
           "keywords": [
@@ -5780,6 +5910,16 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -5787,7 +5927,7 @@
           "system": "",
           "module": "功能开发",
           "name": "评论支持图片",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "推文评论支持上传图片（最多九张）",
           "complexity": "",
           "keywords": [
@@ -5815,6 +5955,16 @@
             "问答系统",
             "内容管理",
             "评论管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -5822,7 +5972,7 @@
           "system": "",
           "module": "功能开发",
           "name": "名片申请优化",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "多title，数据分析展示",
           "complexity": "",
           "keywords": [
@@ -5835,6 +5985,16 @@
           ],
           "patterns": [
             "数据统计"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -5842,7 +6002,7 @@
           "system": "",
           "module": "功能开发",
           "name": "名片审核优化",
-          "effort_days": 0,
+          "effort_days": 1,
           "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
           "complexity": "",
           "keywords": [
@@ -5854,6 +6014,12 @@
           ],
           "patterns": [
             "审核流程"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -5861,20 +6027,26 @@
           "system": "",
           "module": "功能开发",
           "name": "在场权益",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "链接陆家嘴物业小程序，跳转过去",
           "complexity": "",
           "keywords": [
             "在场权益"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
         },
         {
           "id": "Facility 三期需求_20260902_009",
           "system": "",
           "module": "功能开发",
           "name": "门禁卡管理页面图片跳转",
-          "effort_days": 0,
+          "effort_days": 1,
           "description": "门禁卡管理：页面图片增加点击可跳转",
           "complexity": "低",
           "keywords": [
@@ -5887,6 +6059,12 @@
           ],
           "patterns": [
             "文件上传"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -5907,7 +6085,7 @@
           "system": "",
           "module": "功能开发",
           "name": "ISO 45001认证",
-          "effort_days": 0,
+          "effort_days": 25,
           "description": "知识库、宣传渠道（静态页面）",
           "complexity": "",
           "keywords": [
@@ -5921,6 +6099,16 @@
           ],
           "patterns": [
             "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 15
+            }
           ]
         },
         {
@@ -5928,20 +6116,30 @@
           "system": "",
           "module": "功能开发",
           "name": "EAG",
-          "effort_days": 0,
+          "effort_days": 28,
           "description": "静态页，以物易物流程支持",
           "complexity": "",
           "keywords": [
             "EAG"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 20
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 8
+            }
+          ]
         },
         {
           "id": "Facility 三期需求_20260902_013",
           "system": "",
           "module": "功能开发",
           "name": "A1chatbot-行政小智",
-          "effort_days": 0,
+          "effort_days": 13,
           "description": "POC阶段：验证Dify基础接入可行性，实现企微消息接收→Dify处理→回复的基本问答流程",
           "complexity": "",
           "keywords": [
@@ -5961,6 +6159,16 @@
             "问答系统",
             "企微后台",
             "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 8
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 5
+            }
           ]
         },
         {
@@ -5968,7 +6176,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工位、办公室管理系统",
-          "effort_days": 0,
+          "effort_days": 30,
           "description": "POC阶段：实现楼层构位平面图可视化、工位的增删改查、状态处理、分配、释放等核心功能",
           "complexity": "",
           "keywords": [
@@ -5988,6 +6196,16 @@
           "patterns": [
             "CRUD操作",
             "发布管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 20
+            }
           ]
         },
         {
@@ -5995,7 +6213,7 @@
           "system": "",
           "module": "功能开发",
           "name": "Loffice前滩总部访客管理及大楼闸机权限",
-          "effort_days": 0,
+          "effort_days": 22,
           "description": "访客管理、闸机卡权限管理",
           "complexity": "",
           "keywords": [
@@ -6009,6 +6227,16 @@
           ],
           "patterns": [
             "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 12
+            }
           ]
         },
         {
@@ -6016,7 +6244,7 @@
           "system": "",
           "module": "功能开发",
           "name": "天气预警",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
           "complexity": "",
           "keywords": [
@@ -6045,12 +6273,18 @@
             "企微端",
             "推送管理",
             "消息中心"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            }
           ]
         }
       ]
     },
     {
-      "project_id": "Facility 三期需求_20260909",
+      "project_id": "20260909_Facility 三期需求",
       "name": "Facility 三期需求",
       "created_date": "2026-09-09",
       "tech_stack": {
@@ -6065,7 +6299,7 @@
           "system": "",
           "module": "功能开发",
           "name": "应用数据统计展示",
-          "effort_days": 0,
+          "effort_days": 7,
           "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
           "complexity": "",
           "keywords": [
@@ -6090,6 +6324,16 @@
             "数据统计",
             "问答系统",
             "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -6097,7 +6341,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修时间段数量限制",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "工单报修修改（限制时间段可报修数量）",
           "complexity": "中",
           "keywords": [
@@ -6109,6 +6353,12 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -6116,7 +6366,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-处理人查看全部工单范围",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "处理人可查看全部工单，扩大查询范围",
           "complexity": "低",
           "keywords": [
@@ -6128,6 +6378,12 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -6135,7 +6391,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-提交工单填手机号",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "提交工单增加手机号，默认从Workday带出且可修改",
           "complexity": "低",
           "keywords": [
@@ -6147,6 +6403,16 @@
           ],
           "patterns": [
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -6154,7 +6420,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-工单评价",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "工单完成后提交人评价（打分+描述），PC后台查看评价",
           "complexity": "中",
           "keywords": [
@@ -6171,6 +6437,16 @@
           "patterns": [
             "系统管理",
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -6178,7 +6454,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工单报修优化-数据统计与报告",
-          "effort_days": 0,
+          "effort_days": 7,
           "description": "工单数据统计看板与报告导出（含工单评价统计）",
           "complexity": "中",
           "keywords": [
@@ -6201,6 +6477,12 @@
             "数据统计",
             "数据导出",
             "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 7
+            }
           ]
         },
         {
@@ -6208,7 +6490,7 @@
           "system": "",
           "module": "功能开发",
           "name": "评论支持图片",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "推文评论支持上传图片（最多九张）",
           "complexity": "",
           "keywords": [
@@ -6236,6 +6518,16 @@
             "问答系统",
             "内容管理",
             "评论管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -6243,7 +6535,7 @@
           "system": "",
           "module": "功能开发",
           "name": "名片申请优化",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "多title，数据分析展示",
           "complexity": "",
           "keywords": [
@@ -6256,6 +6548,16 @@
           ],
           "patterns": [
             "数据统计"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -6263,7 +6565,7 @@
           "system": "",
           "module": "功能开发",
           "name": "名片审核优化",
-          "effort_days": 0,
+          "effort_days": 1,
           "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
           "complexity": "",
           "keywords": [
@@ -6275,6 +6577,12 @@
           ],
           "patterns": [
             "审核流程"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -6282,7 +6590,7 @@
           "system": "",
           "module": "功能开发",
           "name": "门禁卡管理页面图片跳转",
-          "effort_days": 0,
+          "effort_days": 1,
           "description": "门禁卡管理：页面图片增加点击可跳转",
           "complexity": "低",
           "keywords": [
@@ -6295,6 +6603,12 @@
           ],
           "patterns": [
             "文件上传"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 1
+            }
           ]
         },
         {
@@ -6315,20 +6629,26 @@
           "system": "",
           "module": "功能开发",
           "name": "机器人接口对接",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "机器人接口对接：提供开放的API接口供机器人读取所需数据",
           "complexity": "低",
           "keywords": [
             "机器人接口对接"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "Gateway",
+              "effort_days": 5
+            }
+          ]
         },
         {
           "id": "Facility 三期需求_20260909_013",
           "system": "",
           "module": "功能开发",
           "name": "ISO 45001认证",
-          "effort_days": 0,
+          "effort_days": 25,
           "description": "知识库、宣传渠道（静态页面）",
           "complexity": "",
           "keywords": [
@@ -6342,6 +6662,16 @@
           ],
           "patterns": [
             "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 15
+            }
           ]
         },
         {
@@ -6349,20 +6679,30 @@
           "system": "",
           "module": "功能开发",
           "name": "EAG",
-          "effort_days": 0,
+          "effort_days": 28,
           "description": "以物易物流程支持\n（9/7有提到要有一些回收数据要展示，这个需求未明确未估算）",
           "complexity": "",
           "keywords": [
             "EAG"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 20
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 8
+            }
+          ]
         },
         {
           "id": "Facility 三期需求_20260909_015",
           "system": "",
           "module": "功能开发",
           "name": "行政小智-AI助手",
-          "effort_days": 0,
+          "effort_days": 124.0,
           "description": "三阶段：基础问答 / 知识增强RAG / 数据与办事（阶段明细见各行描述）",
           "complexity": "高",
           "keywords": [
@@ -6374,6 +6714,20 @@
           ],
           "patterns": [
             "问答系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "AI助手",
+              "effort_days": 47.5
+            },
+            {
+              "system": "AI助手",
+              "effort_days": 36.5
+            },
+            {
+              "system": "AI助手",
+              "effort_days": 40
+            }
           ]
         },
         {
@@ -6381,7 +6735,7 @@
           "system": "",
           "module": "功能开发",
           "name": "工位、办公室管理系统",
-          "effort_days": 0,
+          "effort_days": 70,
           "description": "工位与办公室管理：平面图编辑与查看、台账、固定分配与按天共享预订、统计看板与报告导出、基础数据维护（含Workday人事同步）、基础平面图数据建设",
           "complexity": "高",
           "keywords": [
@@ -6413,6 +6767,16 @@
             "数据统计",
             "数据导出",
             "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 12
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 58
+            }
           ]
         },
         {
@@ -6420,7 +6784,7 @@
           "system": "",
           "module": "功能开发",
           "name": "天气预警",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
           "complexity": "",
           "keywords": [
@@ -6449,12 +6813,18 @@
             "企微端",
             "推送管理",
             "消息中心"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            }
           ]
         }
       ]
     },
     {
-      "project_id": "RGI 荣誉勋章_20260915",
+      "project_id": "20260915_RGI 荣誉勋章",
       "name": "RGI 荣誉勋章",
       "created_date": "2026-09-15",
       "tech_stack": {
@@ -6469,7 +6839,7 @@
           "system": "",
           "module": "功能开发",
           "name": "首页",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "对内主页：搜索框（项目/能力）、问候+徽章墙、统计三数（勋章/完成培训/被点赞）、我的专业能力卡+去展示、我的技能数 + 去互动、我的排名入口、能力维护",
           "complexity": "中",
           "keywords": [
@@ -6504,6 +6874,12 @@
             "勋章积分",
             "问答系统",
             "社交互动"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6511,7 +6887,7 @@
           "system": "",
           "module": "功能开发",
           "name": "我的技能树",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "按 7 条产品线分组展示细分能力，Lv.1/Lv.2 等级样式；已获得亮显、未获得灰显可见",
           "complexity": "中",
           "keywords": [
@@ -6524,6 +6900,12 @@
           ],
           "patterns": [
             "勋章积分"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6531,7 +6913,7 @@
           "system": "",
           "module": "功能开发",
           "name": "能力/背景搜索",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "关键词搜索 + 筛选面板（地区▼/能力▼/Tag 排序）+ 徽章 chips 多选 + 重置/确定，结果为同事卡片列表；搜索历史保留（前端本地存储）",
           "complexity": "中",
           "keywords": [
@@ -6546,6 +6928,12 @@
           ],
           "patterns": [
             "CRUD操作"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6553,7 +6941,7 @@
           "system": "",
           "module": "功能开发",
           "name": "同事详情页",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "能力/经验双 tab：能力=技能树视图；经验=工作履历（含友商任职及负责产品）；展示被点赞数",
           "complexity": "中",
           "keywords": [
@@ -6574,6 +6962,12 @@
           "patterns": [
             "CRUD操作",
             "社交互动"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6581,7 +6975,7 @@
           "system": "",
           "module": "功能开发",
           "name": "我的排名",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "RGI 榜与 ER/PH 榜两套榜单分开排名，支持榜单切换查看",
           "complexity": "中",
           "keywords": [
@@ -6593,6 +6987,12 @@
           ],
           "patterns": [
             "排行榜"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6600,7 +7000,7 @@
           "system": "",
           "module": "功能开发",
           "name": "留言墙",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "个人留言墙：可评论、回复（二级回复）、删除；内容先发后审（默认可见）",
           "complexity": "中",
           "keywords": [
@@ -6623,6 +7023,12 @@
             "CRUD操作",
             "问答系统",
             "评论管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6630,20 +7036,26 @@
           "system": "",
           "module": "功能开发",
           "name": "个人资料维护",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "头像、职位、地区等名片展示字段维护；姓名/工号等 HR 字段同步不可改",
           "complexity": "低",
           "keywords": [
             "个人资料维护"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
         },
         {
           "id": "RGI 荣誉勋章_20260915_008",
           "system": "",
           "module": "功能开发",
           "name": "我的能力墙",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "对外名片：个人头卡（照片/姓名/职位/地区/logo）+ 徽章墙 + 分享按钮；7 条产品线可展开卡片，细分能力清单带认证日期；HCP 经分享链接免登录只读",
           "complexity": "",
           "keywords": [
@@ -6663,6 +7075,12 @@
           "patterns": [
             "认证授权",
             "社交互动"
+          ],
+          "sub_systems": [
+            {
+              "system": "对外H5",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6670,7 +7088,7 @@
           "system": "",
           "module": "功能开发",
           "name": "字典维护",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "基础数据字典：产品线（7 条中文名）/细分能力项/能力等级/地区/Tag 分类，支撑搜索筛选分组",
           "complexity": "中",
           "keywords": [
@@ -6688,6 +7106,12 @@
           "patterns": [
             "勋章积分",
             "标签管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 5
+            }
           ]
         },
         {
@@ -6695,7 +7119,7 @@
           "system": "",
           "module": "功能开发",
           "name": "培训数据管理",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "培训数据手工录入 + 批量导入（Excel）；定期更新销售专业能力",
           "complexity": "中",
           "keywords": [
@@ -6713,6 +7137,12 @@
           "patterns": [
             "文件上传",
             "数据导出"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6720,7 +7150,7 @@
           "system": "",
           "module": "功能开发",
           "name": "徽章管理",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "徽章/勋章图标素材上传维护、名称/描述/排序、与 TAG 类型绑定、产品线图标与主题色配置、上下架",
           "complexity": "中",
           "keywords": [
@@ -6744,6 +7174,12 @@
             "文件上传",
             "勋章积分",
             "系统管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6751,7 +7187,7 @@
           "system": "",
           "module": "功能开发",
           "name": "TAG 系统管理",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "TAG 类型维护（实战跟台、项目先锋、友商经历…）、解锁规则配置（行为/数量/口碑三路，各解锁实战 TAG 1/3）",
           "complexity": "高",
           "keywords": [
@@ -6763,6 +7199,12 @@
           ],
           "patterns": [
             "系统管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6770,20 +7212,26 @@
           "system": "",
           "module": "功能开发",
           "name": "解锁评估维护",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "TCS 行为评估录入；DSM 跟台数量维护；DSM 客户口碑评价维护；解锁确认流程（三方确认链）",
           "complexity": "高",
           "keywords": [
             "解锁评估维护"
           ],
-          "patterns": []
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 5
+            }
+          ]
         },
         {
           "id": "RGI 荣誉勋章_20260915_014",
           "system": "",
           "module": "功能开发",
           "name": "员工经历维护",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "工作履历（含友商任职公司与负责产品）后台维护，供同事详情「经验」tab 展示",
           "complexity": "中",
           "keywords": [
@@ -6803,6 +7251,12 @@
           "patterns": [
             "CRUD操作",
             "系统管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6810,7 +7264,7 @@
           "system": "",
           "module": "功能开发",
           "name": "留言墙与培训留言管理",
-          "effort_days": 0,
+          "effort_days": 3,
           "description": "留言/回复列表查看、内容审核（默认可见、违规删除/下架）、审核记录查询",
           "complexity": "中",
           "keywords": [
@@ -6835,6 +7289,12 @@
             "CRUD操作",
             "审核流程",
             "问答系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6842,7 +7302,7 @@
           "system": "",
           "module": "功能开发",
           "name": "用户与角色权限",
-          "effort_days": 0,
+          "effort_days": 5,
           "description": "角色（销售/DSM/TCS/MKT/LT）权限配置；员工基础数据 DAC 同步；企微 OAuth 登录与身份绑定",
           "complexity": "高",
           "keywords": [
@@ -6869,6 +7329,16 @@
             "系统管理",
             "企微后台",
             "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -6876,7 +7346,7 @@
           "system": "",
           "module": "功能开发",
           "name": "数据统计看板",
-          "effort_days": 0,
+          "effort_days": 4,
           "description": "培训完成、TAG 解锁、点赞/留言互动、名片访问统计，含 RGI/ER-PH 双榜单排名数据",
           "complexity": "中",
           "keywords": [
@@ -6905,6 +7375,12 @@
             "排行榜",
             "问答系统",
             "社交互动"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 4
+            }
           ]
         },
         {
@@ -6912,7 +7388,7 @@
           "system": "",
           "module": "功能开发",
           "name": "六边形雷达图",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "多产品专业培训等级维度展示（六边形雷达图）",
           "complexity": "",
           "keywords": [
@@ -6925,6 +7401,12 @@
           ],
           "patterns": [
             "勋章积分"
+          ],
+          "sub_systems": [
+            {
+              "system": "对外H5",
+              "effort_days": 2
+            }
           ]
         },
         {
@@ -6932,7 +7414,7 @@
           "system": "",
           "module": "环境搭建",
           "name": "新环境搭建",
-          "effort_days": 0,
+          "effort_days": 2,
           "description": "新系统独立部署（企微 H5 + PC 后台），开发/测试/生产环境",
           "complexity": "",
           "keywords": [
@@ -6952,12 +7434,18 @@
             "系统管理",
             "企微后台",
             "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "其他",
+              "effort_days": 2
+            }
           ]
         }
       ]
     },
     {
-      "project_id": "小美龙再生邮局_20260915",
+      "project_id": "20260915_小美龙再生邮局",
       "name": "小美龙再生邮局",
       "created_date": "2026-09-15",
       "tech_stack": {
@@ -7045,7 +7533,7 @@
           "system": "",
           "module": "功能开发",
           "name": "排行榜",
-          "effort_days": 0,
+          "effort_days": 8,
           "description": "个人榜（月度积分榜、年度总榜、TOP10 及年度环保达人）与部门榜（按人均环保积分排名、年度最环保部门）",
           "complexity": "",
           "keywords": [
@@ -7062,6 +7550,16 @@
           "patterns": [
             "排行榜",
             "勋章积分"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -7251,7 +7749,7 @@
           "system": "",
           "module": "功能开发",
           "name": "物品登记台账",
-          "effort_days": 0,
+          "effort_days": 7,
           "description": "物品台账：新增/编辑/详情/列表，记录投递日期、员工、部门、物品类别、数量等；支持 PC 后台与企微端管理员登记",
           "complexity": "",
           "keywords": [
@@ -7285,6 +7783,16 @@
             "内容管理",
             "企微后台",
             "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 4
+            },
+            {
+              "system": "企微",
+              "effort_days": 3
+            }
           ]
         },
         {
@@ -7334,6 +7842,769 @@
           ]
         }
       ]
+    },
+    {
+      "project_id": "20260916_渠道随行客服响应优化",
+      "name": "渠道随行客服响应优化",
+      "created_date": "2026-09-16",
+      "tech_stack": {
+        "frontend": "企微小程序（渠道随行，销售端）+ PC后台（客服端）",
+        "backend": "Java/Node.js（复用渠道管理Helpdesk现有服务）",
+        "database": "MySQL/MongoDB",
+        "integration": "企微API（应用消息推送）"
+      },
+      "features": [
+        {
+          "id": "20260916_渠道随行客服响应优化_001",
+          "system": "",
+          "module": "会话状态管理",
+          "name": "对话标签两态管理",
+          "effort_days": 2,
+          "description": "每个对话新增独立标签字段，仅\"未完成/已完成\"两态，不与系统会话流转状态关联；客服处理完毕手动改为已完成，作为内部待办清单使用",
+          "complexity": "低",
+          "keywords": [
+            "对话标签两态管理",
+            "发布",
+            "上线",
+            "状态",
+            "推送",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "发布管理",
+            "标签管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_002",
+          "system": "",
+          "module": "会话状态管理",
+          "name": "客服展示状态自定义",
+          "effort_days": 4,
+          "description": "新增客服个人展示状态（如午休中、开会中、休假中），该状态仅前端展示给销售，与在线接单/消息分配规则解耦",
+          "complexity": "中",
+          "keywords": [
+            "客服展示状态自定义",
+            "发布",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "发布管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            },
+            {
+              "system": "企微",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_003",
+          "system": "",
+          "module": "会话状态管理",
+          "name": "工作时间自动在线/离线切换",
+          "effort_days": 3,
+          "description": "按工作时间（10:00-17:00）自动切换客服在线/离线状态，非工作时间自动离线",
+          "complexity": "中",
+          "keywords": [
+            "工作时间自动在线/离线切换",
+            "发布",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "发布管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 3
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_004",
+          "system": "",
+          "module": "会话状态管理",
+          "name": "手机端客服状态修改（含身份绑定）",
+          "effort_days": 2,
+          "description": "当前小程序端身份为咨询用户、PC后台为客服，需增加角色识别与客服账号绑定逻辑后，支持客服在手机端直接查看并修改自己的展示状态（高频场景）",
+          "complexity": "中",
+          "keywords": [
+            "手机端客服状态修改（含身份绑定）",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台",
+            "发布",
+            "上线",
+            "状态",
+            "推送"
+          ],
+          "patterns": [
+            "认证授权",
+            "系统管理",
+            "发布管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_005",
+          "system": "",
+          "module": "会话关闭与超时",
+          "name": "销售关闭会话前置校验",
+          "effort_days": 2,
+          "description": "客服未回复时销售端不允许主动关闭会话并评价，须客服至少回复一条消息后方可操作，避免客服未响应时产生无效差评",
+          "complexity": "低",
+          "keywords": [
+            "销售关闭会话前置校验"
+          ],
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_006",
+          "system": "",
+          "module": "消息提醒\n与自动回复",
+          "name": "客服未响应自动提醒",
+          "effort_days": 2,
+          "description": "客服超过1分钟未响应时，系统自动向销售弹出提示消息，告知当前咨询量大请耐心等待，并引导关注企业微信后续回访",
+          "complexity": "中",
+          "keywords": [
+            "客服未响应自动提醒",
+            "企微",
+            "企业微信",
+            "企微后台",
+            "企微管理",
+            "企微小程序",
+            "企微H5"
+          ],
+          "patterns": [
+            "企微后台",
+            "企微端"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_渠道随行客服响应优化_007",
+          "system": "",
+          "module": "消息提醒\n与自动回复",
+          "name": "非工作时间自动回复分时段",
+          "effort_days": 2,
+          "description": "自动回复按实际工作时段分割（工作时间外/午休等），明确告知回复延迟原因及后续跟进方式，改善中午咨询时预期不符问题",
+          "complexity": "中",
+          "keywords": [
+            "非工作时间自动回复分时段"
+          ],
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project_id": "20260916_Facility 三期需求",
+      "name": "Facility 三期需求",
+      "created_date": "2026-09-16",
+      "tech_stack": {
+        "frontend": "企微H5（嵌入美外之家）",
+        "backend": "Java/Node.js（复用Facility技术栈）",
+        "database": "MySQL/MongoDB",
+        "integration": "企微API + Workday API + DAC + 第三方LLM（OpenAI兼容）+ 天气API"
+      },
+      "features": [
+        {
+          "id": "20260916_Facility 三期需求_001",
+          "system": "",
+          "module": "功能开发",
+          "name": "应用数据统计展示",
+          "effort_days": 7,
+          "description": "统计应用，所有模块使用情况，推文互动数据统计展示",
+          "complexity": "",
+          "keywords": [
+            "应用数据统计展示",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "数据统计",
+            "问答系统",
+            "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_002",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修时间段数量限制",
+          "effort_days": 2,
+          "description": "工单报修修改（限制时间段可报修数量）",
+          "complexity": "中",
+          "keywords": [
+            "工单报修时间段数量限制",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_003",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-处理人查看全部工单范围",
+          "effort_days": 2,
+          "description": "处理人可查看全部工单，扩大查询范围",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-处理人查看全部工单范围",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_004",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-提交工单填手机号",
+          "effort_days": 3,
+          "description": "提交工单增加手机号，默认从Workday带出且可修改",
+          "complexity": "低",
+          "keywords": [
+            "工单报修优化-提交工单填手机号",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_005",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-工单评价",
+          "effort_days": 3,
+          "description": "工单完成后提交人评价（打分+描述），PC后台查看评价",
+          "complexity": "中",
+          "keywords": [
+            "工单报修优化-工单评价",
+            "系统管理",
+            "配置",
+            "设置",
+            "后台",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "系统管理",
+            "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 2
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_006",
+          "system": "",
+          "module": "功能开发",
+          "name": "工单报修优化-数据统计与报告",
+          "effort_days": 7,
+          "description": "工单数据统计看板与报告导出（含工单评价统计）",
+          "complexity": "中",
+          "keywords": [
+            "工单报修优化-数据统计与报告",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV",
+            "工单",
+            "报修",
+            "维修",
+            "派单"
+          ],
+          "patterns": [
+            "数据统计",
+            "数据导出",
+            "工单系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 7
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_007",
+          "system": "",
+          "module": "功能开发",
+          "name": "评论支持图片",
+          "effort_days": 5,
+          "description": "推文评论支持上传图片（最多九张）",
+          "complexity": "",
+          "keywords": [
+            "评论支持图片",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入",
+            "问答",
+            "评论",
+            "留言",
+            "互动",
+            "内容管理",
+            "发布",
+            "编辑",
+            "推文",
+            "文章",
+            "CMS",
+            "评论管理",
+            "评论审核"
+          ],
+          "patterns": [
+            "文件上传",
+            "问答系统",
+            "内容管理",
+            "评论管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 4
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_008",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片申请优化",
+          "effort_days": 5,
+          "description": "多title，数据分析展示",
+          "complexity": "",
+          "keywords": [
+            "名片申请优化",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘"
+          ],
+          "patterns": [
+            "数据统计"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 3
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 2
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_009",
+          "system": "",
+          "module": "功能开发",
+          "name": "名片审核优化",
+          "effort_days": 1,
+          "description": "DAC接口增加manager_id_modified字段，如果manager id不存在，则用此字段",
+          "complexity": "",
+          "keywords": [
+            "名片审核优化",
+            "审核",
+            "审批",
+            "工作流",
+            "状态流转"
+          ],
+          "patterns": [
+            "审核流程"
+          ],
+          "sub_systems": [
+            {
+              "system": "PC后台",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_010",
+          "system": "",
+          "module": "功能开发",
+          "name": "门禁卡管理页面图片跳转",
+          "effort_days": 1,
+          "description": "门禁卡管理：页面图片增加点击可跳转",
+          "complexity": "低",
+          "keywords": [
+            "门禁卡管理页面图片跳转",
+            "上传",
+            "图片",
+            "文件",
+            "附件",
+            "导入"
+          ],
+          "patterns": [
+            "文件上传"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 1
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_011",
+          "system": "Gateway",
+          "module": "功能开发",
+          "name": "新增OpenAPI接口",
+          "effort_days": 2,
+          "description": "Gateway 新增 openapi 3个",
+          "complexity": "低",
+          "keywords": [
+            "新增OpenAPI接口"
+          ],
+          "patterns": []
+        },
+        {
+          "id": "20260916_Facility 三期需求_012",
+          "system": "",
+          "module": "功能开发",
+          "name": "机器人接口对接",
+          "effort_days": 5,
+          "description": "机器人接口对接：提供开放的API接口供机器人读取所需数据",
+          "complexity": "低",
+          "keywords": [
+            "机器人接口对接"
+          ],
+          "patterns": [],
+          "sub_systems": [
+            {
+              "system": "Gateway",
+              "effort_days": 5
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_013",
+          "system": "",
+          "module": "功能开发",
+          "name": "ISO 45001认证",
+          "effort_days": 25,
+          "description": "知识库、宣传渠道（静态页面）",
+          "complexity": "",
+          "keywords": [
+            "ISO 45001认证",
+            "登录",
+            "注册",
+            "认证",
+            "权限",
+            "角色",
+            "RBAC"
+          ],
+          "patterns": [
+            "认证授权"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 10
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 15
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_014",
+          "system": "",
+          "module": "功能开发",
+          "name": "EAG",
+          "effort_days": 56,
+          "description": "小美龙再生邮局：闲置物品投递登记、ABCD分类、以物易物（自营库存+预约到店）、环保积分、排行榜、数据统计可视化（含回收数据展示）",
+          "complexity": "中",
+          "keywords": [
+            "EAG",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "排行榜",
+            "排行",
+            "排名",
+            "榜单",
+            "勋章",
+            "积分",
+            "奖励",
+            "成就",
+            "等级",
+            "标签",
+            "分类",
+            "标签管理",
+            "分类管理"
+          ],
+          "patterns": [
+            "数据统计",
+            "排行榜",
+            "勋章积分",
+            "标签管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 26
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 30
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_015",
+          "system": "",
+          "module": "功能开发",
+          "name": "行政小智-AI助手",
+          "effort_days": 124.0,
+          "description": "三阶段：基础问答 / 知识增强RAG / 数据与办事（阶段明细见各行描述）",
+          "complexity": "高",
+          "keywords": [
+            "行政小智-AI助手",
+            "问答",
+            "评论",
+            "留言",
+            "互动"
+          ],
+          "patterns": [
+            "问答系统"
+          ],
+          "sub_systems": [
+            {
+              "system": "AI助手",
+              "effort_days": 47.5
+            },
+            {
+              "system": "AI助手",
+              "effort_days": 36.5
+            },
+            {
+              "system": "AI助手",
+              "effort_days": 40
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_016",
+          "system": "",
+          "module": "功能开发",
+          "name": "工位、办公室管理系统",
+          "effort_days": 70,
+          "description": "工位与办公室管理：平面图编辑与查看、台账、固定分配与按天共享预订、统计看板与报告导出、基础数据维护（含Workday人事同步）、基础平面图数据建设",
+          "complexity": "高",
+          "keywords": [
+            "工位、办公室管理系统",
+            "列表",
+            "详情",
+            "创建",
+            "编辑",
+            "删除",
+            "CRUD",
+            "增删改查",
+            "统计",
+            "图表",
+            "报表",
+            "数据分析",
+            "仪表盘",
+            "导出",
+            "下载",
+            "Excel",
+            "CSV",
+            "内容管理",
+            "发布",
+            "推文",
+            "文章",
+            "CMS"
+          ],
+          "patterns": [
+            "CRUD操作",
+            "数据统计",
+            "数据导出",
+            "内容管理"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 12
+            },
+            {
+              "system": "PC后台",
+              "effort_days": 58
+            }
+          ]
+        },
+        {
+          "id": "20260916_Facility 三期需求_017",
+          "system": "",
+          "module": "功能开发",
+          "name": "天气预警",
+          "effort_days": 5,
+          "description": "集成第三方天气API，支持主动推送预警到企微，员工可查询当前天气+预警信息",
+          "complexity": "",
+          "keywords": [
+            "天气预警",
+            "发布",
+            "上线",
+            "状态",
+            "推送",
+            "企微",
+            "企业微信",
+            "企微后台",
+            "企微管理",
+            "企微小程序",
+            "企微H5",
+            "推送记录",
+            "撤回",
+            "定时推送",
+            "消息推送",
+            "消息中心",
+            "通知",
+            "消息管理"
+          ],
+          "patterns": [
+            "发布管理",
+            "企微后台",
+            "企微端",
+            "推送管理",
+            "消息中心"
+          ],
+          "sub_systems": [
+            {
+              "system": "企微",
+              "effort_days": 5
+            }
+          ]
+        }
+      ]
     }
   ],
   "feature_patterns": {
@@ -7351,51 +8622,52 @@
         "增删改查"
       ],
       "examples": [
-        "Facility 需求追加_20260427_008",
-        "Facility 需求追加_20260427_009",
-        "Facility需求追加_20260608_001",
-        "Facility需求追加_20260608_004",
-        "Facility需求追加_20260608_005",
-        "Facility需求追加_20260608_007",
-        "Facility需求追加_20260608_009",
-        "企微图文推送投票功能_20260528_001",
-        "企微图文推送投票功能_20260528_002",
-        "企微图文推送投票功能_20260528_003",
-        "会议签到系统_20260622_004",
-        "会议签到系统_20260622_005",
-        "会议签到系统_20260622_007",
-        "会议签到系统_20260622_009",
-        "会议签到系统_20260622_010",
-        "会议签到系统_20260622_011",
-        "渠道管理Helpdesk_20260330_004",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_005",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_006",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_010",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_015",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_017",
-        "营运部信息化系统_20260519_003",
-        "营运部信息化系统_20260519_015",
-        "营运部信息化系统_20260519_022",
-        "营运部信息化系统_20260519_035",
-        "汽车金融车商管理平台_20260707_009",
-        "Facility_三期需求_20260713_010",
-        "废品与样品管理系统（WSMS）_20260902_010",
-        "Facility 三期需求_20260902_007",
-        "Facility 三期需求_20260902_011",
-        "Facility 三期需求_20260902_014",
-        "Facility 三期需求_20260909_016",
-        "RGI 荣誉勋章_20260915_003",
-        "RGI 荣誉勋章_20260915_004",
-        "RGI 荣誉勋章_20260915_006",
-        "RGI 荣誉勋章_20260915_014",
-        "RGI 荣誉勋章_20260915_015",
-        "小美龙再生邮局_20260915_005",
-        "小美龙再生邮局_20260915_006",
-        "小美龙再生邮局_20260915_007",
-        "小美龙再生邮局_20260915_008",
-        "小美龙再生邮局_20260915_010",
-        "小美龙再生邮局_20260915_013"
+        "20260427_Facility 需求追加_008",
+        "20260427_Facility 需求追加_009",
+        "20260608_Facility需求追加_001",
+        "20260608_Facility需求追加_004",
+        "20260608_Facility需求追加_005",
+        "20260608_Facility需求追加_007",
+        "20260608_Facility需求追加_009",
+        "20260528_企微图文推送投票功能_001",
+        "20260528_企微图文推送投票功能_002",
+        "20260528_企微图文推送投票功能_003",
+        "20260622_会议签到系统_004",
+        "20260622_会议签到系统_005",
+        "20260622_会议签到系统_007",
+        "20260622_会议签到系统_009",
+        "20260622_会议签到系统_010",
+        "20260622_会议签到系统_011",
+        "20260330_渠道管理Helpdesk_004",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_005",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_006",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_010",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_015",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_017",
+        "20260519_营运部信息化系统_003",
+        "20260519_营运部信息化系统_015",
+        "20260519_营运部信息化系统_022",
+        "20260519_营运部信息化系统_035",
+        "20260707_汽车金融车商管理平台_009",
+        "20260713_Facility_三期需求_010",
+        "20260902_废品与样品管理系统（WSMS）_010",
+        "20260902_Facility 三期需求_007",
+        "20260902_Facility 三期需求_011",
+        "20260902_Facility 三期需求_014",
+        "20260909_Facility 三期需求_016",
+        "20260915_RGI 荣誉勋章_003",
+        "20260915_RGI 荣誉勋章_004",
+        "20260915_RGI 荣誉勋章_006",
+        "20260915_RGI 荣誉勋章_014",
+        "20260915_RGI 荣誉勋章_015",
+        "20260915_小美龙再生邮局_005",
+        "20260915_小美龙再生邮局_006",
+        "20260915_小美龙再生邮局_007",
+        "20260915_小美龙再生邮局_008",
+        "20260915_小美龙再生邮局_010",
+        "20260915_小美龙再生邮局_013",
+        "20260916_Facility 三期需求_016"
       ],
       "effort_range": [
         2,
@@ -7416,42 +8688,44 @@
       ],
       "examples": [
         "WX_001",
-        "Facility 需求追加_20260427_004",
-        "企微Dify AI助手系统_20260420_001",
-        "企微Dify AI助手系统_20260420_004",
-        "企微Dify AI助手系统_20260420_005",
-        "企微Dify AI助手系统_20260420_007",
-        "企微Dify AI助手系统_20260420_010",
-        "企微Dify AI助手系统_20260420_011",
-        "企微图文推送投票功能_20260528_001",
-        "企微图文推送投票功能_20260528_002",
-        "会议签到系统_20260622_001",
-        "会议签到系统_20260622_014",
+        "20260427_Facility 需求追加_004",
+        "20260420_企微Dify AI助手系统_001",
+        "20260420_企微Dify AI助手系统_004",
+        "20260420_企微Dify AI助手系统_005",
+        "20260420_企微Dify AI助手系统_007",
+        "20260420_企微Dify AI助手系统_010",
+        "20260420_企微Dify AI助手系统_011",
+        "20260528_企微图文推送投票功能_001",
+        "20260528_企微图文推送投票功能_002",
+        "20260622_会议签到系统_001",
+        "20260622_会议签到系统_014",
         "ADMIN_006",
-        "营运部信息化系统_20260519_001",
-        "营运部信息化系统_20260519_006",
-        "营运部信息化系统_20260519_010",
-        "营运部信息化系统_20260519_018",
-        "营运部信息化系统_20260519_020",
-        "营运部信息化系统_20260519_022",
-        "营运部信息化系统_20260519_036",
-        "营运部信息化系统_20260519_037",
-        "汽车金融车商管理平台_20260707_001",
-        "汽车金融车商管理平台_20260707_039",
-        "Facility_三期需求_20260713_007",
-        "Facility_三期需求_20260713_011",
-        "废品与样品管理系统（WSMS）_20260902_003",
-        "废品与样品管理系统（WSMS）_20260902_021",
-        "废品与样品管理系统（WSMS）_20260902_028",
-        "废品与样品管理系统（WSMS）_20260902_031",
-        "废品与样品管理系统（WSMS）_20260902_036",
-        "Facility 三期需求_20260902_008",
-        "Facility 三期需求_20260902_012",
-        "Facility 三期需求_20260902_011",
-        "Facility 三期需求_20260902_015",
-        "Facility 三期需求_20260909_013",
-        "RGI 荣誉勋章_20260915_008",
-        "RGI 荣誉勋章_20260915_016"
+        "20260519_营运部信息化系统_001",
+        "20260519_营运部信息化系统_006",
+        "20260519_营运部信息化系统_010",
+        "20260519_营运部信息化系统_018",
+        "20260519_营运部信息化系统_020",
+        "20260519_营运部信息化系统_022",
+        "20260519_营运部信息化系统_036",
+        "20260519_营运部信息化系统_037",
+        "20260707_汽车金融车商管理平台_001",
+        "20260707_汽车金融车商管理平台_039",
+        "20260713_Facility_三期需求_007",
+        "20260713_Facility_三期需求_011",
+        "20260902_废品与样品管理系统（WSMS）_003",
+        "20260902_废品与样品管理系统（WSMS）_021",
+        "20260902_废品与样品管理系统（WSMS）_028",
+        "20260902_废品与样品管理系统（WSMS）_031",
+        "20260902_废品与样品管理系统（WSMS）_036",
+        "20260902_Facility 三期需求_008",
+        "20260902_Facility 三期需求_012",
+        "20260902_Facility 三期需求_011",
+        "20260902_Facility 三期需求_015",
+        "20260909_Facility 三期需求_013",
+        "20260915_RGI 荣誉勋章_008",
+        "20260915_RGI 荣誉勋章_016",
+        "20260916_渠道随行客服响应优化_004",
+        "20260916_Facility 三期需求_013"
       ],
       "effort_range": [
         3,
@@ -7470,38 +8744,40 @@
         "导入"
       ],
       "examples": [
-        "Facility需求追加_20260608_001",
-        "Facility需求追加_20260608_004",
-        "企微Dify AI助手系统_20260420_003",
-        "企微Dify AI助手系统_20260420_013",
-        "企微图文推送投票功能_20260528_002",
+        "20260608_Facility需求追加_001",
+        "20260608_Facility需求追加_004",
+        "20260420_企微Dify AI助手系统_003",
+        "20260420_企微Dify AI助手系统_013",
+        "20260528_企微图文推送投票功能_002",
         "ADMIN_005",
-        "渠道管理Helpdesk_20260330_001",
-        "渠道管理Helpdesk_20260330_002",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_001",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_002",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_016",
-        "营运部信息化系统_20260519_012",
-        "营运部信息化系统_20260519_030",
-        "营运部信息化系统_20260519_031",
-        "营运部信息化系统_20260519_032",
-        "汽车金融车商管理平台_20260707_016",
-        "汽车金融车商管理平台_20260707_031",
-        "汽车金融车商管理平台_20260707_032",
-        "汽车金融车商管理平台_20260707_043",
-        "汽车金融车商管理平台_20260707_044",
-        "Facility_三期需求_20260713_003",
-        "废品与样品管理系统（WSMS）_20260902_007",
-        "废品与样品管理系统（WSMS）_20260902_008",
-        "废品与样品管理系统（WSMS）_20260902_025",
-        "废品与样品管理系统（WSMS）_20260902_035",
-        "Facility 三期需求_20260902_003",
-        "Facility 三期需求_20260902_005",
-        "Facility 三期需求_20260902_009",
-        "Facility 三期需求_20260909_007",
-        "Facility 三期需求_20260909_010",
-        "RGI 荣誉勋章_20260915_010",
-        "RGI 荣誉勋章_20260915_011"
+        "20260330_渠道管理Helpdesk_001",
+        "20260330_渠道管理Helpdesk_002",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_001",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_002",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_016",
+        "20260519_营运部信息化系统_012",
+        "20260519_营运部信息化系统_030",
+        "20260519_营运部信息化系统_031",
+        "20260519_营运部信息化系统_032",
+        "20260707_汽车金融车商管理平台_016",
+        "20260707_汽车金融车商管理平台_031",
+        "20260707_汽车金融车商管理平台_032",
+        "20260707_汽车金融车商管理平台_043",
+        "20260707_汽车金融车商管理平台_044",
+        "20260713_Facility_三期需求_003",
+        "20260902_废品与样品管理系统（WSMS）_007",
+        "20260902_废品与样品管理系统（WSMS）_008",
+        "20260902_废品与样品管理系统（WSMS）_025",
+        "20260902_废品与样品管理系统（WSMS）_035",
+        "20260902_Facility 三期需求_003",
+        "20260902_Facility 三期需求_005",
+        "20260902_Facility 三期需求_009",
+        "20260909_Facility 三期需求_007",
+        "20260909_Facility 三期需求_010",
+        "20260915_RGI 荣誉勋章_010",
+        "20260915_RGI 荣誉勋章_011",
+        "20260916_Facility 三期需求_007",
+        "20260916_Facility 三期需求_010"
       ],
       "effort_range": [
         3,
@@ -7520,7 +8796,7 @@
         "内容编辑"
       ],
       "examples": [
-        "企微图文推送投票功能_20260528_002",
+        "20260528_企微图文推送投票功能_002",
         "ADMIN_004"
       ],
       "effort_range": [
@@ -7539,30 +8815,31 @@
         "状态流转"
       ],
       "examples": [
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_008",
-        "营运部信息化系统_20260519_001",
-        "营运部信息化系统_20260519_002",
-        "营运部信息化系统_20260519_003",
-        "营运部信息化系统_20260519_009",
-        "营运部信息化系统_20260519_015",
-        "营运部信息化系统_20260519_019",
-        "营运部信息化系统_20260519_020",
-        "营运部信息化系统_20260519_026",
-        "营运部信息化系统_20260519_027",
-        "营运部信息化系统_20260519_030",
-        "汽车金融车商管理平台_20260707_003",
-        "汽车金融车商管理平台_20260707_007",
-        "汽车金融车商管理平台_20260707_017",
-        "汽车金融车商管理平台_20260707_020",
-        "汽车金融车商管理平台_20260707_036",
-        "汽车金融车商管理平台_20260707_037",
-        "废品与样品管理系统（WSMS）_20260902_003",
-        "废品与样品管理系统（WSMS）_20260902_019",
-        "Facility 三期需求_20260902_005",
-        "Facility 三期需求_20260902_007",
-        "Facility 三期需求_20260909_009",
-        "RGI 荣誉勋章_20260915_015"
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_008",
+        "20260519_营运部信息化系统_001",
+        "20260519_营运部信息化系统_002",
+        "20260519_营运部信息化系统_003",
+        "20260519_营运部信息化系统_009",
+        "20260519_营运部信息化系统_015",
+        "20260519_营运部信息化系统_019",
+        "20260519_营运部信息化系统_020",
+        "20260519_营运部信息化系统_026",
+        "20260519_营运部信息化系统_027",
+        "20260519_营运部信息化系统_030",
+        "20260707_汽车金融车商管理平台_003",
+        "20260707_汽车金融车商管理平台_007",
+        "20260707_汽车金融车商管理平台_017",
+        "20260707_汽车金融车商管理平台_020",
+        "20260707_汽车金融车商管理平台_036",
+        "20260707_汽车金融车商管理平台_037",
+        "20260902_废品与样品管理系统（WSMS）_003",
+        "20260902_废品与样品管理系统（WSMS）_019",
+        "20260902_Facility 三期需求_005",
+        "20260902_Facility 三期需求_007",
+        "20260909_Facility 三期需求_009",
+        "20260915_RGI 荣誉勋章_015",
+        "20260916_Facility 三期需求_009"
       ],
       "effort_range": [
         4,
@@ -7581,33 +8858,38 @@
         "仪表盘"
       ],
       "examples": [
-        "Facility 需求追加_20260427_008",
-        "企微Dify AI助手系统_20260420_006",
-        "企微图文推送投票功能_20260528_004",
-        "会议签到系统_20260622_008",
-        "会议签到系统_20260622_012",
-        "渠道管理Helpdesk_20260330_007",
-        "渠道管理Helpdesk_20260330_008",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_013",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_014",
-        "营运部信息化系统_20260519_019",
-        "营运部信息化系统_20260519_029",
-        "Facility_三期需求_20260713_001",
-        "Facility_三期需求_20260713_004",
-        "废品与样品管理系统（WSMS）_20260902_009",
-        "废品与样品管理系统（WSMS）_20260902_011",
-        "废品与样品管理系统（WSMS）_20260902_022",
-        "Facility 三期需求_20260902_001",
-        "Facility 三期需求_20260902_004",
-        "Facility 三期需求_20260902_006",
-        "Facility 三期需求_20260909_001",
-        "Facility 三期需求_20260909_006",
-        "Facility 三期需求_20260909_008",
-        "Facility 三期需求_20260909_016",
-        "RGI 荣誉勋章_20260915_001",
-        "RGI 荣誉勋章_20260915_017",
-        "小美龙再生邮局_20260915_012",
-        "小美龙再生邮局_20260915_015"
+        "20260427_Facility 需求追加_008",
+        "20260420_企微Dify AI助手系统_006",
+        "20260528_企微图文推送投票功能_004",
+        "20260622_会议签到系统_008",
+        "20260622_会议签到系统_012",
+        "20260330_渠道管理Helpdesk_007",
+        "20260330_渠道管理Helpdesk_008",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_013",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_014",
+        "20260519_营运部信息化系统_019",
+        "20260519_营运部信息化系统_029",
+        "20260713_Facility_三期需求_001",
+        "20260713_Facility_三期需求_004",
+        "20260902_废品与样品管理系统（WSMS）_009",
+        "20260902_废品与样品管理系统（WSMS）_011",
+        "20260902_废品与样品管理系统（WSMS）_022",
+        "20260902_Facility 三期需求_001",
+        "20260902_Facility 三期需求_004",
+        "20260902_Facility 三期需求_006",
+        "20260909_Facility 三期需求_001",
+        "20260909_Facility 三期需求_006",
+        "20260909_Facility 三期需求_008",
+        "20260909_Facility 三期需求_016",
+        "20260915_RGI 荣誉勋章_001",
+        "20260915_RGI 荣誉勋章_017",
+        "20260915_小美龙再生邮局_012",
+        "20260915_小美龙再生邮局_015",
+        "20260916_Facility 三期需求_001",
+        "20260916_Facility 三期需求_006",
+        "20260916_Facility 三期需求_008",
+        "20260916_Facility 三期需求_014",
+        "20260916_Facility 三期需求_016"
       ],
       "effort_range": [
         4,
@@ -7625,10 +8907,11 @@
         "榜单"
       ],
       "examples": [
-        "RGI 荣誉勋章_20260915_001",
-        "RGI 荣誉勋章_20260915_005",
-        "RGI 荣誉勋章_20260915_017",
-        "小美龙再生邮局_20260915_004"
+        "20260915_RGI 荣誉勋章_001",
+        "20260915_RGI 荣誉勋章_005",
+        "20260915_RGI 荣誉勋章_017",
+        "20260915_小美龙再生邮局_004",
+        "20260916_Facility 三期需求_014"
       ],
       "effort_range": [
         5,
@@ -7645,15 +8928,15 @@
         "考勤"
       ],
       "examples": [
-        "会议签到系统_20260622_003",
-        "会议签到系统_20260622_004",
-        "会议签到系统_20260622_006",
-        "会议签到系统_20260622_007",
-        "会议签到系统_20260622_008",
-        "会议签到系统_20260622_011",
-        "会议签到系统_20260622_012",
-        "会议签到系统_20260622_013",
-        "会议签到系统_20260622_019"
+        "20260622_会议签到系统_003",
+        "20260622_会议签到系统_004",
+        "20260622_会议签到系统_006",
+        "20260622_会议签到系统_007",
+        "20260622_会议签到系统_008",
+        "20260622_会议签到系统_011",
+        "20260622_会议签到系统_012",
+        "20260622_会议签到系统_013",
+        "20260622_会议签到系统_019"
       ],
       "effort_range": [
         2,
@@ -7672,18 +8955,19 @@
         "等级"
       ],
       "examples": [
-        "营运部信息化系统_20260519_009",
-        "营运部信息化系统_20260519_027",
-        "汽车金融车商管理平台_20260707_020",
-        "RGI 荣誉勋章_20260915_001",
-        "RGI 荣誉勋章_20260915_002",
-        "RGI 荣誉勋章_20260915_009",
-        "RGI 荣誉勋章_20260915_011",
-        "RGI 荣誉勋章_20260915_018",
-        "小美龙再生邮局_20260915_003",
-        "小美龙再生邮局_20260915_004",
-        "小美龙再生邮局_20260915_014",
-        "小美龙再生邮局_20260915_015"
+        "20260519_营运部信息化系统_009",
+        "20260519_营运部信息化系统_027",
+        "20260707_汽车金融车商管理平台_020",
+        "20260915_RGI 荣誉勋章_001",
+        "20260915_RGI 荣誉勋章_002",
+        "20260915_RGI 荣誉勋章_009",
+        "20260915_RGI 荣誉勋章_011",
+        "20260915_RGI 荣誉勋章_018",
+        "20260915_小美龙再生邮局_003",
+        "20260915_小美龙再生邮局_004",
+        "20260915_小美龙再生邮局_014",
+        "20260915_小美龙再生邮局_015",
+        "20260916_Facility 三期需求_014"
       ],
       "effort_range": [
         6,
@@ -7701,28 +8985,31 @@
         "互动"
       ],
       "examples": [
-        "Facility 需求追加_20260427_007",
-        "Facility需求追加_20260608_001",
-        "Facility需求追加_20260608_002",
-        "Facility需求追加_20260608_003",
-        "Facility需求追加_20260608_004",
+        "20260427_Facility 需求追加_007",
+        "20260608_Facility需求追加_001",
+        "20260608_Facility需求追加_002",
+        "20260608_Facility需求追加_003",
+        "20260608_Facility需求追加_004",
         "USER_002",
         "ADMIN_002",
-        "Facility_三期需求_20260713_001",
-        "Facility_三期需求_20260713_003",
-        "Facility_三期需求_20260713_009",
-        "Facility 三期需求_20260902_001",
-        "Facility 三期需求_20260902_003",
-        "Facility 三期需求_20260902_010",
-        "Facility 三期需求_20260902_005",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260909_001",
-        "Facility 三期需求_20260909_007",
-        "Facility 三期需求_20260909_015",
-        "RGI 荣誉勋章_20260915_001",
-        "RGI 荣誉勋章_20260915_006",
-        "RGI 荣誉勋章_20260915_015",
-        "RGI 荣誉勋章_20260915_017"
+        "20260713_Facility_三期需求_001",
+        "20260713_Facility_三期需求_003",
+        "20260713_Facility_三期需求_009",
+        "20260902_Facility 三期需求_001",
+        "20260902_Facility 三期需求_003",
+        "20260902_Facility 三期需求_010",
+        "20260902_Facility 三期需求_005",
+        "20260902_Facility 三期需求_013",
+        "20260909_Facility 三期需求_001",
+        "20260909_Facility 三期需求_007",
+        "20260909_Facility 三期需求_015",
+        "20260915_RGI 荣誉勋章_001",
+        "20260915_RGI 荣誉勋章_006",
+        "20260915_RGI 荣誉勋章_015",
+        "20260915_RGI 荣誉勋章_017",
+        "20260916_Facility 三期需求_001",
+        "20260916_Facility 三期需求_007",
+        "20260916_Facility 三期需求_015"
       ],
       "effort_range": [
         5,
@@ -7739,18 +9026,18 @@
         "QR码"
       ],
       "examples": [
-        "营运部信息化系统_20260519_001",
-        "营运部信息化系统_20260519_016",
-        "营运部信息化系统_20260519_018",
-        "汽车金融车商管理平台_20260707_019",
-        "废品与样品管理系统（WSMS）_20260902_002",
-        "废品与样品管理系统（WSMS）_20260902_022",
-        "废品与样品管理系统（WSMS）_20260902_023",
-        "废品与样品管理系统（WSMS）_20260902_024",
-        "废品与样品管理系统（WSMS）_20260902_025",
-        "废品与样品管理系统（WSMS）_20260902_026",
-        "废品与样品管理系统（WSMS）_20260902_032",
-        "废品与样品管理系统（WSMS）_20260902_037"
+        "20260519_营运部信息化系统_001",
+        "20260519_营运部信息化系统_016",
+        "20260519_营运部信息化系统_018",
+        "20260707_汽车金融车商管理平台_019",
+        "20260902_废品与样品管理系统（WSMS）_002",
+        "20260902_废品与样品管理系统（WSMS）_022",
+        "20260902_废品与样品管理系统（WSMS）_023",
+        "20260902_废品与样品管理系统（WSMS）_024",
+        "20260902_废品与样品管理系统（WSMS）_025",
+        "20260902_废品与样品管理系统（WSMS）_026",
+        "20260902_废品与样品管理系统（WSMS）_032",
+        "20260902_废品与样品管理系统（WSMS）_037"
       ],
       "effort_range": [
         1,
@@ -7769,48 +9056,50 @@
       ],
       "examples": [
         "WX_001",
-        "Facility 需求追加_20260427_008",
-        "Facility 需求追加_20260427_009",
-        "Facility需求追加_20260608_006",
-        "企微Dify AI助手系统_20260420_007",
-        "企微Dify AI助手系统_20260420_012",
-        "企微Dify AI助手系统_20260420_014",
-        "企微图文推送投票功能_20260528_002",
-        "会议签到系统_20260622_007",
-        "会议签到系统_20260622_010",
-        "会议签到系统_20260622_011",
-        "会议签到系统_20260622_014",
+        "20260427_Facility 需求追加_008",
+        "20260427_Facility 需求追加_009",
+        "20260608_Facility需求追加_006",
+        "20260420_企微Dify AI助手系统_007",
+        "20260420_企微Dify AI助手系统_012",
+        "20260420_企微Dify AI助手系统_014",
+        "20260528_企微图文推送投票功能_002",
+        "20260622_会议签到系统_007",
+        "20260622_会议签到系统_010",
+        "20260622_会议签到系统_011",
+        "20260622_会议签到系统_014",
         "ADMIN_001",
         "ADMIN_002",
         "ADMIN_004",
         "ADMIN_005",
         "ADMIN_006",
         "OTHER_001",
-        "渠道管理Helpdesk_20260330_001",
-        "渠道管理Helpdesk_20260330_006",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_001",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_007",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_008",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_012",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_023",
-        "营运部信息化系统_20260519_001",
-        "营运部信息化系统_20260519_022",
-        "营运部信息化系统_20260519_033",
-        "营运部信息化系统_20260519_036",
-        "营运部信息化系统_20260519_037",
-        "汽车金融车商管理平台_20260707_011",
-        "汽车金融车商管理平台_20260707_027",
-        "废品与样品管理系统（WSMS）_20260902_002",
-        "废品与样品管理系统（WSMS）_20260902_022",
-        "废品与样品管理系统（WSMS）_20260902_037",
-        "Facility 三期需求_20260909_005",
-        "RGI 荣誉勋章_20260915_011",
-        "RGI 荣誉勋章_20260915_012",
-        "RGI 荣誉勋章_20260915_014",
-        "RGI 荣誉勋章_20260915_016",
-        "RGI 荣誉勋章_20260915_019",
-        "小美龙再生邮局_20260915_009",
-        "小美龙再生邮局_20260915_013"
+        "20260330_渠道管理Helpdesk_001",
+        "20260330_渠道管理Helpdesk_006",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_001",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_007",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_008",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_012",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_023",
+        "20260519_营运部信息化系统_001",
+        "20260519_营运部信息化系统_022",
+        "20260519_营运部信息化系统_033",
+        "20260519_营运部信息化系统_036",
+        "20260519_营运部信息化系统_037",
+        "20260707_汽车金融车商管理平台_011",
+        "20260707_汽车金融车商管理平台_027",
+        "20260902_废品与样品管理系统（WSMS）_002",
+        "20260902_废品与样品管理系统（WSMS）_022",
+        "20260902_废品与样品管理系统（WSMS）_037",
+        "20260909_Facility 三期需求_005",
+        "20260915_RGI 荣誉勋章_011",
+        "20260915_RGI 荣誉勋章_012",
+        "20260915_RGI 荣誉勋章_014",
+        "20260915_RGI 荣誉勋章_016",
+        "20260915_RGI 荣誉勋章_019",
+        "20260915_小美龙再生邮局_009",
+        "20260915_小美龙再生邮局_013",
+        "20260916_渠道随行客服响应优化_004",
+        "20260916_Facility 三期需求_005"
       ],
       "effort_range": [
         5,
@@ -7828,27 +9117,29 @@
         "CSV"
       ],
       "examples": [
-        "Facility 需求追加_20260427_008",
-        "企微Dify AI助手系统_20260420_006",
-        "企微图文推送投票功能_20260528_004",
-        "会议签到系统_20260622_013",
+        "20260427_Facility 需求追加_008",
+        "20260420_企微Dify AI助手系统_006",
+        "20260528_企微图文推送投票功能_004",
+        "20260622_会议签到系统_013",
         "ADMIN_003",
-        "渠道管理Helpdesk_20260330_008",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_014",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_016",
-        "营运部信息化系统_20260519_006",
-        "营运部信息化系统_20260519_017",
-        "营运部信息化系统_20260519_023",
-        "营运部信息化系统_20260519_024",
-        "营运部信息化系统_20260519_025",
-        "废品与样品管理系统（WSMS）_20260902_010",
-        "废品与样品管理系统（WSMS）_20260902_011",
-        "废品与样品管理系统（WSMS）_20260902_033",
-        "废品与样品管理系统（WSMS）_20260902_035",
-        "Facility 三期需求_20260902_007",
-        "Facility 三期需求_20260909_006",
-        "Facility 三期需求_20260909_016",
-        "RGI 荣誉勋章_20260915_010"
+        "20260330_渠道管理Helpdesk_008",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_014",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_016",
+        "20260519_营运部信息化系统_006",
+        "20260519_营运部信息化系统_017",
+        "20260519_营运部信息化系统_023",
+        "20260519_营运部信息化系统_024",
+        "20260519_营运部信息化系统_025",
+        "20260902_废品与样品管理系统（WSMS）_010",
+        "20260902_废品与样品管理系统（WSMS）_011",
+        "20260902_废品与样品管理系统（WSMS）_033",
+        "20260902_废品与样品管理系统（WSMS）_035",
+        "20260902_Facility 三期需求_007",
+        "20260909_Facility 三期需求_006",
+        "20260909_Facility 三期需求_016",
+        "20260915_RGI 荣誉勋章_010",
+        "20260916_Facility 三期需求_006",
+        "20260916_Facility 三期需求_016"
       ],
       "effort_range": [
         2,
@@ -7869,37 +9160,40 @@
       ],
       "examples": [
         "WX_002",
-        "Facility 需求追加_20260427_008",
-        "Facility 需求追加_20260427_009",
-        "企微图文推送投票功能_20260528_001",
-        "企微图文推送投票功能_20260528_002",
-        "企微图文推送投票功能_20260528_003",
-        "会议签到系统_20260622_005",
-        "会议签到系统_20260622_007",
-        "会议签到系统_20260622_009",
-        "会议签到系统_20260622_010",
-        "会议签到系统_20260622_022",
+        "20260427_Facility 需求追加_008",
+        "20260427_Facility 需求追加_009",
+        "20260528_企微图文推送投票功能_001",
+        "20260528_企微图文推送投票功能_002",
+        "20260528_企微图文推送投票功能_003",
+        "20260622_会议签到系统_005",
+        "20260622_会议签到系统_007",
+        "20260622_会议签到系统_009",
+        "20260622_会议签到系统_010",
+        "20260622_会议签到系统_022",
         "USER_005",
         "ADMIN_002",
         "ADMIN_004",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_027",
-        "营运部信息化系统_20260519_026",
-        "营运部信息化系统_20260519_035",
-        "营运部信息化系统_20260519_041",
-        "汽车金融车商管理平台_20260707_035",
-        "Facility_三期需求_20260713_001",
-        "Facility_三期需求_20260713_003",
-        "废品与样品管理系统（WSMS）_20260902_010",
-        "废品与样品管理系统（WSMS）_20260902_043",
-        "Facility 三期需求_20260902_001",
-        "Facility 三期需求_20260902_003",
-        "Facility 三期需求_20260902_005",
-        "Facility 三期需求_20260909_001",
-        "Facility 三期需求_20260909_007",
-        "Facility 三期需求_20260909_016",
-        "小美龙再生邮局_20260915_002",
-        "小美龙再生邮局_20260915_008",
-        "小美龙再生邮局_20260915_013"
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_027",
+        "20260519_营运部信息化系统_026",
+        "20260519_营运部信息化系统_035",
+        "20260519_营运部信息化系统_041",
+        "20260707_汽车金融车商管理平台_035",
+        "20260713_Facility_三期需求_001",
+        "20260713_Facility_三期需求_003",
+        "20260902_废品与样品管理系统（WSMS）_010",
+        "20260902_废品与样品管理系统（WSMS）_043",
+        "20260902_Facility 三期需求_001",
+        "20260902_Facility 三期需求_003",
+        "20260902_Facility 三期需求_005",
+        "20260909_Facility 三期需求_001",
+        "20260909_Facility 三期需求_007",
+        "20260909_Facility 三期需求_016",
+        "20260915_小美龙再生邮局_002",
+        "20260915_小美龙再生邮局_008",
+        "20260915_小美龙再生邮局_013",
+        "20260916_Facility 三期需求_001",
+        "20260916_Facility 三期需求_007",
+        "20260916_Facility 三期需求_016"
       ],
       "effort_range": [
         8,
@@ -7918,49 +9212,54 @@
       ],
       "examples": [
         "WX_002",
-        "Facility 需求追加_20260427_008",
-        "Facility需求追加_20260608_005",
-        "Facility需求追加_20260608_007",
-        "Facility需求追加_20260608_008",
-        "Facility需求追加_20260608_009",
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_013",
-        "企微图文推送投票功能_20260528_003",
-        "会议签到系统_20260622_005",
-        "会议签到系统_20260622_009",
-        "会议签到系统_20260622_011",
-        "会议签到系统_20260622_013",
-        "会议签到系统_20260622_022",
+        "20260427_Facility 需求追加_008",
+        "20260608_Facility需求追加_005",
+        "20260608_Facility需求追加_007",
+        "20260608_Facility需求追加_008",
+        "20260608_Facility需求追加_009",
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_013",
+        "20260528_企微图文推送投票功能_003",
+        "20260622_会议签到系统_005",
+        "20260622_会议签到系统_009",
+        "20260622_会议签到系统_011",
+        "20260622_会议签到系统_013",
+        "20260622_会议签到系统_022",
         "USER_001",
         "ADMIN_001",
         "ADMIN_002",
-        "渠道管理Helpdesk_20260330_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_005",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_008",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_019",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_027",
-        "营运部信息化系统_20260519_019",
-        "营运部信息化系统_20260519_026",
-        "营运部信息化系统_20260519_035",
-        "营运部信息化系统_20260519_041",
-        "汽车金融车商管理平台_20260707_033",
-        "汽车金融车商管理平台_20260707_035",
-        "汽车金融车商管理平台_20260707_047",
-        "汽车金融车商管理平台_20260707_048",
-        "Facility_三期需求_20260713_010",
-        "Facility_三期需求_20260713_012",
-        "废品与样品管理系统（WSMS）_20260902_042",
-        "废品与样品管理系统（WSMS）_20260902_043",
-        "Facility 三期需求_20260902_011",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260902_014",
-        "Facility 三期需求_20260902_016",
-        "Facility 三期需求_20260909_017",
-        "小美龙再生邮局_20260915_005",
-        "小美龙再生邮局_20260915_008",
-        "小美龙再生邮局_20260915_010"
+        "20260330_渠道管理Helpdesk_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_005",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_008",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_018",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_019",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_027",
+        "20260519_营运部信息化系统_019",
+        "20260519_营运部信息化系统_026",
+        "20260519_营运部信息化系统_035",
+        "20260519_营运部信息化系统_041",
+        "20260707_汽车金融车商管理平台_033",
+        "20260707_汽车金融车商管理平台_035",
+        "20260707_汽车金融车商管理平台_047",
+        "20260707_汽车金融车商管理平台_048",
+        "20260713_Facility_三期需求_010",
+        "20260713_Facility_三期需求_012",
+        "20260902_废品与样品管理系统（WSMS）_042",
+        "20260902_废品与样品管理系统（WSMS）_043",
+        "20260902_Facility 三期需求_011",
+        "20260902_Facility 三期需求_013",
+        "20260902_Facility 三期需求_014",
+        "20260902_Facility 三期需求_016",
+        "20260909_Facility 三期需求_017",
+        "20260915_小美龙再生邮局_005",
+        "20260915_小美龙再生邮局_008",
+        "20260915_小美龙再生邮局_010",
+        "20260916_渠道随行客服响应优化_001",
+        "20260916_渠道随行客服响应优化_002",
+        "20260916_渠道随行客服响应优化_003",
+        "20260916_渠道随行客服响应优化_004",
+        "20260916_Facility 三期需求_017"
       ],
       "effort_range": [
         3,
@@ -7979,21 +9278,23 @@
       ],
       "examples": [
         "WX_002",
-        "企微Dify AI助手系统_20260420_004",
-        "企微图文推送投票功能_20260528_002",
+        "20260420_企微Dify AI助手系统_004",
+        "20260528_企微图文推送投票功能_002",
         "ADMIN_003",
-        "渠道管理Helpdesk_20260330_004",
-        "渠道管理Helpdesk_20260330_010",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_010",
-        "营运部信息化系统_20260519_032",
-        "废品与样品管理系统（WSMS）_20260902_002",
-        "废品与样品管理系统（WSMS）_20260902_014",
-        "废品与样品管理系统（WSMS）_20260902_015",
-        "废品与样品管理系统（WSMS）_20260902_023",
-        "废品与样品管理系统（WSMS）_20260902_026",
-        "RGI 荣誉勋章_20260915_009",
-        "小美龙再生邮局_20260915_001",
-        "小美龙再生邮局_20260915_002"
+        "20260330_渠道管理Helpdesk_004",
+        "20260330_渠道管理Helpdesk_010",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_010",
+        "20260519_营运部信息化系统_032",
+        "20260902_废品与样品管理系统（WSMS）_002",
+        "20260902_废品与样品管理系统（WSMS）_014",
+        "20260902_废品与样品管理系统（WSMS）_015",
+        "20260902_废品与样品管理系统（WSMS）_023",
+        "20260902_废品与样品管理系统（WSMS）_026",
+        "20260915_RGI 荣誉勋章_009",
+        "20260915_小美龙再生邮局_001",
+        "20260915_小美龙再生邮局_002",
+        "20260916_渠道随行客服响应优化_001",
+        "20260916_Facility 三期需求_014"
       ],
       "effort_range": [
         2,
@@ -8011,16 +9312,17 @@
       ],
       "examples": [
         "WX_002",
-        "Facility需求追加_20260608_001",
-        "Facility需求追加_20260608_002",
-        "Facility需求追加_20260608_003",
-        "Facility需求追加_20260608_004",
+        "20260608_Facility需求追加_001",
+        "20260608_Facility需求追加_002",
+        "20260608_Facility需求追加_003",
+        "20260608_Facility需求追加_004",
         "ADMIN_002",
-        "Facility_三期需求_20260713_003",
-        "Facility 三期需求_20260902_003",
-        "Facility 三期需求_20260902_005",
-        "Facility 三期需求_20260909_007",
-        "RGI 荣誉勋章_20260915_006"
+        "20260713_Facility_三期需求_003",
+        "20260902_Facility 三期需求_003",
+        "20260902_Facility 三期需求_005",
+        "20260909_Facility 三期需求_007",
+        "20260915_RGI 荣誉勋章_006",
+        "20260916_Facility 三期需求_007"
       ],
       "effort_range": [
         2,
@@ -8040,11 +9342,11 @@
       ],
       "examples": [
         "WX_003",
-        "Facility需求追加_20260608_002",
-        "RGI 荣誉勋章_20260915_001",
-        "RGI 荣誉勋章_20260915_004",
-        "RGI 荣誉勋章_20260915_008",
-        "RGI 荣誉勋章_20260915_017"
+        "20260608_Facility需求追加_002",
+        "20260915_RGI 荣誉勋章_001",
+        "20260915_RGI 荣誉勋章_004",
+        "20260915_RGI 荣誉勋章_008",
+        "20260915_RGI 荣誉勋章_017"
       ],
       "effort_range": [
         6,
@@ -8080,30 +9382,32 @@
       ],
       "examples": [
         "WX_001",
-        "Facility需求追加_20260608_008",
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_001",
-        "企微Dify AI助手系统_20260420_004",
-        "企微Dify AI助手系统_20260420_011",
-        "企微Dify AI助手系统_20260420_012",
-        "会议签到系统_20260622_001",
-        "会议签到系统_20260622_014",
-        "会议签到系统_20260622_015",
+        "20260608_Facility需求追加_008",
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_001",
+        "20260420_企微Dify AI助手系统_004",
+        "20260420_企微Dify AI助手系统_011",
+        "20260420_企微Dify AI助手系统_012",
+        "20260622_会议签到系统_001",
+        "20260622_会议签到系统_014",
+        "20260622_会议签到系统_015",
         "OTHER_001",
-        "渠道管理Helpdesk_20260330_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "汽车金融车商管理平台_20260707_005",
-        "汽车金融车商管理平台_20260707_008",
-        "Facility_三期需求_20260713_009",
-        "Facility_三期需求_20260713_012",
-        "Facility 三期需求_20260902_010",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260902_016",
-        "Facility 三期需求_20260909_017",
-        "RGI 荣誉勋章_20260915_016",
-        "RGI 荣誉勋章_20260915_019",
-        "小美龙再生邮局_20260915_001",
-        "小美龙再生邮局_20260915_013"
+        "20260330_渠道管理Helpdesk_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_018",
+        "20260707_汽车金融车商管理平台_005",
+        "20260707_汽车金融车商管理平台_008",
+        "20260713_Facility_三期需求_009",
+        "20260713_Facility_三期需求_012",
+        "20260902_Facility 三期需求_010",
+        "20260902_Facility 三期需求_013",
+        "20260902_Facility 三期需求_016",
+        "20260909_Facility 三期需求_017",
+        "20260915_RGI 荣誉勋章_016",
+        "20260915_RGI 荣誉勋章_019",
+        "20260915_小美龙再生邮局_001",
+        "20260915_小美龙再生邮局_013",
+        "20260916_渠道随行客服响应优化_006",
+        "20260916_Facility 三期需求_017"
       ],
       "effort_range": [
         6,
@@ -8122,30 +9426,32 @@
       ],
       "examples": [
         "WX_003",
-        "Facility需求追加_20260608_008",
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_001",
-        "企微Dify AI助手系统_20260420_004",
-        "企微Dify AI助手系统_20260420_011",
-        "企微Dify AI助手系统_20260420_012",
-        "会议签到系统_20260622_001",
-        "会议签到系统_20260622_014",
-        "会议签到系统_20260622_015",
+        "20260608_Facility需求追加_008",
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_001",
+        "20260420_企微Dify AI助手系统_004",
+        "20260420_企微Dify AI助手系统_011",
+        "20260420_企微Dify AI助手系统_012",
+        "20260622_会议签到系统_001",
+        "20260622_会议签到系统_014",
+        "20260622_会议签到系统_015",
         "OTHER_001",
-        "渠道管理Helpdesk_20260330_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "汽车金融车商管理平台_20260707_005",
-        "汽车金融车商管理平台_20260707_008",
-        "Facility_三期需求_20260713_009",
-        "Facility_三期需求_20260713_012",
-        "Facility 三期需求_20260902_010",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260902_016",
-        "Facility 三期需求_20260909_017",
-        "RGI 荣誉勋章_20260915_016",
-        "RGI 荣誉勋章_20260915_019",
-        "小美龙再生邮局_20260915_001",
-        "小美龙再生邮局_20260915_013"
+        "20260330_渠道管理Helpdesk_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_018",
+        "20260707_汽车金融车商管理平台_005",
+        "20260707_汽车金融车商管理平台_008",
+        "20260713_Facility_三期需求_009",
+        "20260713_Facility_三期需求_012",
+        "20260902_Facility 三期需求_010",
+        "20260902_Facility 三期需求_013",
+        "20260902_Facility 三期需求_016",
+        "20260909_Facility 三期需求_017",
+        "20260915_RGI 荣誉勋章_016",
+        "20260915_RGI 荣誉勋章_019",
+        "20260915_小美龙再生邮局_001",
+        "20260915_小美龙再生邮局_013",
+        "20260916_渠道随行客服响应优化_006",
+        "20260916_Facility 三期需求_017"
       ],
       "effort_range": [
         6,
@@ -8165,15 +9471,16 @@
       ],
       "examples": [
         "WX_004",
-        "Facility需求追加_20260608_008",
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_013",
-        "渠道管理Helpdesk_20260330_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "Facility_三期需求_20260713_012",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260902_016",
-        "Facility 三期需求_20260909_017"
+        "20260608_Facility需求追加_008",
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_013",
+        "20260330_渠道管理Helpdesk_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_018",
+        "20260713_Facility_三期需求_012",
+        "20260902_Facility 三期需求_013",
+        "20260902_Facility 三期需求_016",
+        "20260909_Facility 三期需求_017",
+        "20260916_Facility 三期需求_017"
       ],
       "effort_range": [
         3,
@@ -8192,22 +9499,23 @@
       ],
       "examples": [
         "WX_004",
-        "Facility需求追加_20260608_008",
-        "Facility需求追加_20260608_010",
-        "企微Dify AI助手系统_20260420_013",
+        "20260608_Facility需求追加_008",
+        "20260608_Facility需求追加_010",
+        "20260420_企微Dify AI助手系统_013",
         "ADMIN_001",
-        "渠道管理Helpdesk_20260330_009",
-        "渠道管理Helpdesk需求变更_第三方RTC语音方案_20260409_018",
-        "营运部信息化系统_20260519_003",
-        "营运部信息化系统_20260519_008",
-        "营运部信息化系统_20260519_025",
-        "汽车金融车商管理平台_20260707_002",
-        "汽车金融车商管理平台_20260707_005",
-        "汽车金融车商管理平台_20260707_008",
-        "Facility_三期需求_20260713_012",
-        "Facility 三期需求_20260902_013",
-        "Facility 三期需求_20260902_016",
-        "Facility 三期需求_20260909_017"
+        "20260330_渠道管理Helpdesk_009",
+        "20260409_渠道管理Helpdesk需求变更_第三方RTC语音方案_018",
+        "20260519_营运部信息化系统_003",
+        "20260519_营运部信息化系统_008",
+        "20260519_营运部信息化系统_025",
+        "20260707_汽车金融车商管理平台_002",
+        "20260707_汽车金融车商管理平台_005",
+        "20260707_汽车金融车商管理平台_008",
+        "20260713_Facility_三期需求_012",
+        "20260902_Facility 三期需求_013",
+        "20260902_Facility 三期需求_016",
+        "20260909_Facility 三期需求_017",
+        "20260916_Facility 三期需求_017"
       ],
       "effort_range": [
         3,
@@ -8227,15 +9535,20 @@
       "examples": [
         "USER_001",
         "ADMIN_001",
-        "Facility_三期需求_20260713_002",
-        "Facility 三期需求_20260902_002",
-        "Facility 三期需求_20260902_003",
-        "Facility 三期需求_20260902_004",
-        "Facility 三期需求_20260909_002",
-        "Facility 三期需求_20260909_003",
-        "Facility 三期需求_20260909_004",
-        "Facility 三期需求_20260909_005",
-        "Facility 三期需求_20260909_006"
+        "20260713_Facility_三期需求_002",
+        "20260902_Facility 三期需求_002",
+        "20260902_Facility 三期需求_003",
+        "20260902_Facility 三期需求_004",
+        "20260909_Facility 三期需求_002",
+        "20260909_Facility 三期需求_003",
+        "20260909_Facility 三期需求_004",
+        "20260909_Facility 三期需求_005",
+        "20260909_Facility 三期需求_006",
+        "20260916_Facility 三期需求_002",
+        "20260916_Facility 三期需求_003",
+        "20260916_Facility 三期需求_004",
+        "20260916_Facility 三期需求_005",
+        "20260916_Facility 三期需求_006"
       ],
       "effort_range": [
         10,
