@@ -1,0 +1,126 @@
+{
+  "project_id": "渠道随行客服响应优化_20260915",
+  "name": "渠道随行客服响应优化",
+  "created_date": "2026-09-15",
+  "total_effort": 22,
+  "description": "针对渠道随行小程序客服响应慢导致差评的专项优化：对话标签两态管理、客服展示状态与接单解耦（含企微端状态展示与手机端改状态）、工作时间自动在线/离线切换、销售关闭会话前置校验、客服未响应自动提醒与非工作时间分时段自动回复",
+  "systems": ["企微", "PC后台", "其他"],
+  "tags": ["企微", "小程序", "Helpdesk", "客服", "聊天", "响应优化", "会话超时", "自动回复"],
+  "tech_stack": {
+    "frontend": "企微小程序（渠道随行，销售端）+ PC后台（客服端）",
+    "backend": "Java/Node.js（复用渠道管理Helpdesk现有服务）",
+    "database": "MySQL/MongoDB",
+    "integration": "企微API（应用消息推送）"
+  },
+  "features": [
+    {
+      "module": "会话状态管理",
+      "name": "对话标签两态管理",
+      "requirement_type": "功能优化",
+      "complexity": "低",
+      "description": "每个对话新增独立标签字段，仅\"未完成/已完成\"两态，不与系统会话流转状态关联；客服处理完毕手动改为已完成，作为内部待办清单使用",
+      "sub_systems": [
+        {"system": "PC后台", "effort_days": 2, "remark": "对话列表新增标签列+筛选+手动标记完成"}
+      ],
+      "effort_days": 2,
+      "reference": "CRUD操作模式（历史Helpdesk对话队列管理基础上的增量）"
+    },
+    {
+      "module": "会话状态管理",
+      "name": "客服展示状态自定义",
+      "requirement_type": "功能优化",
+      "complexity": "中",
+      "description": "新增客服个人展示状态（如午休中、开会中、休假中），该状态仅前端展示给销售，与在线接单/消息分配规则解耦",
+      "sub_systems": [
+        {"system": "PC后台", "effort_days": 3, "remark": "状态动态设置CRUD\n客服个人状态设置与展示"},
+        {"system": "企微", "effort_days": 1, "remark": "人工对话中展示客户状态"}
+      ],
+      "effort_days": 4,
+      "reference": "历史项目「用户在线状态管理」基础上的扩展"
+    },
+    {
+      "module": "会话状态管理",
+      "name": "工作时间自动在线/离线切换",
+      "requirement_type": "功能优化",
+      "complexity": "中",
+      "description": "按工作时间（10:00-17:00）自动切换客服在线/离线状态，非工作时间自动离线",
+      "sub_systems": [
+        {"system": "PC后台", "effort_days": 3, "remark": "工作时段配置入口，默认10:00-17:00；定时任务按配置自动切换，与休假状态联动"}
+      ],
+      "effort_days": 3,
+      "reference": "对话超时机制模式（定时任务，历史2人天）"
+    },
+    {
+      "module": "会话状态管理",
+      "name": "手机端客服状态修改（含身份绑定）",
+      "requirement_type": "功能优化",
+      "complexity": "中",
+      "description": "当前小程序端身份为咨询用户、PC后台为客服，需增加角色识别与客服账号绑定逻辑后，支持客服在手机端直接查看并修改自己的展示状态（高频场景）",
+      "sub_systems": [
+        {"system": "企微", "effort_days": 2, "remark": "手机端状态查看+修改入口"}
+      ],
+      "effort_days": 2,
+      "reference": "历史项目「用户在线状态管理」扩展；跨端身份绑定为新增逻辑"
+    },
+    {
+      "module": "会话关闭与超时",
+      "name": "销售关闭会话前置校验",
+      "requirement_type": "功能优化",
+      "complexity": "低",
+      "description": "客服未回复时销售端不允许主动关闭会话并评价，须客服至少回复一条消息后方可操作，避免客服未响应时产生无效差评",
+      "sub_systems": [
+        {"system": "企微", "effort_days": 2, "remark": "客服未回复时禁用关闭/评价入口并给出引导提示"}
+      ],
+      "effort_days": 2,
+      "reference": "会话流转规则校验（历史满意度评分/对话超时机制相关改造）"
+    },
+    {
+      "module": "消息提醒\n与自动回复",
+      "name": "客服未响应自动提醒",
+      "requirement_type": "功能优化",
+      "complexity": "中",
+      "description": "客服超过1分钟未响应时，系统自动向销售弹出提示消息，告知当前咨询量大请耐心等待，并引导关注企业微信后续回访",
+      "sub_systems": [
+        {"system": "企微", "effort_days": 2, "remark": "提醒消息样式渲染，检测客服首响+自动消息下发"}
+      ],
+      "effort_days": 2,
+      "reference": "消息中心模式（实时消息服务基础上扩展）"
+    },
+    {
+      "module": "消息提醒\n与自动回复",
+      "name": "非工作时间自动回复分时段",
+      "requirement_type": "功能优化",
+      "complexity": "中",
+      "description": "自动回复按实际工作时段分割（工作时间外/午休等），明确告知回复延迟原因及后续跟进方式，改善中午咨询时预期不符问题",
+      "sub_systems": [
+        {"system": "PC后台", "effort_days": 2, "remark": "时段与文案配置管理，按时段匹配回复文案的引擎改造"}
+      ],
+      "effort_days": 2,
+      "reference": "自动回复规则配置化（工作时段10:00-17:00）"
+    }
+  ],
+  "summary": {
+    "user_development": 7,
+    "admin_development": 10,
+    "other_development": 0,
+    "total_development_effort": 17,
+    "testing_effort": 3,
+    "other_fixed": {
+      "communication": 1,
+      "environment": 0,
+      "acceptance": 1,
+      "ui_ux_design": 0,
+      "ui_ux_design_note": "复用现有界面样式与组件，均为现有页面上的小改动"
+    },
+    "total_effort": 22
+  },
+  "notes": [
+    "现有系统（渠道管理Helpdesk，初版60人天+RTC变更111人天）增量优化：环境搭建0人天，UI复用现有样式0人天",
+    "客户确认后定稿（2026-09-15，以Isaac手改v2 Excel为准）：本期7项开发17人天；超时关闭时长可配置（2）、消息撤回（4）、历史评分修改（3）三项剔除未计价，其中撤回与评分修改曾按指示补充估算、客户确认后移除",
+    "管理员手动调整客服状态（非工作时间/休假代调离线或自定义状态）现有系统已实现，无需开发不计价（2026-09-15 Isaac确认）",
+    "网页版传输慢确认为客户公司内网策略限制，非系统问题，无开发工作量（建议5G/热点）",
+    "原'-'后端行已并入企微/PC后台各功能行计价；功能测试=ROUNDUP(17×0.15)=3，总计=开发17+测试3+需求沟通1+验收发布1=22",
+    "登录有效期优化、转人工延迟压测为会后技术事项（见pending_questions.md），未计入本版报价",
+    "历史调整轨迹：初估31.5（11项）→ 手改23 → 手改24 → 补撤回/评分32 → 客户确认后定稿22"
+  ]
+}

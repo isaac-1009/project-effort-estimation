@@ -30,7 +30,7 @@ setup_logging()
 log = logging.getLogger(__name__)
 
 
-# 可选的保留 ID 校验格式：name_YYYYMMDD
+# 可选的保留 ID 校验格式：YYYYMMDD_name（新版，日期前置）或 name_YYYYMMDD（旧版兼容）
 _ID_DATE_TAIL_LEN = len("_20260101")  # 9
 
 # 镜像目录环境变量名：设置后归档会把整个归档文件夹额外复制一份到该目录
@@ -43,8 +43,9 @@ def _normalize_project_id(metadata: dict, archived_date_compact: str) -> str:
     规范化 project_id：统一用归档日期，消除双时间源漂移。
 
     规则：
-      - 若 metadata.project_id 末尾是 _YYYYMMDD 且该日期 == 归档日期，则原样使用
-      - 否则用 {name}_{归档日期} 生成（与 folder 名同源）
+      - 若 metadata.project_id 的归档日期（前缀 YYYYMMDD_ 或后缀 _YYYYMMDD）
+        与本次归档日期一致，则原样使用（同日重归档幂等）
+      - 否则用 {归档日期}_{name} 生成（日期前置，与 folder 名同源）
     这样 project_id 与 index.json.folder 始终一致。
     """
     raw_id = metadata.get("project_id", "")
@@ -56,7 +57,14 @@ def _normalize_project_id(metadata: dict, archived_date_compact: str) -> str:
         and raw_id[-8:] == archived_date_compact
     ):
         return raw_id
-    return f"{name}_{archived_date_compact}"
+    if (
+        len(raw_id) > _ID_DATE_TAIL_LEN
+        and raw_id[8:].startswith("_")
+        and raw_id[:8].isdigit()
+        and raw_id[:8] == archived_date_compact
+    ):
+        return raw_id
+    return f"{archived_date_compact}_{name}"
 
 
 def _copy_to_mirror(mirror_dir: str, src_folder: str, folder_name: str) -> Optional[str]:
@@ -121,8 +129,8 @@ def update_index(index_path, project_id, metadata, feature_patterns):
     archived_date = datetime.now()
     archived_date_compact = archived_date.strftime('%Y%m%d')
     archived_date_iso = archived_date.strftime('%Y-%m-%d')
-    # folder 名含用户可控的 metadata.name，先清洗非法字符防止路径穿越
-    folder_name = f"{sanitize_filename(metadata['name'])}_{archived_date_compact}"
+    # folder 名日期前置（YYYYMMDD_name），含用户可控的 metadata.name，先清洗非法字符防止路径穿越
+    folder_name = f"{archived_date_compact}_{sanitize_filename(metadata['name'])}"
 
     # 添加新项目
     project_info = {
