@@ -1,6 +1,6 @@
 # 项目工时估算工具
 
-基于 Claude Code 的项目工时估算系统，通过 `project-estimation` skill 实现智能工时估算。
+基于 AI 编码助手（Claude Code / Codex / ZCode 等）的项目工时估算系统，通过 `project-estimation` skill 实现智能工时估算。
 
 ## 整体架构
 
@@ -46,10 +46,12 @@
 
 ### 使用方法
 
-1. **提供需求** — 向 Claude 提供项目需求文本
-2. **自动处理** — Claude 执行 5 步工作流，生成文件到 `data/current/`
+1. **提供需求** — 向 AI 编码助手提供项目需求文本
+2. **自动处理** — 助手执行 5 步工作流，生成文件到 `data/current/`
 3. **审查确认** — 查看 `data/current/` 中的 Excel 和分析文档
-4. **归档** — 确认无误后运行 `python scripts/archive_estimation.py`（若设置了环境变量 `ARCHIVE_MIRROR_DIR`，归档时会把整个归档文件夹额外复制一份到该目录，用于同步到 WeDrive 等）
+4. **归档** — 确认无误后运行 `python scripts/archive_estimation.py`（`--force` 跳过交互确认；
+   归档目录为 `data/estimations/{YYYYMMDD}_{项目名}/`，日期前置；若设置了环境变量
+   `ARCHIVE_MIRROR_DIR`，归档时会把整个归档文件夹额外复制一份到该目录，用于同步到 WeDrive 等）
 
 ### 生成报价版
 
@@ -58,6 +60,15 @@
 
 ```bash
 python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
+```
+
+### 生成 Medtronic 客户报价单
+
+需要输出 Medtronic 格式报价单时，基于估算 Excel 按 `templates/Medtronic_template.xlsx`
+模板自动填功能行与固定项，单价列留空由商务填写：
+
+```bash
+python scripts/fill_medtronic_quote.py <估算.xlsx> --name "项目名" [-o 输出.xlsx]
 ```
 
 ## 工时估算原理
@@ -103,7 +114,8 @@ python scripts/generate_quote.py <metadata.json> --total 249.5 [-o 输出.xlsx]
 - 每个归档项目自动更新 `index.json`（项目索引）和 `history.json`（功能模式库）
 - 归档时 `archive_estimation.py` 会把新项目的每个 feature 与 24 种标准模式
   做关键词匹配，命中的 feature id 回填到 `feature_patterns[].examples`，
-  实现"越用越准"的自学习
+  实现"越用越准"的自学习；多端（企微/PC后台）`sub_systems` 功能按各端工时
+  合计入库并保留明细
 - 下次估算通过标签、技术栈、功能关键词匹配相似项目
 - 匹配到相似功能时直接参考历史工时
 
@@ -127,7 +139,7 @@ data/
 ├── history.json                    ← 功能模式库(24种) + 历史项目
 ├── estimations/
 │   ├── index.json                  ← 项目索引 + 功能关键词索引
-│   └── {name}_{date}/              ← 已归档项目
+│   └── {YYYYMMDD}_{项目名}/        ← 已归档项目（日期前置）
 │       ├── metadata.json
 │       ├── 工时估算.xlsx
 │       └── analysis.md
@@ -157,10 +169,14 @@ project-effort-estimation/
 │   ├── path_safety.py              # 共享：路径安全助手（文件名清洗 + 越界校验）
 │   ├── generate_excel.py           # 从 metadata.json 生成 Excel 估算（8 列布局）
 │   ├── generate_quote.py           # 生成报价版估算（目标总工时精确配平）
-│   ├── read_excel.py               # 读取/校验 Excel 估算文件
+│   ├── read_excel.py               # 读取/校验 Excel 估算文件（--json 程序化读取）
 │   ├── archive_estimation.py       # 归档当前估算到历史库（含镜像复制 + .bak 备份）
-│   └── generate_dev_plan.py        # 生成甘特图 HTML
-└── tests/                          # pytest 单元测试（8 个文件、94 项用例）
+│   ├── generate_dev_plan.py        # 生成甘特图 HTML
+│   └── fill_medtronic_quote.py     # 按 Medtronic 模板生成客户报价单（单价留空待商务）
+├── templates/
+│   ├── Medtronic_template.xlsx     # Medtronic 报价单模板
+│   └── analysis_template.md        # 分析文档模板
+└── tests/                          # pytest 单元测试（11 个文件、114 项用例）
 ```
 
 ## Skill 配置
@@ -182,7 +198,7 @@ project-effort-estimation/
 | 5-10 | ±20% | 有少量历史参考 |
 | 10-20 | ±15% | 功能模式库较完善 |
 
-> 当前库已积累 13 个项目、283 个 feature，24 种功能模式中 23 种有历史实例支撑。
+> 当前库已积累 19 个项目、358 个 feature，24 种功能模式均已积累历史实例支撑。
 
 ## 安装与开发
 
@@ -206,6 +222,6 @@ python -m pytest tests/   # 运行全部单元测试
 ### 版本控制
 
 项目使用 git 管理。`.gitignore` 排除了本机 AI 工具目录
-（`.claude/settings.local.json`、`.zcode/`、`.mimosa/`、`.codegraph/`）
-和 Office 锁文件。Excel/HTML 等二进制产物通过 `.gitattributes` 标记为
-binary，文本文件统一 LF 行尾。
+（`.claude/settings.local.json`、`.zcode/`、`.mimosa/`、`.codegraph/`）、
+Office 锁文件和 Python/pytest 缓存等本地产物。Excel/HTML 等二进制产物通过
+`.gitattributes` 标记为 binary，文本文件统一 LF 行尾。
